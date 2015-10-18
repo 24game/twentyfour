@@ -1,7 +1,7 @@
 {
 "version": 3,
-"mappings": "",
-"sources": [],
+"mappings": "AAAQ,uEAA+D;ACIvE,UAAW;EACP,KAAK,EAAE,KAAK;EACZ,MAAM,EAAE,MAAM;EAEd,iBAAO;IACH,WAAW,EAAE,wBAAwB;IAErC,2BAAU;MACN,UAAU,EAAE,MAAM",
+"sources": ["fonts.scss","site.scss"],
 "names": [],
 "file": "site.css"
 }

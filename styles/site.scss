@@ -1,0 +1,16 @@
+@import "fonts";
+
+$site-container-width: 768px;
+
+.container {
+    width: 768px;
+    margin: 0 auto;
+
+    header {
+        font-family: 'Montserrat', sans-serif;
+
+        .centered {
+            text-align: center;
+        }
+    }
+}

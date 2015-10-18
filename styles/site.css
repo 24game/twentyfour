@@ -1,3 +1,10 @@
-
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+.container {
+  width: 768px;
+  margin: 0 auto; }
+  .container header {
+    font-family: 'Montserrat', sans-serif; }
+    .container header .centered {
+      text-align: center; }
 
 /*# sourceMappingURL=site.css.map */
