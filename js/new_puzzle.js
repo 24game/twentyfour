@@ -1,15 +1,22 @@
-function Puzzles() {
+function loadJson() {
+  var json = null;
   $.ajax({
-    url: "./puzzle.json",
-    dataType: 'json',
-    async: false,
-    success: function(json) {
-      this.json = json;
-      console.log("Loaded json successfully!");
-      var randomIndex = Math.floor(Math.random() * json.puzzle.length);
-      console.log(json.puzzle[randomIndex]);
+    'async' : false,
+    'global' : false,
+    'url' : "./puzzles.json",
+    'dataType' : "json",
+    success : function (data) {
+      console.log("Successfully loaded json.");
+      json = data;
     }
   });
+  return json;
 }
 
-window.Puzzles = new Puzzles();
+function GetPuzzles() {
+  var json = loadJson();
+  var puzzles = json.puzzles;
+  console.log(puzzles);
+  var randomIndex = Math.floor(Math.random() * puzzles.length);
+  return puzzles[randomIndex];
+}
