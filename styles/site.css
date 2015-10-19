@@ -1,10 +1,53 @@
 @import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
-.container {
-  width: 768px;
+.debug {
+  border: 1px solid magenta; }
+
+.flexible {
+  display: -webkit-flex;
+  display: flex; }
+  .flexible.rows {
+    -webkit-flex-direction: row;
+    flex-direction: row; }
+  .flexible.columns {
+    -webkit-flex-direction: column;
+    flex-direction: column; }
+  .flexible.horizontally-centered {
+    -webkit-align-items: center;
+    align-items: center; }
+  .flexible.vertically-centered {
+    -webkit-justify-content: center;
+    justify-content: center; }
+
+.pull-left {
+  float: left; }
+
+.pull-right {
+  float: right; }
+
+.center-block {
   margin: 0 auto; }
-  .container header {
-    font-family: 'Montserrat', sans-serif; }
-    .container header .centered {
-      text-align: center; }
+
+.centered {
+  text-align: center; }
+
+/* Variables */
+body {
+  font-family: "Montserrat", sans-serif; }
+
+.number {
+  background: #eee4da;
+  width: 62px;
+  height: 62px;
+  border-radius: 4px;
+  margin-left: 7.5px;
+  margin-right: 7.5px; }
+  .number:first-child {
+    margin-left: 0; }
+  .number:last-child {
+    margin-right: 0; }
+
+.operator {
+  border-radius: 50%;
+  border: 1px solid #55acee; }
 
 /*# sourceMappingURL=site.css.map */

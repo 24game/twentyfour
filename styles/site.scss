@@ -1,16 +1,43 @@
+@import "helpers";
 @import "fonts";
 
-$site-container-width: 768px;
 
-.container {
-    width: 768px;
-    margin: 0 auto;
+/* Variables */
+$font-montserrat: 'Montserrat', sans-serif;
 
-    header {
-        font-family: 'Montserrat', sans-serif;
+$site-font: $font-montserrat;
 
-        .centered {
-            text-align: center;
-        }
+$tile-color: #eee4da;
+$tile-size: 62px;
+$tile-border-radius: 4px;
+$tile-space-between: 15px;
+
+$operator-color: #55acee;
+
+
+body {
+    font-family: $site-font;
+}
+
+.number {
+    background: $tile-color;
+    width: $tile-size;
+    height: $tile-size;
+
+    border-radius: $tile-border-radius;
+    margin-left: $tile-space-between / 2;
+    margin-right: $tile-space-between / 2;
+
+    &:first-child {
+        margin-left: 0;
     }
+
+    &:last-child {
+        margin-right: 0;
+    }
+}
+
+.operator {
+    border-radius: 50%;
+    border: 1px solid $operator-color;
 }

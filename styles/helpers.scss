@@ -1,0 +1,44 @@
+.debug {
+    border: 1px solid magenta;
+}
+
+.flexible {
+    display: -webkit-flex;
+    display: flex;
+
+    &.rows {
+        -webkit-flex-direction: row;
+        flex-direction: row;
+    }
+
+    &.columns {
+        -webkit-flex-direction: column;
+        flex-direction: column;
+    }
+
+    &.horizontally-centered {
+        -webkit-align-items: center;
+        align-items: center;
+    }
+
+    &.vertically-centered {
+        -webkit-justify-content: center;
+        justify-content: center;
+    }
+}
+
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}
+
+.center-block {
+    margin: 0 auto;
+}
+
+.centered {
+    text-align: center;
+}
