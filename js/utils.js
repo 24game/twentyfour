@@ -14,3 +14,7 @@ Utils.loadJson = function(file) {
   });
   return json;
 }
+
+Utils.cleanStringToCompute = function(stringToCompute) {
+  return stringToCompute.replace(/[^0-9\+\-\*\/\(\)]+/g, '');
+}
