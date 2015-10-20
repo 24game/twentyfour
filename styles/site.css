@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700|Droid+Sans:700,400,600,800);
 .debug {
   border: 1px solid magenta; }
 
@@ -30,24 +30,168 @@
 .centered {
   text-align: center; }
 
+/* http://stackoverflow.com/a/6900392 */
+.unselectable {
+  -webkit-user-select: none;
+  /* Chrome/Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* IE10+ */
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none; }
+
+.uppercase {
+  text-transform: uppercase; }
+
+.lowercase {
+  text-transform: lowercase; }
+
+.capitalize {
+  text-transform: capitalize; }
+
+.larger {
+  font-size: 150%; }
+
+.large {
+  font-size: 125%; }
+
 /* Variables */
+html {
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased; }
+
 body {
   font-family: "Montserrat", sans-serif; }
 
-.number {
-  background: #eee4da;
-  width: 62px;
-  height: 62px;
-  border-radius: 4px;
-  margin-left: 7.5px;
-  margin-right: 7.5px; }
-  .number:first-child {
+h1 {
+  font-size: 4rem;
+  color: #493622;
+  letter-spacing: 0.3rem;
+  word-spacing: 1rem; }
+
+section.instructions {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-size: 1.3rem;
+  word-spacing: 0.08rem;
+  color: #6b4f33;
+  background: #f8f5f1;
+  padding: 10px 50px;
+  border-radius: 8px; }
+  section.instructions p {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem; }
+
+section.instructions + section.game {
+  margin-top: 3rem;
+  padding: 1rem; }
+
+section.game {
+  font-family: "Droid Sans", sans-serif;
+  background: white;
+  padding: 1.43rem;
+  border-radius: 6px; }
+
+.number-tile {
+  position: relative;
+  font-size: 4.5rem;
+  font-weight: 700;
+  background-color: #f8f5f1;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 75ms ease-out;
+  border: 4px dashed transparent;
+  margin-left: 1rem;
+  margin-right: 1rem; }
+  .number-tile .number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    transition: font-size 75ms ease-in-out;
+    font-size: inherit;
+    font-weight: inherit;
+    color: #493622; }
+  .number-tile:hover {
+    background-color: #f0e8e0;
+    border: 4px dashed #cfb59b; }
+    .number-tile:hover .number {
+      font-size: 5.175rem; }
+  .number-tile:first-child {
     margin-left: 0; }
-  .number:last-child {
+  .number-tile:last-child {
     margin-right: 0; }
 
-.operator {
-  border-radius: 50%;
-  border: 1px solid #55acee; }
+code {
+  padding: 2px 4px;
+  font-size: inherit;
+  color: #493622;
+  border-radius: 4px;
+  margin-left: 0.125rem;
+  margin-right: 0.125rem; }
+  code:first-child {
+    margin-left: 0; }
+  code:last-child {
+    margin-right: 0; }
+
+.operator-tile {
+  position: relative;
+  font-size: 4.5rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  color: #493622;
+  cursor: pointer;
+  width: 4rem;
+  height: 4rem;
+  padding: 1rem;
+  border: 4px dashed transparent;
+  border-radius: 50%; }
+  .operator-tile .operator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    transition: font-size 75ms ease-in-out;
+    font-size: inherit;
+    font-weight: inherit;
+    color: #493622; }
+  .operator-tile:hover {
+    background-color: #d9e3ed;
+    color: #375676;
+    border: 4px dashed #82a2c5; }
+    .operator-tile:hover .operator {
+      font-size: 5.175rem;
+      color: inherit; }
+
+.equals-tile {
+  font-size: 5.4rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  color: #493622;
+  cursor: default;
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
+  border: 4px dashed transparent;
+  color: #9f754b; }
+
+.result-tile {
+  position: relative;
+  font-weight: 700;
+  cursor: default;
+  background-color: unset;
+  width: 5rem;
+  height: 5rem;
+  font-size: 4.95rem; }
+  .result-tile .result {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    font-weight: inherit;
+    color: #9f754b; }
 
 /*# sourceMappingURL=site.css.map */

@@ -1,27 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1" >
-  <title></title>
-  <link rel="stylesheet" href="styles/site.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link rel="stylesheet" href="styles/site.css">
 </head>
 <body>
 <div class="flexible columns horizontally-centered page">
-  <header>
-    <div class="centered">
-      <h1>Twenty Four</h1>
-    </div>
-  </header>
-  <section class="flexible rows horizontally-centered vertically-centered game">
-    <div class="flexible horizontally-centered vertically-centered number">10</div>
-    <div class="flexible horizontally-centered vertically-centered number">3</div>
-    <div class="flexible horizontally-centered vertically-centered number"></div>
-    <div class="flexible horizontally-centered vertically-centered number">650</div>
-  </section>
-  <footer>
+    <header>
+        <div class="centered">
+            <h1 class="uppercase">Twenty Four</h1>
+        </div>
+    </header>
+    <section class="flexible columns horizontally-centered instructions">
+        <p class="larger">Use
+            <strong class="larger"><code>&plus;</code><code>&minus;</code><code>&times;</code><code>&divide;</code></strong>
+            to make 24.</p>
+        <p><strong class="uppercase">Circle</strong> numbers to wrap them in <strong class="large"><code>&lpar;</code><code>&rpar;</code></strong>.</p>
+        <p><strong class="uppercase">Click</strong> operators to cycle between them.</p>
+    </section>
+    <section class="flexible rows horizontally-centered vertically-centered game">
+        <div class="number-tile"><span class="unselectable number">6</span></div>
+        <div class="operator-tile"><span class="unselectable operator">&times;</span></div>
+        <div class="number-tile"><span class="unselectable number">1</span></div>
+        <div class="operator-tile"><span class="unselectable operator">&minus;</span></div>
+        <div class="number-tile"><span class="unselectable number">3</span></div>
+        <div class="operator-tile"><span class="unselectable operator">&divide;</span></div>
+        <div class="number-tile"><span class="unselectable number">4</span></div>
+        <div class="equals-tile"><span class="unselectable equals">&equals;</span></div>
+        <div class="result-tile"><span class="unselectable result">1.5</span></div>
+    </section>
+    <footer>
 
-  </footer>
+    </footer>
 </div>
 </body>
 </html>

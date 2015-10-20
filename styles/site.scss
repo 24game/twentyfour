@@ -1,43 +1,172 @@
 @import "helpers";
 @import "fonts";
 
-
 /* Variables */
 $font-montserrat: 'Montserrat', sans-serif;
+$font-droidsans: 'Droid Sans', sans-serif;
+$color-wood: #ede3d9;
 
-$site-font: $font-montserrat;
+$base-font: $font-montserrat;
+$base-font-size: 14px;
+$base-space-between: 1rem;
 
-$tile-color: #eee4da;
-$tile-size: 62px;
-$tile-border-radius: 4px;
-$tile-space-between: 15px;
+$tile-background: lighten($color-wood, 7%);
+$tile-color: darken($tile-background, 75%);
+$tile-size: 10rem;
+$tile-font-size: $tile-size * 0.45;
+$tile-border-width: 4px;
+$tile-border-radius: 6px;
+$tile-space-between: $base-space-between * 2;
+$tile-hover-background: darken($tile-background, 5%);
+$tile-hover-border-color: darken($tile-background, 25%);
+$tile-hover-font-size: $tile-font-size * 1.15;
+
+$operator-size: 4rem;
+
 
 $operator-color: #55acee;
 
+html {
+  font-size: $base-font-size;
+  -webkit-font-smoothing: antialiased;
+}
 
 body {
-    font-family: $site-font;
+  font-family: $base-font;
 }
 
-.number {
-    background: $tile-color;
-    width: $tile-size;
-    height: $tile-size;
-
-    border-radius: $tile-border-radius;
-    margin-left: $tile-space-between / 2;
-    margin-right: $tile-space-between / 2;
-
-    &:first-child {
-        margin-left: 0;
-    }
-
-    &:last-child {
-        margin-right: 0;
-    }
+h1 {
+  font-size: 4rem;
+  color: $tile-color;
+  letter-spacing: 0.3rem;
+  word-spacing: 1rem;
 }
 
-.operator {
-    border-radius: 50%;
-    border: 1px solid $operator-color;
+section.instructions {
+  font-family: $font-montserrat;
+  font-weight: 400;
+  font-size: 1.3rem;
+  word-spacing: 0.08rem;
+  color: lighten($tile-color, 10%);
+  background: lighten($tile-background, 0%);
+  padding: 10px 50px;
+  border-radius: 8px;
+
+  p {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+section.instructions + section.game {
+  margin-top: 3rem;
+  padding: 1rem;
+}
+
+section.game {
+  font-family: $font-droidsans;
+  background: lighten($tile-background, 20%);
+  padding: 1.43rem;
+  border-radius: $tile-border-radius;
+}
+
+.number-tile {
+  position: relative;
+  font-size: $tile-font-size;
+  font-weight: 700;
+  background-color: $tile-background;
+  width: $tile-size;
+  height: $tile-size;
+  border-radius: $tile-border-radius;
+  cursor: pointer;
+  transition: background-color 75ms ease-out;
+  border: $tile-border-width dashed transparent;
+
+  .number {
+    @include center-via-transform-translate();
+    transition: font-size 75ms ease-in-out;
+    font-size: inherit;
+    font-weight: inherit;
+    color: $tile-color;
+  }
+
+  &:hover {
+    background-color: $tile-hover-background;
+    border: $tile-border-width dashed $tile-hover-border-color;
+
+    .number {
+      font-size: $tile-hover-font-size;
+    }
+  }
+
+  @include space-between($tile-space-between);
+}
+
+code {
+  padding: 2px 4px;
+  font-size: inherit;
+  color: $tile-color;
+  border-radius: 4px;
+  @include space-between($base-space-between / 4);
+}
+
+.operator-tile {
+  position: relative;
+  font-size: $tile-font-size;
+  font-family: $font-montserrat;
+  font-weight: 400;
+  color: $tile-color;
+  cursor: pointer;
+  width: $operator-size;
+  height: $operator-size;
+  padding: $base-space-between;
+  border: $tile-border-width dashed transparent;
+  border-radius: 50%;
+
+  .operator {
+    @include center-via-transform-translate();
+    transition: font-size 75ms ease-in-out;
+    font-size: inherit;
+    font-weight: inherit;
+    color: $tile-color;
+  }
+
+  &:hover {
+    background-color: lighten(invert($tile-color), 10%);
+    color: darken(invert($tile-color), 45%);
+    border: $tile-border-width dashed darken(invert($tile-color), 15%);
+
+    .operator {
+      font-size: $tile-hover-font-size;
+      color: inherit;
+    }
+  }
+}
+
+.equals-tile {
+  font-size: $tile-font-size * 1.2;
+  font-family: $font-montserrat;
+  font-weight: 400;
+  color: $tile-color;
+  cursor: default;
+  margin-left: $base-space-between * 2.5;
+  margin-right: $base-space-between * 2.50;
+  border: $tile-border-width dashed transparent;
+  color: darken($tile-background, 50%);
+}
+
+.result-tile {
+  position: relative;
+  font-weight: 700;
+  cursor: default;
+  background-color: unset;
+  width: $tile-size / 2;
+  height: $tile-size / 2;
+  font-size: $tile-font-size * 1.1;
+
+  .result {
+    @include center-via-transform-translate();
+    font-weight: inherit;
+    color: darken($tile-background, 50%);
+  }
 }

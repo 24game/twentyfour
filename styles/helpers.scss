@@ -1,44 +1,95 @@
 .debug {
-    border: 1px solid magenta;
+  border: 1px solid magenta;
 }
 
 .flexible {
-    display: -webkit-flex;
-    display: flex;
+  display: -webkit-flex;
+  display: flex;
 
-    &.rows {
-        -webkit-flex-direction: row;
-        flex-direction: row;
-    }
+  &.rows {
+    -webkit-flex-direction: row;
+    flex-direction: row;
+  }
 
-    &.columns {
-        -webkit-flex-direction: column;
-        flex-direction: column;
-    }
+  &.columns {
+    -webkit-flex-direction: column;
+    flex-direction: column;
+  }
 
-    &.horizontally-centered {
-        -webkit-align-items: center;
-        align-items: center;
-    }
+  &.horizontally-centered {
+    -webkit-align-items: center;
+    align-items: center;
+  }
 
-    &.vertically-centered {
-        -webkit-justify-content: center;
-        justify-content: center;
-    }
+  &.vertically-centered {
+    -webkit-justify-content: center;
+    justify-content: center;
+  }
 }
 
 .pull-left {
-    float: left;
+  float: left;
 }
 
 .pull-right {
-    float: right;
+  float: right;
 }
 
 .center-block {
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 .centered {
-    text-align: center;
+  text-align: center;
+}
+
+/* http://stackoverflow.com/a/6900392 */
+.unselectable {
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.larger {
+  font-size: 150%;
+}
+
+.large {
+  font-size: 125%;
+}
+
+@mixin center-via-transform-translate() {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+@mixin space-between($value) {
+  margin-left: $value / 2;
+  margin-right: $value / 2;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
 }
