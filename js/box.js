@@ -2,6 +2,7 @@ function Box() {}
 
 Box.prototype.number = function(numberValue) {
   this.numberValue = numberValue;
+  this.isClicked = false; 
 };
 
 Box.prototype.operator = function(operatorValue) {
