@@ -11,7 +11,6 @@ Game.prototype.initializeGame = function() {
 Game.prototype.newGame = function() {
   this.initializeGame();
   this.puzzle = this.puzzles.getNewPuzzle();
-  console.log(this.puzzle);
   this.firstNumber.number = this.firstNumber.number(this.puzzle[0]);
   this.secondNumber.number = this.secondNumber.number(this.puzzle[1]);
   this.thirdNumber.number = this.thirdNumber.number(this.puzzle[2]);
