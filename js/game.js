@@ -1,4 +1,5 @@
-function Game() {}
+function Game() {
+}
 
 Game.prototype.initializeGame = function() {
   this.puzzles = new Puzzles();
