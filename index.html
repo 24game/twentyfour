@@ -20,16 +20,16 @@
         <p><strong class="uppercase">Circle</strong> numbers to wrap them in <strong class="large"><code>&lpar;</code><code>&rpar;</code></strong>.</p>
         <p><strong class="uppercase">Click</strong> operators to cycle between them.</p>
     </section>
-    <section class="flexible rows horizontally-centered vertically-centered game">
-        <div class="number-tile"><span class="unselectable number">6</span></div>
-        <div class="operator-tile"><span class="unselectable operator">&times;</span></div>
-        <div class="number-tile"><span class="unselectable number">10</span></div>
-        <div class="operator-tile"><span class="unselectable operator">&divide;</span></div>
-        <div class="number-tile"><span class="unselectable number">3</span></div>
-        <div class="operator-tile"><span class="unselectable operator">&plus;</span></div>
-        <div class="number-tile"><span class="unselectable number">4</span></div>
-        <div class="equals-tile"><span class="unselectable equals">&equals;</span></div>
-        <div class="result-tile"><span class="unselectable result">24</span></div>
+    <section class="flexible rows horizontally-centered vertically-centered game" id="game">
+        <div class="drop-container"><div class="number-tile"><span class="unselectable number">6</span></div></div>
+        <div class="drop-container"><div class="operator-tile"><span class="unselectable operator">&times;</span></div></div>
+        <div class="drop-container"><div class="number-tile"><span class="unselectable number">10</span></div></div>
+        <div class="drop-container"><div class="operator-tile"><span class="unselectable operator">&divide;</span></div></div>
+        <div class="drop-container"><div class="number-tile"><span class="unselectable number">3</span></div></div>
+        <div class="drop-container"><div class="operator-tile"><span class="unselectable operator">&plus;</span></div></div>
+        <div class="drop-container"><div class="number-tile"><span class="unselectable number">4</span></div></div>
+        <div class="drop-container"><div class="equals-tile"><span class="unselectable equals">&equals;</span></div></div>
+        <div class="drop-container"><div class="result-tile"><span class="unselectable result">24</span></div></div>
     </section>
     <footer>
 
@@ -45,3 +45,28 @@
 <script type="text/javascript" src="js/calculator.js"></script>
 <script type="text/javascript" src="js/box.js"></script>
 <script type="text/javascript" src="js/game.js"></script>
+<script type="text/javascript" src="js/dragula.min.js"></script>
+<script>
+    var numbers = $('.drop-container .number-tile').parent().toArray();
+    $('.drop-container').mousedown(function(event) {
+        var dropContainer = event.target;
+        if ($(dropContainer).hasClass('number'))
+            dropContainer = $(dropContainer).parent().parent();
+        else if ($(dropContainer).hasClass('number-tile'))
+            dropContainer = $(dropContainer).parent();
+        if (window.drake) {
+            window.drake.destroy();
+        }
+        //var numbers = $('.drop-container .number-tile').parent().toArray();
+        var numbers = $('section.game').toArray();
+        window.drake = dragula(numbers), {
+            copy: true,
+            isContainer: function (el) {
+                return el.classList.contains('number-tile'); // only elements in drake.containers will be taken into account
+            },
+        };
+        window.drake.on('drop', function(el, target, source, sibling) {
+            console.log(el, target, source, sibling);
+        });
+    });
+</script>
