@@ -1,5 +1,5 @@
 function Puzzles() {
-  var json = Utils.loadJson("./puzzles.json");
+  var json = Utils.loadJson('./puzzles.json');
   this.puzzles = json.puzzles;
 }
 

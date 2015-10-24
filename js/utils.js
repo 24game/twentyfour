@@ -8,7 +8,7 @@ Utils.loadJson = function(file) {
     'url': file,
     'dataType': "json",
     success: function(data) {
-      console.log("Successfully loaded json.");
+      console.log('Successfully loaded json.');
       json = data;
     }
   });
@@ -19,10 +19,8 @@ Utils.cleanStringToCompute = function(stringToCompute) {
   return stringToCompute.replace(/[^0-9\+\-\*\/\(\)]+/g, '');
 };
 
-Utils.swap = function(a, b, array) {
-  var temp = array[a];
-  array[a] = array[b];
-  array[b] = temp;
+Utils.cleanOperators = function(stringToClean) {
+  return stringToClean.replace(/×+/g, '*').replace(/÷+/g, '/');
 };
 
 Utils.randomize = function(array) {
@@ -31,4 +29,10 @@ Utils.randomize = function(array) {
     this.swap(i, random, array);
   }
   return array;
+};
+
+Utils.swap = function(a, b, array) {
+  var temp = array[a];
+  array[a] = array[b];
+  array[b] = temp;
 };
