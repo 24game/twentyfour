@@ -6,6 +6,8 @@
 $font-montserrat: 'Montserrat', sans-serif;
 $font-droidsans: 'Droid Sans', sans-serif;
 $color-wood: #ede3d9;
+$color-marble: #9597a1;
+$color-fern: #a2b1a6;
 
 $base-font: $font-montserrat;
 $base-font-size: 14px;
@@ -13,7 +15,7 @@ $base-space-between: 1rem;
 
 $tile-transition-duration: 75ms;
 
-$tile-background: lighten($color-wood, 7%);
+$tile-background: lighten($color-wood, 2%);
 $tile-color: darken($tile-background, 75%);
 $tile-size: 10rem;
 $tile-font-size: $tile-size * 0.45;
@@ -25,7 +27,7 @@ $tile-hover-border-color: darken($tile-background, 25%);
 $tile-hover-font-size: $tile-font-size * 1.15;
 
 $operator-size: 6rem;
-$operator-color: #55acee;
+$operator-color: #879093;
 $operator-space-between: $base-space-between / 2;
 
 html {
@@ -118,7 +120,7 @@ code {
 
 .operator-tile {
   @include tile(
-  $hover-background-color: lighten(invert($tile-color), 10%),
+  $hover-background-color: lighten(#879093, 30%),
   $font-family: $font-montserrat,
   $font-weight: 400,
   $color: $operator-color,
@@ -127,8 +129,8 @@ code {
   $margin: $operator-space-between,
   $border: $tile-border-width dashed transparent,
   $border-radius: 50%,
-  $hover-border: $tile-border-width dashed darken(invert($tile-color), 15%),
-  $hover-color: darken(invert($tile-color), 45%)
+  $hover-border: $tile-border-width dashed lighten(#879093, 15%),
+  $hover-color: darken(#879093, 25%)
   );
 
   .operator {

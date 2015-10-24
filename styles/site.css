@@ -95,7 +95,7 @@ body {
 
 h1 {
   font-size: 4rem;
-  color: #493622;
+  color: #37291a;
   letter-spacing: 0.3rem;
   word-spacing: 1rem; }
 
@@ -104,8 +104,8 @@ section.instructions {
   font-weight: 400;
   font-size: 1.3rem;
   word-spacing: 0.08rem;
-  color: #6b4f33;
-  background: #f8f5f1;
+  color: #5a422b;
+  background: #f0e8e0;
   padding: 10px 50px;
   border-radius: 8px; }
   section.instructions p {
@@ -125,7 +125,7 @@ section.game {
 code {
   padding: 2px 4px;
   font-size: inherit;
-  color: #493622;
+  color: #37291a;
   border-radius: 4px;
   margin-left: 0.125rem;
   margin-right: 0.125rem; }
@@ -143,7 +143,7 @@ code {
   cursor: pointer;
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
-  color: #55acee;
+  color: #879093;
   width: 6rem;
   height: 6rem;
   margin: 0.5rem;
@@ -153,9 +153,9 @@ code {
   transition: background-color 75ms ease-out;
   transition: font-size 75ms ease-in-out; }
   .operator-tile:hover {
-    background-color: #d9e3ed;
-    color: #375676;
-    border: 4px dashed #82a2c5; }
+    background-color: #d8dadb;
+    color: #494f51;
+    border: 4px dashed #afb5b7; }
   .operator-tile .operator {
     position: absolute;
     top: 50%;
@@ -164,7 +164,7 @@ code {
     font-size: inherit;
     font-weight: inherit;
     background-color: transparent;
-    color: #493622;
+    color: #37291a;
     transition: inherit; }
   .operator-tile:hover .operator {
     font-size: 5.175rem;
@@ -178,13 +178,13 @@ code {
   cursor: pointer;
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
-  color: #493622;
+  color: #37291a;
   width: 10rem;
   height: 10rem;
   margin: 0.5rem;
   border: 4px dashed transparent;
   border-radius: 6px;
-  background-color: #f8f5f1;
+  background-color: #f0e8e0;
   transition: background-color 75ms ease-out;
   transition: font-size 75ms ease-in-out; }
   .number-tile:first-child {
@@ -192,9 +192,9 @@ code {
   .number-tile:last-child {
     margin-right: 0; }
   .number-tile:hover {
-    background-color: #f0e8e0;
-    color: #493622;
-    border: 4px dashed #cfb59b; }
+    background-color: #e8dbcf;
+    color: #37291a;
+    border: 4px dashed #c7a889; }
   .number-tile .number {
     position: absolute;
     top: 50%;
@@ -203,7 +203,7 @@ code {
     font-size: inherit;
     font-weight: inherit;
     background-color: transparent;
-    color: #493622;
+    color: #37291a;
     transition: inherit; }
   .number-tile:hover .number {
     font-size: 5.175rem;
@@ -215,7 +215,7 @@ code {
   cursor: pointer;
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
-  color: #493622;
+  color: #37291a;
   width: initial;
   height: 10rem;
   margin: 4.5rem;
@@ -226,7 +226,7 @@ code {
   transition: font-size 75ms ease-in-out; }
   .equals-tile:hover {
     background-color: transparent;
-    color: #493622;
+    color: #37291a;
     border: initial; }
   .equals-tile .equals {
     position: absolute;
@@ -240,7 +240,7 @@ code {
   cursor: pointer;
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
-  color: #493622;
+  color: #37291a;
   width: initial;
   height: 10rem;
   margin: 2rem;
@@ -251,7 +251,7 @@ code {
   transition: font-size 75ms ease-in-out; }
   .result-tile:hover {
     background-color: transparent;
-    color: #493622;
+    color: #37291a;
     border: initial; }
   .result-tile .result {
     position: absolute;
