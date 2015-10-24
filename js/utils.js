@@ -18,3 +18,17 @@ Utils.loadJson = function(file) {
 Utils.cleanStringToCompute = function(stringToCompute) {
   return stringToCompute.replace(/[^0-9\+\-\*\/\(\)]+/g, '');
 };
+
+Utils.swap = function(a, b, array) {
+  var temp = array[a];
+  array[a] = array[b];
+  array[b] = temp;
+};
+
+Utils.randomize = function(array) {
+  for (var i = 0; i < array.length; i ++) {
+    var random = Math.floor(Math.random() * array.length);
+    this.swap(i, random, array);
+  }
+  return array;
+};

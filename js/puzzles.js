@@ -5,5 +5,5 @@ function Puzzles() {
 
 Puzzles.prototype.getNewPuzzle = function() {
   var randomIndex = Math.floor(Math.random() * this.puzzles.length);
-  return this.puzzles[randomIndex];
+  return Utils.randomize(this.puzzles[randomIndex]);
 };
