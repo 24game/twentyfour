@@ -1,5 +1,5 @@
 .debug {
-  border: 1px solid magenta;
+  border: 1px solid magenta !important;
 }
 
 .flexible {
@@ -41,6 +41,14 @@
 
 .centered {
   text-align: center;
+}
+
+.marginless {
+    margin: 0;
+}
+
+.paddingless {
+    padding: 0;
 }
 
 /* http://stackoverflow.com/a/6900392 */
