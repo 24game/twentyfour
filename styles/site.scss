@@ -6,6 +6,7 @@
 $font-montserrat: 'Montserrat', sans-serif;
 $font-droidsans: 'Droid Sans', sans-serif;
 $color-wood: #ede3d9;
+$color-wood-invert: invert($color-wood);
 $color-marble: #9597a1;
 $color-fern: #a2b1a6;
 
@@ -25,6 +26,7 @@ $tile-space-between: $base-space-between * 2;
 $tile-hover-background: darken($tile-background, 5%);
 $tile-hover-border-color: darken($tile-background, 25%);
 $tile-hover-font-size: $tile-font-size * 1.15;
+$tile-active-background: lighten(invert($tile-color), 10%);
 
 $operator-size: 6rem;
 $operator-color: #879093;
@@ -144,6 +146,15 @@ code {
    font-size: $tile-hover-font-size;
    color: inherit;
   }
+
+  &:active {
+    background: lighten(#879093, 15%);
+    border: $tile-border-width dashed lighten(#879093, 0%);
+
+    .operator {
+      font-size: $tile-hover-font-size * 1.2;
+    }
+  }
 }
 
 .number-tile {
@@ -166,13 +177,19 @@ code {
   .number {
     @include tile-inner(
     $background-color: transparent,
-    $color: $tile-color
+    $color: inherit
     );
   }
 
   &:hover .number {
     font-size: $tile-hover-font-size;
     color: inherit;
+  }
+
+  &.selected {
+    background-color: $tile-active-background;
+    border: $tile-border-width dashed darken($tile-active-background, 25%);
+    color: darken($tile-active-background, 70%);
   }
 }
 

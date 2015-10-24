@@ -169,6 +169,11 @@ code {
   .operator-tile:hover .operator {
     font-size: 5.175rem;
     color: inherit; }
+  .operator-tile:active {
+    background: #afb5b7;
+    border: 4px dashed #879093; }
+    .operator-tile:active .operator {
+      font-size: 6.21rem; }
 
 .number-tile {
   margin-left: 1rem;
@@ -203,11 +208,15 @@ code {
     font-size: inherit;
     font-weight: inherit;
     background-color: transparent;
-    color: #37291a;
+    color: inherit;
     transition: inherit; }
   .number-tile:hover .number {
     font-size: 5.175rem;
     color: inherit; }
+  .number-tile.selected {
+    background-color: #ebf0f5;
+    border: 4px dashed #94afcc;
+    color: #273d54; }
 
 .equals-tile {
   position: relative;

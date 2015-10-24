@@ -48,25 +48,36 @@
 <script type="text/javascript" src="js/dragula.min.js"></script>
 <script>
     var numbers = $('.drop-container .number-tile').parent().toArray();
-    $('.drop-container').mousedown(function(event) {
-        var dropContainer = event.target;
-        if ($(dropContainer).hasClass('number'))
-            dropContainer = $(dropContainer).parent().parent();
-        else if ($(dropContainer).hasClass('number-tile'))
-            dropContainer = $(dropContainer).parent();
-        if (window.drake) {
-            window.drake.destroy();
-        }
-        //var numbers = $('.drop-container .number-tile').parent().toArray();
-        var numbers = $('section.game').toArray();
-        window.drake = dragula(numbers), {
-            copy: true,
-            isContainer: function (el) {
-                return el.classList.contains('number-tile'); // only elements in drake.containers will be taken into account
-            },
-        };
-        window.drake.on('drop', function(el, target, source, sibling) {
-            console.log(el, target, source, sibling);
-        });
-    });
+//    $('.drop-container').mousedown(function(event) {
+//        var dropContainer = event.target;
+//        if ($(dropContainer).hasClass('number'))
+//            dropContainer = $(dropContainer).parent().parent();
+//        else if ($(dropContainer).hasClass('number-tile'))
+//            dropContainer = $(dropContainer).parent();
+//        if (window.drake) {
+//            window.drake.destroy();
+//        }
+//        //var numbers = $('.drop-container .number-tile').parent().toArray();
+//        var numbers = $('section.game').toArray();
+//        window.drake = dragula(numbers), {
+//            copy: true,
+//            isContainer: function (el) {
+//                return el.classList.contains('number-tile'); // only elements in drake.containers will be taken into account
+//            },
+//        };
+//        window.drake.on('drop', function(el, target, source, sibling) {
+//            console.log(el, target, source, sibling);
+//        });
+//    });
+  $('.number-tile').on('click', function(event) {
+    var target;
+    if ($(event.target).hasClass('number')) {
+      target = $(event.target).parent();
+    }
+    else if ($(event.target).hasClass('number-tile')) {
+      target = event.target;
+    }
+    console.log(target);
+    $(target).toggleClass('selected');
+  });
 </script>
