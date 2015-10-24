@@ -11,6 +11,8 @@ $base-font: $font-montserrat;
 $base-font-size: 14px;
 $base-space-between: 1rem;
 
+$tile-transition-duration: 75ms;
+
 $tile-background: lighten($color-wood, 7%);
 $tile-color: darken($tile-background, 75%);
 $tile-size: 10rem;
@@ -22,10 +24,9 @@ $tile-hover-background: darken($tile-background, 5%);
 $tile-hover-border-color: darken($tile-background, 25%);
 $tile-hover-font-size: $tile-font-size * 1.15;
 
-$operator-size: 4rem;
-
-
+$operator-size: 6rem;
 $operator-color: #55acee;
+$operator-space-between: $base-space-between / 2;
 
 html {
   font-size: $base-font-size;
@@ -71,38 +72,6 @@ section.game {
   border-radius: $tile-border-radius;
 }
 
-.number-tile {
-  position: relative;
-  font-size: $tile-font-size;
-  font-weight: 700;
-  background-color: $tile-background;
-  width: $tile-size;
-  height: $tile-size;
-  border-radius: $tile-border-radius;
-  cursor: pointer;
-  transition: background-color 75ms ease-out;
-  border: $tile-border-width dashed transparent;
-
-  .number {
-    @include center-via-transform-translate();
-    transition: font-size 75ms ease-in-out;
-    font-size: inherit;
-    font-weight: inherit;
-    color: $tile-color;
-  }
-
-  &:hover {
-    background-color: $tile-hover-background;
-    border: $tile-border-width dashed $tile-hover-border-color;
-
-    .number {
-      font-size: $tile-hover-font-size;
-    }
-  }
-
-  @include space-between($tile-space-between);
-}
-
 code {
   padding: 2px 4px;
   font-size: inherit;
@@ -111,63 +80,130 @@ code {
   @include space-between($base-space-between / 4);
 }
 
-.operator-tile {
+.drop-container {
   position: relative;
-  font-size: $tile-font-size;
-  font-family: $font-montserrat;
-  font-weight: 400;
-  color: $tile-color;
-  cursor: pointer;
-  width: $operator-size;
-  height: $operator-size;
-  padding: $base-space-between;
-  border: $tile-border-width dashed transparent;
-  border-radius: 50%;
+}
 
-  .operator {
+@mixin tile($background-color: initial, $hover-background-color: $background-color, $color: initial, $width: initial, $height: initial, $margin: initial, $border: initial, $border-radius: initial, $font-size: inherit, $font-family: inherit, $font-weight: inherit, $hover-border: initial, $hover-color: initial) {
+    position: relative;
+    font-size: $tile-font-size;
+    cursor: pointer;
+    font-family: $font-family;
+    font-weight: $font-weight;
+    color: $color;
+    width: $width;
+    height: $height;
+    margin: $margin;
+    border: $border;
+    border-radius: $border-radius;
+    background-color: $background-color;
+    transition: background-color $tile-transition-duration ease-out;
+    transition: font-size $tile-transition-duration ease-in-out;
+
+    &:hover {
+      background-color: $hover-background-color;
+      color: $hover-color;
+      border: $hover-border;
+    }
+}
+
+@mixin tile-inner($background-color, $color) {
     @include center-via-transform-translate();
-    transition: font-size 75ms ease-in-out;
     font-size: inherit;
     font-weight: inherit;
-    color: $tile-color;
+    background-color: $background-color;
+    color: $color;
+    transition: inherit;
+}
+
+.operator-tile {
+  @include tile(
+  $hover-background-color: lighten(invert($tile-color), 10%),
+  $font-family: $font-montserrat,
+  $font-weight: 400,
+  $color: $operator-color,
+  $width: $operator-size,
+  $height: $operator-size,
+  $margin: $operator-space-between,
+  $border: $tile-border-width dashed transparent,
+  $border-radius: 50%,
+  $hover-border: $tile-border-width dashed darken(invert($tile-color), 15%),
+  $hover-color: darken(invert($tile-color), 45%)
+  );
+
+  .operator {
+    @include tile-inner(
+    $background-color: transparent,
+    $color: $tile-color
+    );
   }
 
-  &:hover {
-    background-color: lighten(invert($tile-color), 10%);
-    color: darken(invert($tile-color), 45%);
-    border: $tile-border-width dashed darken(invert($tile-color), 15%);
+  &:hover .operator {
+   font-size: $tile-hover-font-size;
+   color: inherit;
+  }
+}
 
-    .operator {
-      font-size: $tile-hover-font-size;
-      color: inherit;
-    }
+.number-tile {
+  @include space-between($tile-space-between);
+  @include tile(
+  $background-color: $tile-background,
+  $hover-background-color: $tile-hover-background,
+  $font-family: $font-montserrat,
+  $font-weight: 400,
+  $color: $tile-color,
+  $width: $tile-size,
+  $height: $tile-size,
+  $margin: $operator-space-between,
+  $border: $tile-border-width dashed transparent,
+  $border-radius: $tile-border-radius,
+  $hover-border: $tile-border-width dashed $tile-hover-border-color,
+  $hover-color: $tile-color
+  );
+
+  .number {
+    @include tile-inner(
+    $background-color: transparent,
+    $color: $tile-color
+    );
+  }
+
+  &:hover .number {
+    font-size: $tile-hover-font-size;
+    color: inherit;
   }
 }
 
 .equals-tile {
-  font-size: $tile-font-size * 1.2;
-  font-family: $font-montserrat;
-  font-weight: 400;
-  color: $tile-color;
-  cursor: default;
-  margin-left: $base-space-between * 2.5;
-  margin-right: $base-space-between * 2.50;
-  border: $tile-border-width dashed transparent;
-  color: darken($tile-background, 50%);
+  @include tile(
+  $background-color: transparent,
+  $font-size: $tile-font-size * 1.2,
+  $font-family: $font-montserrat,
+  $font-weight: 400,
+  $color: $tile-color,
+  $height: $tile-size,
+  $margin: 4.5rem,
+  $hover-color: $tile-color
+  );
+
+  .equals {
+    @include center-via-transform-translate();
+  }
 }
 
 .result-tile {
-  position: relative;
-  font-weight: 700;
-  cursor: default;
-  background-color: unset;
-  width: $tile-size / 2;
-  height: $tile-size / 2;
-  font-size: $tile-font-size * 1.1;
+  @include tile(
+  $background-color: transparent,
+  $font-size: $tile-font-size * 1.2,
+  $font-family: $font-montserrat,
+  $font-weight: 400,
+  $color: $tile-color,
+  $height: $tile-size,
+  $margin: 2rem,
+  $hover-color: $tile-color
+  );
 
   .result {
     @include center-via-transform-translate();
-    font-weight: inherit;
-    color: darken($tile-background, 50%);
   }
 }

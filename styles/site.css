@@ -1,6 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Montserrat:400,700|Droid+Sans:700,400,600,800);
 .debug {
-  border: 1px solid magenta; }
+  border: 1px solid magenta !important; }
 
 .flexible {
   display: -webkit-flex;
@@ -29,6 +29,12 @@
 
 .centered {
   text-align: center; }
+
+.marginless {
+  margin: 0; }
+
+.paddingless {
+  padding: 0; }
 
 /* http://stackoverflow.com/a/6900392 */
 .unselectable {
@@ -116,38 +122,6 @@ section.game {
   padding: 1.43rem;
   border-radius: 6px; }
 
-.number-tile {
-  position: relative;
-  font-size: 4.5rem;
-  font-weight: 700;
-  background-color: #f8f5f1;
-  width: 10rem;
-  height: 10rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 75ms ease-out;
-  border: 4px dashed transparent;
-  margin-left: 1rem;
-  margin-right: 1rem; }
-  .number-tile .number {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    transition: font-size 75ms ease-in-out;
-    font-size: inherit;
-    font-weight: inherit;
-    color: #493622; }
-  .number-tile:hover {
-    background-color: #f0e8e0;
-    border: 4px dashed #cfb59b; }
-    .number-tile:hover .number {
-      font-size: 5.175rem; }
-  .number-tile:first-child {
-    margin-left: 0; }
-  .number-tile:last-child {
-    margin-right: 0; }
-
 code {
   padding: 2px 4px;
   font-size: inherit;
@@ -160,60 +134,129 @@ code {
   code:last-child {
     margin-right: 0; }
 
+.drop-container {
+  position: relative; }
+
 .operator-tile {
   position: relative;
   font-size: 4.5rem;
+  cursor: pointer;
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
-  color: #493622;
-  cursor: pointer;
-  width: 4rem;
-  height: 4rem;
-  padding: 1rem;
+  color: #55acee;
+  width: 6rem;
+  height: 6rem;
+  margin: 0.5rem;
   border: 4px dashed transparent;
-  border-radius: 50%; }
+  border-radius: 50%;
+  background-color: initial;
+  transition: background-color 75ms ease-out;
+  transition: font-size 75ms ease-in-out; }
+  .operator-tile:hover {
+    background-color: #d9e3ed;
+    color: #375676;
+    border: 4px dashed #82a2c5; }
   .operator-tile .operator {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
-    transition: font-size 75ms ease-in-out;
     font-size: inherit;
     font-weight: inherit;
-    color: #493622; }
-  .operator-tile:hover {
-    background-color: #d9e3ed;
-    color: #375676;
-    border: 4px dashed #82a2c5; }
-    .operator-tile:hover .operator {
-      font-size: 5.175rem;
-      color: inherit; }
+    background-color: transparent;
+    color: #493622;
+    transition: inherit; }
+  .operator-tile:hover .operator {
+    font-size: 5.175rem;
+    color: inherit; }
 
-.equals-tile {
-  font-size: 5.4rem;
+.number-tile {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  position: relative;
+  font-size: 4.5rem;
+  cursor: pointer;
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
   color: #493622;
-  cursor: default;
-  margin-left: 2.5rem;
-  margin-right: 2.5rem;
+  width: 10rem;
+  height: 10rem;
+  margin: 0.5rem;
   border: 4px dashed transparent;
-  color: #9f754b; }
-
-.result-tile {
-  position: relative;
-  font-weight: 700;
-  cursor: default;
-  background-color: unset;
-  width: 5rem;
-  height: 5rem;
-  font-size: 4.95rem; }
-  .result-tile .result {
+  border-radius: 6px;
+  background-color: #f8f5f1;
+  transition: background-color 75ms ease-out;
+  transition: font-size 75ms ease-in-out; }
+  .number-tile:first-child {
+    margin-left: 0; }
+  .number-tile:last-child {
+    margin-right: 0; }
+  .number-tile:hover {
+    background-color: #f0e8e0;
+    color: #493622;
+    border: 4px dashed #cfb59b; }
+  .number-tile .number {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+    font-size: inherit;
     font-weight: inherit;
-    color: #9f754b; }
+    background-color: transparent;
+    color: #493622;
+    transition: inherit; }
+  .number-tile:hover .number {
+    font-size: 5.175rem;
+    color: inherit; }
+
+.equals-tile {
+  position: relative;
+  font-size: 4.5rem;
+  cursor: pointer;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  color: #493622;
+  width: initial;
+  height: 10rem;
+  margin: 4.5rem;
+  border: initial;
+  border-radius: initial;
+  background-color: transparent;
+  transition: background-color 75ms ease-out;
+  transition: font-size 75ms ease-in-out; }
+  .equals-tile:hover {
+    background-color: transparent;
+    color: #493622;
+    border: initial; }
+  .equals-tile .equals {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%); }
+
+.result-tile {
+  position: relative;
+  font-size: 4.5rem;
+  cursor: pointer;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  color: #493622;
+  width: initial;
+  height: 10rem;
+  margin: 2rem;
+  border: initial;
+  border-radius: initial;
+  background-color: transparent;
+  transition: background-color 75ms ease-out;
+  transition: font-size 75ms ease-in-out; }
+  .result-tile:hover {
+    background-color: transparent;
+    color: #493622;
+    border: initial; }
+  .result-tile .result {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%); }
 
 /*# sourceMappingURL=site.css.map */
