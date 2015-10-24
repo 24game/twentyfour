@@ -2,10 +2,10 @@ function Game() {}
 
 Game.prototype.initializeGame = function() {
   this.puzzles = new Puzzles();
-  this.firstNumber = new Box;
-  this.secondNumber = new Box();
-  this.thirdNumber = new Box();
-  this.fourthNumber = new Box();
+  this.firstNumber = new Tile();
+  this.secondNumber = new Tile();
+  this.thirdNumber = new Tile();
+  this.fourthNumber = new Tile();
 };
 
 Game.prototype.newGame = function() {
