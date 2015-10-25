@@ -4,12 +4,12 @@
     function Animator() {}
 
     Animator.animate = function(a, b) {
-      var height, length;
-      if (a === b) {
-        return;
-      }
-      window.a = a;
-      window.b = b;
+      var deferred, height, length;
+      deferred = Q.defer();
+      this.completeState = {
+        a: false,
+        b: false
+      };
       $(a).addClass('animating-a');
       $(b).addClass('animating-b');
       length = $(b).offset().left - ($(a).offset().left);
@@ -41,18 +41,17 @@
         iterationCount: '1',
         direction: 'normal',
         fillMode: 'forwards',
-        complete: function() {
-          var operator;
-          operator = $('.animating-a').next();
-          $(".animating-b").before($(".animating-a"));
-          $(operator).before($(".animating-b"));
-          $(".animating-b").removeClass('animating-b');
-          $('.animating-a').removeClass('animating-a');
-          $('.selected').removeClass('selected');
-          return $(a).resetKeyframe(null);
-        }
+        complete: (function(_this) {
+          return function() {
+            $(a).resetKeyframe(null);
+            _this.completeState[a] = true;
+            if (_this.completeState[a] && _this.completeState[b]) {
+              return deferred.resolve();
+            }
+          };
+        })(this)
       });
-      return $(b).playKeyframe({
+      $(b).playKeyframe({
         name: 'animation-b-to-a',
         duration: '0.30s',
         timingFunction: 'ease-out',
@@ -60,10 +59,17 @@
         iterationCount: '1',
         direction: 'normal',
         fillMode: 'forwards',
-        complete: function() {
-          return $(b).resetKeyframe(null);
-        }
+        complete: (function(_this) {
+          return function() {
+            $(b).resetKeyframe(null);
+            _this.completeState[b] = true;
+            if (_this.completeState[a] && _this.completeState[b]) {
+              return deferred.resolve();
+            }
+          };
+        })(this)
       });
+      return deferred.promise;
     };
 
     return Animator;
@@ -76,12 +82,30 @@
     TileSwap.tilesToSwap = [];
 
     TileSwap.process = function(tile) {
-      var firstTile, secondTile;
+      var firstTile, onAnimationComplete, secondTile;
+      if (this.animationStarted || $(tile).hasClass('enclosable')) {
+        return;
+      }
+      $(tile).toggleClass('swappable');
       this.tilesToSwap.push(tile);
       if (this.tilesToSwap.length === 2) {
+        this.animationStarted = true;
         firstTile = this.tilesToSwap.pop();
         secondTile = this.tilesToSwap.pop();
-        return Animator.animate(firstTile, secondTile);
+        onAnimationComplete = Animator.animate(firstTile, secondTile);
+        return onAnimationComplete.then(function(successValue) {
+          var operator;
+          operator = $('.animating-a').next();
+          $(".animating-b").before($(".animating-a"));
+          $(operator).before($(".animating-b"));
+          $(".animating-b").removeClass('animating-b');
+          $('.animating-a').removeClass('animating-a');
+          return $('.swappable').removeClass('swappable');
+        }, function(failReason) {}).done((function(_this) {
+          return function() {
+            return _this.animationStarted = false;
+          };
+        })(this));
       }
     };
 
@@ -97,7 +121,6 @@
     } else if ($(event.target).hasClass('number-tile')) {
       target = event.target;
     }
-    $(target).toggleClass('swappable');
     return TileSwap.process(target);
   });
 
@@ -109,8 +132,7 @@
     } else if ($(event.target).hasClass('number-tile')) {
       target = event.target;
     }
-    $(target).toggleClass('enclosable');
-    return TileSwap.process(target);
+    return $(target).toggleClass('enclosable');
   });
 
 }).call(this);
