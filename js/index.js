@@ -97,7 +97,7 @@
     } else if ($(event.target).hasClass('number-tile')) {
       target = event.target;
     }
-    $(target).toggleClass('selected');
+    $(target).toggleClass('swappable');
     return TileSwap.process(target);
   });
 
@@ -109,7 +109,7 @@
     } else if ($(event.target).hasClass('number-tile')) {
       target = event.target;
     }
-    $(target).toggleClass('swapped');
+    $(target).toggleClass('enclosable');
     return TileSwap.process(target);
   });
 

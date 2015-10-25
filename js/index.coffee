@@ -70,7 +70,7 @@ $('.number-tile').on('click', (event) ->
     target = event.target.parentElement;
   else if $(event.target).hasClass('number-tile')
     target = event.target;
-  $(target).toggleClass('selected')
+  $(target).toggleClass('swappable')
   TileSwap.process(target);
 )
 
@@ -80,7 +80,7 @@ $('.number-tile').on('dblclick', (event) ->
     target = event.target.parentElement;
   else if $(event.target).hasClass('number-tile')
     target = event.target;
-  $(target).toggleClass('swapped')
+  $(target).toggleClass('enclosable')
   TileSwap.process(target);
 )
 

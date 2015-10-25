@@ -195,13 +195,13 @@ code {
     color: inherit;
   }
 
-  &.selected {
+  &.swappable {
     background-color: $tile-active-background;
     border: $tile-border-width dashed darken($tile-active-background, 25%);
     color: darken($tile-active-background, 70%);
   }
 
-  &.swappable {
+  &.enclosable {
     background-color: $color-forest;
     border: $tile-border-width dashed darken($color-forest, 25%);
     color: darken($color-forest, 70%);
