@@ -1,9 +1,9 @@
 function Puzzles() {
-  var json = Utils.loadJson("./puzzles.json");
+  var json = Utils.loadJson('./puzzles.json');
   this.puzzles = json.puzzles;
 }
 
 Puzzles.prototype.getNewPuzzle = function() {
   var randomIndex = Math.floor(Math.random() * this.puzzles.length);
-  return this.puzzles[randomIndex];
+  return Utils.randomize(this.puzzles[randomIndex]);
 };
