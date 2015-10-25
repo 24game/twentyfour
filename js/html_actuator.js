@@ -1,5 +1,13 @@
 function HTMLActuator() {}
 
+HTMLActuator.prototype.getCurrentStateToEvaluate = function() {
+  this.currentHtmlState = $('[class*=tile]').children();
+  this.currentStateToEvaluate = "";
+  for (var i = 0; i < this.currentHtmlState.size(); i ++) {
+    this.currentStateToEvaluate += Utils.cleanOperators(this.currentState[i].innerHTML);
+  }
+};
+
 HTMLActuator.prototype.getCurrentState = function() {
   this.numberTiles = $(".number-tile .number");
   this.operatorTiles = $(".operator-tile .operator");
@@ -10,5 +18,4 @@ HTMLActuator.prototype.getCurrentState = function() {
   this.firstOperator = Utils.cleanOperators(this.operatorTiles[0].innerHTML);
   this.secondOperator = Utils.cleanOperators(this.operatorTiles[1].innerHTML);
   this.thirdOperator = Utils.cleanOperators(this.operatorTiles[2].innerHTML);
-  this.result = Calculator.compute(this.firstNumberTile + this.firstOperator + this.secondNumberTile + this.secondOperator + this.thirdNumberTile + this.thirdOperator + this.fourthNumberTile);
 };
