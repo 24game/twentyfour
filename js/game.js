@@ -1,7 +1,8 @@
-function Game() {}
+function Game() {
+  this.puzzles = new Puzzles();
+}
 
 Game.prototype.initializeGame = function() {
-  this.puzzles = new Puzzles();
   this.firstNumber = new Tile();
   this.secondNumber = new Tile();
   this.thirdNumber = new Tile();
