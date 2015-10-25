@@ -3,7 +3,33 @@
   this.Animator = (function() {
     function Animator() {}
 
-    Animator.animate = function(a, b) {};
+    Animator.animate = function(a, b) {
+      var height, length;
+      length = $(b).offset().left - $(a).offset().left;
+      height = 50;
+      console.info(length);
+      $.keyframe.define([
+        {
+          name: "animation-a-to-b",
+          '0%': {
+            'transform': "translateX(0px)"
+          },
+          '100%': {
+            'transform': "translateX(" + (length / 2) + "px)"
+          }
+        }
+      ]);
+      return $(a).playKeyframe({
+        name: 'animation-a-to-b',
+        duration: '1s',
+        timingFunction: 'linear',
+        delay: '0s',
+        iterationCount: '1',
+        direction: 'normal',
+        fillMode: 'forwards',
+        complete: function() {}
+      });
+    };
 
     return Animator;
 
@@ -15,12 +41,12 @@
     TileSwap.tilesToSwap = [];
 
     TileSwap.process = function(tile) {
-      var firstTile, secondTIle;
-      if (this.tilesToSwap.length < 2) {
-        return this.tilesToSwap.push(tile);
-      } else {
+      var firstTile, secondTile;
+      this.tilesToSwap.push(tile);
+      if (this.tilesToSwap.length === 2) {
         firstTile = this.tilesToSwap.pop();
-        return secondTIle = this.tilesToSwap.pop();
+        secondTile = this.tilesToSwap.pop();
+        return Animator.animate(firstTile, secondTile);
       }
     };
 
@@ -36,7 +62,8 @@
     } else if ($(event.target).hasClass('number-tile')) {
       target = event.target;
     }
-    return $(target).toggleClass('selected');
+    $(target).toggleClass('selected');
+    return TileSwap.process(target);
   });
 
 }).call(this);
