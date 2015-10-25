@@ -223,7 +223,7 @@ code {
   }
 }
 
-.equals-tile {
+.equal-sign {
   @include tile(
   $background-color: transparent,
   $font-size: $tile-font-size * 1.2,
@@ -240,7 +240,7 @@ code {
   }
 }
 
-.result-tile {
+.result-display {
   @include tile(
   $background-color: transparent,
   $font-size: $tile-font-size * 1.2,
