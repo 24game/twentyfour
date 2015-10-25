@@ -5,9 +5,15 @@
 
     Animator.animate = function(a, b) {
       var height, length;
-      length = $(b).offset().left - $(a).offset().left;
+      if (a === b) {
+        return;
+      }
+      window.a = a;
+      window.b = b;
+      $(a).addClass('animating-a');
+      $(b).addClass('animating-b');
+      length = $(b).offset().left - ($(a).offset().left);
       height = 50;
-      console.info(length);
       $.keyframe.define([
         {
           name: "animation-a-to-b",
@@ -15,19 +21,48 @@
             'transform': "translateX(0px)"
           },
           '100%': {
-            'transform': "translateX(" + (length / 2) + "px)"
+            'transform': "translateX(" + length + "px)"
+          }
+        }, {
+          name: "animation-b-to-a",
+          '0%': {
+            'transform': "translateX(0px)"
+          },
+          '100%': {
+            'transform': "translateX(" + (length * -1) + "px)"
           }
         }
       ]);
-      return $(a).playKeyframe({
+      $(a).playKeyframe({
         name: 'animation-a-to-b',
-        duration: '1s',
-        timingFunction: 'linear',
+        duration: '0.30s',
+        timingFunction: 'ease-out',
         delay: '0s',
         iterationCount: '1',
         direction: 'normal',
         fillMode: 'forwards',
-        complete: function() {}
+        complete: function() {
+          var operator;
+          operator = $('.animating-a').next();
+          $(".animating-b").before($(".animating-a"));
+          $(operator).before($(".animating-b"));
+          $(".animating-b").removeClass('animating-b');
+          $('.animating-a').removeClass('animating-a');
+          $('.selected').removeClass('selected');
+          return $(a).resetKeyframe(null);
+        }
+      });
+      return $(b).playKeyframe({
+        name: 'animation-b-to-a',
+        duration: '0.30s',
+        timingFunction: 'ease-out',
+        delay: '0s',
+        iterationCount: '1',
+        direction: 'normal',
+        fillMode: 'forwards',
+        complete: function() {
+          return $(b).resetKeyframe(null);
+        }
       });
     };
 
@@ -54,15 +89,27 @@
 
   })();
 
-  $('.number-tile').on('click', function() {
+  $('.number-tile').on('click', function(event) {
     target;
     var target;
     if ($(event.target).hasClass('number')) {
-      target = $(event.target).parent();
+      target = event.target.parentElement;
     } else if ($(event.target).hasClass('number-tile')) {
       target = event.target;
     }
     $(target).toggleClass('selected');
+    return TileSwap.process(target);
+  });
+
+  $('.number-tile').on('dblclick', function(event) {
+    target;
+    var target;
+    if ($(event.target).hasClass('number')) {
+      target = event.target.parentElement;
+    } else if ($(event.target).hasClass('number-tile')) {
+      target = event.target;
+    }
+    $(target).toggleClass('swapped');
     return TileSwap.process(target);
   });
 
