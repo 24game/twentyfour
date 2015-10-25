@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Montserrat:400,700|Droid+Sans:700,400,600,800);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700);
 .debug {
   border: 1px solid magenta !important; }
 
@@ -38,15 +39,15 @@
 
 /* http://stackoverflow.com/a/6900392 */
 .unselectable {
+  -webkit-touch-callout: none;
   -webkit-user-select: none;
-  /* Chrome/Safari */
+  -khtml-user-select: none;
   -moz-user-select: none;
-  /* Firefox */
   -ms-user-select: none;
-  /* IE10+ */
-  /* Rules below not implemented in browsers yet */
-  -o-user-select: none;
   user-select: none; }
+
+.default-cursor {
+  cursor: default; }
 
 .uppercase {
   text-transform: uppercase; }
@@ -115,13 +116,36 @@ code {
 .drop-container {
   position: relative; }
 
-.noselect {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none; }
+.parenthesis-tile {
+  position: relative;
+  font-size: 4.5rem;
+  cursor: pointer;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  color: initial;
+  width: 2rem;
+  height: 10rem;
+  margin: 0.5rem;
+  border: initial;
+  border-radius: 35%;
+  background-color: initial;
+  transition: background-color 75ms ease-out;
+  transition: font-size 75ms ease-in-out; }
+  .parenthesis-tile:hover {
+    background-color: initial;
+    color: #494f51;
+    border: initial; }
+  .parenthesis-tile .parenthesis {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    font-size: inherit;
+    font-weight: inherit;
+    background-color: transparent;
+    color: #37291a;
+    transition: inherit;
+    cursor: default; }
 
 .operator-tile {
   position: relative;
@@ -210,7 +234,7 @@ code {
 
 .equals-tile {
   position: relative;
-  font-size: 4.5rem;
+  font-size: 5.4rem;
   cursor: pointer;
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
@@ -235,7 +259,7 @@ code {
 
 .result-tile {
   position: relative;
-  font-size: 4.5rem;
+  font-size: 5.4rem;
   cursor: pointer;
   font-family: "Montserrat", sans-serif;
   font-weight: 400;

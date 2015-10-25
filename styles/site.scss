@@ -4,6 +4,7 @@
 /* Variables */
 $font-montserrat: 'Montserrat', sans-serif;
 $font-droidsans: 'Droid Sans', sans-serif;
+$font-roboto: 'Roboto Condensed', sans-serif;
 $color-wood: #ede3d9;
 $color-wood-invert: invert($color-wood);
 $color-marble: #9597a1;
@@ -88,18 +89,9 @@ code {
   position: relative;
 }
 
-.noselect {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
 @mixin tile($background-color: initial, $hover-background-color: $background-color, $color: initial, $width: initial, $height: initial, $margin: initial, $border: initial, $border-radius: initial, $font-size: inherit, $font-family: inherit, $font-weight: inherit, $hover-border: initial, $hover-color: initial) {
     position: relative;
-    font-size: $tile-font-size;
+    font-size: $font-size;
     cursor: pointer;
     font-family: $font-family;
     font-weight: $font-weight;
@@ -128,10 +120,32 @@ code {
     color: $color;
     transition: inherit;
 }
+.parenthesis-tile {
+  @include tile(
+  $font-size: $tile-font-size,
+  $font-family: $font-montserrat,
+  $font-weight: 400,
+  $width: 2rem,
+  $height: $tile-size,
+  $margin: $operator-space-between,
+  $border-radius: 35%,
+  $hover-color: darken(#879093, 25%)
+  );
+
+
+  .parenthesis {
+    @include tile-inner(
+    $background-color: transparent,
+    $color: $tile-color
+    );
+    cursor: default;
+  }
+}
 
 .operator-tile {
   @include tile(
   $hover-background-color: lighten(#879093, 30%),
+  $font-size: $tile-font-size,
   $font-family: $font-montserrat,
   $font-weight: 400,
   $color: $operator-color,
@@ -171,6 +185,7 @@ code {
   @include tile(
   $background-color: $tile-background,
   $hover-background-color: $tile-hover-background,
+  $font-size: $tile-font-size,
   $font-family: $font-montserrat,
   $font-weight: 400,
   $color: $tile-color,
