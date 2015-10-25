@@ -1,4 +1,5 @@
 // Wait till the browser is ready to render the game (avoids glitches)
 window.requestAnimationFrame(function() {
-  // Initialization code here
+  this.game = new Game();
+  game.newGame();
 });
