@@ -100,18 +100,18 @@
 }
 
 /* Variables */
-/* line 34, site.scss */
+/* line 35, site.scss */
 html {
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
 }
 
-/* line 39, site.scss */
+/* line 40, site.scss */
 body {
   font-family: "Montserrat", sans-serif;
 }
 
-/* line 43, site.scss */
+/* line 44, site.scss */
 h1 {
   font-size: 4rem;
   color: #37291a;
@@ -119,7 +119,7 @@ h1 {
   word-spacing: 1rem;
 }
 
-/* line 50, site.scss */
+/* line 51, site.scss */
 section.instructions {
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
@@ -130,19 +130,19 @@ section.instructions {
   padding: 10px 50px;
   border-radius: 8px;
 }
-/* line 60, site.scss */
+/* line 61, site.scss */
 section.instructions p {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
 
-/* line 66, site.scss */
+/* line 67, site.scss */
 section.instructions + section.game {
   margin-top: 3rem;
   padding: 1rem;
 }
 
-/* line 71, site.scss */
+/* line 72, site.scss */
 section.game {
   font-family: "Droid Sans", sans-serif;
   background: white;
@@ -150,7 +150,7 @@ section.game {
   border-radius: 6px;
 }
 
-/* line 78, site.scss */
+/* line 79, site.scss */
 code {
   padding: 2px 4px;
   font-size: inherit;
@@ -168,12 +168,12 @@ code:last-child {
   margin-right: 0;
 }
 
-/* line 86, site.scss */
+/* line 87, site.scss */
 .drop-container {
   position: relative;
 }
 
-/* line 90, site.scss */
+/* line 91, site.scss */
 .noselect {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -183,7 +183,7 @@ code:last-child {
   user-select: none;
 }
 
-/* line 131, site.scss */
+/* line 132, site.scss */
 .operator-tile {
   position: relative;
   font-size: 4.5rem;
@@ -200,13 +200,13 @@ code:last-child {
   transition: background-color 75ms ease-out;
   transition: font-size 75ms ease-in-out;
 }
-/* line 115, site.scss */
+/* line 116, site.scss */
 .operator-tile:hover {
   background-color: #d8dadb;
   color: #494f51;
   border: 4px dashed #afb5b7;
 }
-/* line 146, site.scss */
+/* line 147, site.scss */
 .operator-tile .operator {
   position: absolute;
   top: 50%;
@@ -218,22 +218,22 @@ code:last-child {
   color: #37291a;
   transition: inherit;
 }
-/* line 153, site.scss */
+/* line 154, site.scss */
 .operator-tile:hover .operator {
   font-size: 5.175rem;
   color: inherit;
 }
-/* line 158, site.scss */
+/* line 159, site.scss */
 .operator-tile:active {
   background: #afb5b7;
   border: 4px dashed #879093;
 }
-/* line 162, site.scss */
+/* line 163, site.scss */
 .operator-tile:active .operator {
   font-size: 6.21rem;
 }
 
-/* line 168, site.scss */
+/* line 169, site.scss */
 .number-tile {
   margin-left: 1rem;
   margin-right: 1rem;
@@ -260,13 +260,13 @@ code:last-child {
 .number-tile:last-child {
   margin-right: 0;
 }
-/* line 115, site.scss */
+/* line 116, site.scss */
 .number-tile:hover {
   background-color: #e8dbcf;
   color: #37291a;
   border: 4px dashed #c7a889;
 }
-/* line 185, site.scss */
+/* line 186, site.scss */
 .number-tile .number {
   position: absolute;
   top: 50%;
@@ -278,19 +278,25 @@ code:last-child {
   color: inherit;
   transition: inherit;
 }
-/* line 192, site.scss */
+/* line 193, site.scss */
 .number-tile:hover .number {
   font-size: 5.175rem;
   color: inherit;
 }
-/* line 197, site.scss */
+/* line 198, site.scss */
 .number-tile.selected {
   background-color: #ebf0f5;
   border: 4px dashed #94afcc;
   color: #273d54;
 }
-
 /* line 204, site.scss */
+.number-tile.swappable {
+  background-color: #c0ccbb;
+  border: 4px dashed #7d9572;
+  color: #10130f;
+}
+
+/* line 211, site.scss */
 .equals-tile {
   position: relative;
   font-size: 4.5rem;
@@ -307,13 +313,13 @@ code:last-child {
   transition: background-color 75ms ease-out;
   transition: font-size 75ms ease-in-out;
 }
-/* line 115, site.scss */
+/* line 116, site.scss */
 .equals-tile:hover {
   background-color: transparent;
   color: #37291a;
   border: initial;
 }
-/* line 216, site.scss */
+/* line 223, site.scss */
 .equals-tile .equals {
   position: absolute;
   top: 50%;
@@ -321,7 +327,7 @@ code:last-child {
   transform: translateX(-50%) translateY(-50%);
 }
 
-/* line 221, site.scss */
+/* line 228, site.scss */
 .result-tile {
   position: relative;
   font-size: 4.5rem;
@@ -338,13 +344,13 @@ code:last-child {
   transition: background-color 75ms ease-out;
   transition: font-size 75ms ease-in-out;
 }
-/* line 115, site.scss */
+/* line 116, site.scss */
 .result-tile:hover {
   background-color: transparent;
   color: #37291a;
   border: initial;
 }
-/* line 233, site.scss */
+/* line 240, site.scss */
 .result-tile .result {
   position: absolute;
   top: 50%;

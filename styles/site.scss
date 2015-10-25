@@ -8,6 +8,7 @@ $color-wood: #ede3d9;
 $color-wood-invert: invert($color-wood);
 $color-marble: #9597a1;
 $color-fern: #a2b1a6;
+$color-forest: #c0ccbb;
 
 $base-font: $font-montserrat;
 $base-font-size: 14px;
@@ -198,6 +199,12 @@ code {
     background-color: $tile-active-background;
     border: $tile-border-width dashed darken($tile-active-background, 25%);
     color: darken($tile-active-background, 70%);
+  }
+
+  &.swappable {
+    background-color: $color-forest;
+    border: $tile-border-width dashed darken($color-forest, 25%);
+    color: darken($color-forest, 70%);
   }
 }
 
