@@ -4,7 +4,7 @@ HTMLActuator.prototype.getCurrentStateToEvaluate = function() {
   this.currentHtmlState = $('[class*=tile]').children();
   this.currentStateToEvaluate = "";
   for (var i = 0; i < this.currentHtmlState.size(); i ++) {
-    this.currentStateToEvaluate += Utils.cleanOperators(this.currentState[i].innerHTML);
+    this.currentStateToEvaluate += Utils.cleanOperators(this.currentHtmlState[i].innerHTML);
   }
 };
 
