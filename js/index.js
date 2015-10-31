@@ -164,7 +164,8 @@
     } else if ($(event.target).hasClass('number-tile')) {
       target = event.target;
     }
-    return TileSwap.process(target);
+    TileSwap.process(target);
+    return event.stopPropagation();
   });
 
   $('.number-tile').on('dblclick', function(event) {
@@ -175,7 +176,12 @@
     } else if ($(event.target).hasClass('number-tile')) {
       target = event.target;
     }
-    return Parenthetor.process(target);
+    Parenthetor.process(target);
+    return event.stopPropagation();
+  });
+
+  $('.page').on('dblclick', function(event) {
+    return $('.parenthesis-tile').remove();
   });
 
 }).call(this);

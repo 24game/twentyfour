@@ -121,6 +121,7 @@ $('.number-tile').on('click', (event) ->
   else if $(event.target).hasClass('number-tile')
     target = event.target;
   TileSwap.process(target);
+  event.stopPropagation();
 )
 
 $('.number-tile').on('dblclick', (event) ->
@@ -130,5 +131,10 @@ $('.number-tile').on('dblclick', (event) ->
   else if $(event.target).hasClass('number-tile')
     target = event.target;
   Parenthetor.process(target);
+  event.stopPropagation();
+)
+
+$('.page').on('dblclick', (event) ->
+  $('.parenthesis-tile').remove();
 )
 
