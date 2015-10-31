@@ -118,6 +118,44 @@
 
   })();
 
+  this.Parenthetor = (function() {
+    function Parenthetor() {}
+
+    Parenthetor.tilesToEnclose = [];
+
+    Parenthetor.process = function(tile) {
+      var firstTile, firstTileIndex, secondTile, secondTileIndex, tmp;
+      if (this.enclosingStarted || $('.swappable').length > 0) {
+        return;
+      }
+      $(tile).toggleClass('enclosable');
+      if (!$.contains(this.tilesToEnclose, tile)) {
+        this.tilesToEnclose.push(tile);
+      }
+      if (this.tilesToEnclose.length === 2) {
+        $('.parenthesis-tile').remove();
+        this.enclosingStarted = true;
+        secondTile = this.tilesToEnclose.pop();
+        firstTile = this.tilesToEnclose.pop();
+        firstTileIndex = $('.number-tile').toArray().indexOf(firstTile);
+        secondTileIndex = $('.number-tile').toArray().indexOf(secondTile);
+        if (firstTileIndex > secondTileIndex) {
+          tmp = secondTile;
+          secondTile = firstTile;
+          firstTile = tmp;
+        }
+        $(firstTile).before("<div class=\"parenthesis-tile\"><span class=\"unselectable parenthesis\">(</span></div>");
+        $(secondTile).after("<div class=\"parenthesis-tile\"><span class=\"unselectable parenthesis\">)</span></div>");
+        $(firstTile).removeClass('enclosable');
+        $(secondTile).removeClass('enclosable');
+        return this.enclosingStarted = false;
+      }
+    };
+
+    return Parenthetor;
+
+  })();
+
   $('.number-tile').on('click', function(event) {
     target;
     var target;
@@ -126,7 +164,8 @@
     } else if ($(event.target).hasClass('number-tile')) {
       target = event.target;
     }
-    return TileSwap.process(target);
+    TileSwap.process(target);
+    return event.stopPropagation();
   });
 
   $('.number-tile').on('dblclick', function(event) {
@@ -137,7 +176,12 @@
     } else if ($(event.target).hasClass('number-tile')) {
       target = event.target;
     }
-    return $(target).toggleClass('enclosable');
+    Parenthetor.process(target);
+    return event.stopPropagation();
+  });
+
+  $('.page').on('dblclick', function(event) {
+    return $('.parenthesis-tile').remove();
   });
 
 }).call(this);
