@@ -1,5 +1,5 @@
 function Calculator() {}
 
 Calculator.compute = function(stringToCompute) {
-  return eval(Utils.cleanStringToCompute(stringToCompute));
+  return Math.round( eval(Utils.cleanStringToCompute(stringToCompute)) * 10 ) / 10;
 };

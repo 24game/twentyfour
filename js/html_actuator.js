@@ -18,6 +18,7 @@ HTMLActuator.prototype.getCurrentStateToEvaluate = function() {
   for (var i = 0; i < this.currentHtmlState.size(); i ++) {
     this.currentStateToEvaluate += Utils.cleanOperators(this.currentHtmlState[i].innerHTML);
   }
+  return this.currentStateToEvaluate;
 };
 
 HTMLActuator.prototype.getCurrentTileStates = function() {
@@ -33,7 +34,5 @@ HTMLActuator.prototype.getCurrentTileStates = function() {
 };
 
 HTMLActuator.prototype.actuate = function(puzzle) {
-  for (var i = 0; i < puzzle.length; i ++) {
-    $($('.number')[i]).html([puzzle[i]]);
-  }
+  $('.result').html(Calculator.compute(this.getCurrentStateToEvaluate()));
 };

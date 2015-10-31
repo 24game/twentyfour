@@ -16,4 +16,7 @@ Game.prototype.newGame = function() {
   this.secondNumber.number(this.puzzle[1]);
   this.thirdNumber.number(this.puzzle[2]);
   this.fourthNumber.number(this.puzzle[3]);
+  for (var i = 0; i < this.puzzle.length; i ++) {
+    $($('.number')[i]).html([this.puzzle[i]]);
+  }
 };
