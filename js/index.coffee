@@ -84,6 +84,7 @@ class @TileSwap
       , (failReason) ->
       ).done( =>
         @animationStarted = false
+        $(HTMLActuator).trigger('onGameUpdated');
       )
 
 class @Parenthetor
@@ -113,9 +114,19 @@ class @Parenthetor
       $(firstTile).removeClass('enclosable')
       $(secondTile).removeClass('enclosable')
       @enclosingStarted = false
+      $(HTMLActuator).trigger('onGameUpdated');
+
+class @OperatorSwitcher
+  @operators = ['+', '-', '×', '÷']
+
+  @process: (tile) ->
+    operatorValue = $(tile).find('.operator').html()
+    operatorValueIndex = @operators.indexOf(operatorValue)
+    nextOperatorValueIndex = (operatorValueIndex + 1) % @operators.length
+    $(tile).find('.operator').html(@operators[nextOperatorValueIndex])
+    $(HTMLActuator).trigger('onGameUpdated');
 
 $('.number-tile').on('click', (event) ->
-  target;
   if $(event.target).hasClass('number')
     target = event.target.parentElement;
   else if $(event.target).hasClass('number-tile')
@@ -125,7 +136,6 @@ $('.number-tile').on('click', (event) ->
 )
 
 $('.number-tile').on('dblclick', (event) ->
-  target;
   if $(event.target).hasClass('number')
     target = event.target.parentElement;
   else if $(event.target).hasClass('number-tile')
@@ -134,7 +144,17 @@ $('.number-tile').on('dblclick', (event) ->
   event.stopPropagation();
 )
 
+$('.operator-tile').on('click', (event) ->
+  if $(event.target).hasClass('operator')
+    target = event.target.parentElement;
+  else if $(event.target).hasClass('operator-tile')
+    target = event.target;
+  OperatorSwitcher.process(target);
+  event.stopPropagation();
+)
+
 $('.page').on('dblclick', (event) ->
   $('.parenthesis-tile').remove();
+  $(HTMLActuator).trigger('onGameUpdated');
 )
 
