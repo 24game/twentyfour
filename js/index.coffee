@@ -117,7 +117,7 @@ class @Parenthetor
       $(HTMLActuator).trigger('onGameUpdated');
 
 class @OperatorSwitcher
-  @operators = ['+', '−', '×', '÷']
+  @operators = ['+', '-', '×', '÷']
 
   @process: (tile) ->
     operatorValue = $(tile).find('.operator').html()
@@ -161,3 +161,9 @@ $('.page').on('dblclick', (event) ->
 $(HTMLActuator).on('onGameUpdated', ->
   window.GameManager.actuator.actuate();
 );
+
+@hack = (a, b, c, d) ->
+  $($(".number-tile .number")[0]).html(a);
+  $($(".number-tile .number")[1]).html(b);
+  $($(".number-tile .number")[2]).html(c);
+  $($(".number-tile .number")[3]).html(d);

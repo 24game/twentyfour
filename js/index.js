@@ -159,7 +159,7 @@
   this.OperatorSwitcher = (function() {
     function OperatorSwitcher() {}
 
-    OperatorSwitcher.operators = ['+', '−', '×', '÷'];
+    OperatorSwitcher.operators = ['+', '-', '×', '÷'];
 
     OperatorSwitcher.process = function(tile) {
       var nextOperatorValueIndex, operatorValue, operatorValueIndex;
@@ -215,6 +215,13 @@
   $(HTMLActuator).on('onGameUpdated', function() {
     return window.GameManager.actuator.actuate();
   });
+
+  this.hack = function(a, b, c, d) {
+    $($(".number-tile .number")[0]).html(a);
+    $($(".number-tile .number")[1]).html(b);
+    $($(".number-tile .number")[2]).html(c);
+    return $($(".number-tile .number")[3]).html(d);
+  };
 
 }).call(this);
 
