@@ -65,9 +65,6 @@
   font-size: 125%; }
 
 /* Variables */
-* {
-  -webkit-backface-visibility: hidden !important; }
-
 html {
   font-size: 14px;
   -webkit-font-smoothing: antialiased; }

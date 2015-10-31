@@ -86,6 +86,34 @@ class @TileSwap
         @animationStarted = false
       )
 
+class @Parenthetor
+  @tilesToEnclose = []
+
+  @process: (tile) ->
+    return if @enclosingStarted || $('.swappable').length > 0
+    $(tile).toggleClass('enclosable')
+    @tilesToEnclose.push tile unless $.contains(@tilesToEnclose, tile)
+    if @tilesToEnclose.length == 2
+      $('.parenthesis-tile').remove();
+      @enclosingStarted = true
+      secondTile = @tilesToEnclose.pop()
+      firstTile = @tilesToEnclose.pop()
+      firstTileIndex = $('.number-tile').toArray().indexOf(firstTile)
+      secondTileIndex = $('.number-tile').toArray().indexOf(secondTile)
+      if (firstTileIndex > secondTileIndex)
+        tmp = secondTile
+        secondTile = firstTile
+        firstTile = tmp
+      $(firstTile).before("""
+        <div class="parenthesis-tile"><span class="unselectable parenthesis">(</span></div>
+                       """)
+      $(secondTile).after("""
+        <div class="parenthesis-tile"><span class="unselectable parenthesis">)</span></div>
+                       """)
+      $(firstTile).removeClass('enclosable')
+      $(secondTile).removeClass('enclosable')
+      @enclosingStarted = false
+
 $('.number-tile').on('click', (event) ->
   target;
   if $(event.target).hasClass('number')
@@ -101,6 +129,6 @@ $('.number-tile').on('dblclick', (event) ->
     target = event.target.parentElement;
   else if $(event.target).hasClass('number-tile')
     target = event.target;
-  $(target).toggleClass('enclosable')
+  Parenthetor.process(target);
 )
 
