@@ -130,9 +130,7 @@
         return;
       }
       $(tile).toggleClass('enclosable');
-      if (!$.contains(this.tilesToEnclose, tile)) {
-        this.tilesToEnclose.push(tile);
-      }
+      this.tilesToEnclose.push(tile);
       if (this.tilesToEnclose.length === 2) {
         $('.parenthesis-tile').remove();
         this.enclosingStarted = true;

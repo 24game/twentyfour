@@ -93,7 +93,7 @@ class @Parenthetor
   @process: (tile) ->
     return if @enclosingStarted || $('.swappable').length > 0
     $(tile).toggleClass('enclosable')
-    @tilesToEnclose.push tile unless $.contains(@tilesToEnclose, tile)
+    @tilesToEnclose.push tile
     if @tilesToEnclose.length == 2
       $('.parenthesis-tile').remove();
       @enclosingStarted = true
