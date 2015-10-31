@@ -161,7 +161,7 @@
   this.OperatorSwitcher = (function() {
     function OperatorSwitcher() {}
 
-    OperatorSwitcher.operators = ['+', '-', '×', '÷'];
+    OperatorSwitcher.operators = ['+', '−', '×', '÷'];
 
     OperatorSwitcher.process = function(tile) {
       var nextOperatorValueIndex, operatorValue, operatorValueIndex;
@@ -212,6 +212,10 @@
   $('.page').on('dblclick', function(event) {
     $('.parenthesis-tile').remove();
     return $(HTMLActuator).trigger('onGameUpdated');
+  });
+
+  $(HTMLActuator).on('onGameUpdated', function() {
+    return window.GameManager.actuator.actuate();
   });
 
 }).call(this);
