@@ -33,6 +33,6 @@ HTMLActuator.prototype.getCurrentTileStates = function() {
   this.thirdOperator = Utils.cleanOperators(this.operatorTiles[2].innerHTML);
 };
 
-HTMLActuator.prototype.actuate = function(puzzle) {
+HTMLActuator.prototype.actuate = function() {
   $('.result').html(Calculator.compute(this.getCurrentStateToEvaluate()));
 };
