@@ -34,8 +34,5 @@ HTMLActuator.prototype.getCurrentTileStates = function() {
 };
 
 HTMLActuator.prototype.actuate = function(puzzle) {
-  for (var i = 0; i < puzzle.length; i ++) {
-    $($('.number')[i]).html([puzzle[i]]);
-  }
   $('.result').html(Calculator.compute(this.getCurrentStateToEvaluate()));
 };
