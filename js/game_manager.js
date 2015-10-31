@@ -1,8 +1,7 @@
-function GameManager(Game, Actuator) {
-  this.game = new Game();
-  this.actuator = new HTMLActuator();
-  game.newGame();
-  this.puzzle = game.getNewPuzzle();
-  actuator.actuate(this.puzzle);
-  console.log(this.puzzle);
+function GameManager(PuzzleGame, Actuator) {
+  this.puzzleGame = new PuzzleGame();
+  this.actuator = new Actuator();
+  this.puzzleGame.newGame();
+  this.puzzle = this.puzzleGame.puzzle;
+  this.actuator.actuate(this.puzzle);
 }
