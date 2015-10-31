@@ -14,46 +14,45 @@ class @Animator
       '0%': {
         'transform': "translateX(0px)",
       },
-      '100%': {
+      '99%': {
         'transform': "translateX(#{length}px)",
-      }
+      },
+      'to': {}, # equals `100% {}` Leave it empty to fix the flicker
     },{
       name: "animation-b-to-a",
       '0%': {
         'transform': "translateX(0px)",
       },
-      '100%': {
+      '99%': {
         'transform': "translateX(#{length * -1}px)",
-      }
+      },
+      'to': {}, # equals `100% {}` Leave it empty to fix the flicker
     }
     ]);
     $(a).playKeyframe({
       name: 'animation-a-to-b', # name of the keyframe you want to bind to the selected element
-      duration: '0.30s', # [optional, default: 0, in ms] how long you want it to last in milliseconds
+      duration: '0.3s', # [optional, default: 0, in ms] how long you want it to last in milliseconds
       timingFunction: 'ease-out', # [optional, default: ease] specifies the speed curve of the animation
       delay: '0s', #[optional, default: 0s]  how long you want to wait before the animation starts
       iterationCount: '1', #[optional, default:1]  how many times you want the animation to repeat
       direction: 'normal', #[optional, default: 'normal']  which direction you want the frames to flow
       fillMode: 'forwards', #[optional, default: 'forward']  how to apply the styles outside the animation time, default value is forwards
       complete: => #[optional] Function fired after the animation is complete. If repeat is infinite, the function will be fired every time the animation is restarted.
-        $(a).resetKeyframe(null);
-        @completeState[a] = true
         if @completeState[a] && @completeState[b]
-          deferred.resolve()
+          deferred.resolve([a, b])
     });
     $(b).playKeyframe({
       name: 'animation-b-to-a', # name of the keyframe you want to bind to the selected element
-      duration: '0.30s', # [optional, default: 0, in ms] how long you want it to last in milliseconds
+      duration: '0.3s', # [optional, default: 0, in ms] how long you want it to last in milliseconds
       timingFunction: 'ease-out', # [optional, default: ease] specifies the speed curve of the animation
       delay: '0s', #[optional, default: 0s]  how long you want to wait before the animation starts
       iterationCount: '1', #[optional, default:1]  how many times you want the animation to repeat
       direction: 'normal', #[optional, default: 'normal']  which direction you want the frames to flow
       fillMode: 'forwards', #[optional, default: 'forward']  how to apply the styles outside the animation time, default value is forwards
       complete: => #[optional] Function fired after the animation is complete. If repeat is infinite, the function will be fired every time the animation is restarted.
-        $(b).resetKeyframe(null);
         @completeState[b] = true
         if @completeState[a] && @completeState[b]
-          deferred.resolve()
+          deferred.resolve([a, b])
     });
     deferred.promise
 
@@ -69,13 +68,19 @@ class @TileSwap
       firstTile = @tilesToSwap.pop()
       secondTile = @tilesToSwap.pop()
       onAnimationComplete = Animator.animate(firstTile, secondTile);
-      onAnimationComplete.then((successValue) ->
-        operator = $('.animating-a').next();
-        $(".animating-b").before($(".animating-a"));
-        $(operator).before($(".animating-b"));
-        $(".animating-b").removeClass('animating-b');
-        $('.animating-a').removeClass('animating-a');
-        $('.swappable').removeClass('swappable');
+      onAnimationComplete.then((ab) ->
+         operator = $('.animating-a').next()
+         animatingAValue = $(".animating-a .number").html();
+         animatingBValue = $(".animating-b .number").html();
+         $(".animating-a .number").html(animatingBValue);
+         $(".animating-b .number").html(animatingAValue);
+         $('.animating-a').removeClass('animating-a')
+         $('.animating-b').removeClass('animating-b')
+         $('.swappable').removeClass('swappable')
+         a = ab[0]
+         b = ab[1]
+         $(a).resetKeyframe(null)
+         $(b).resetKeyframe(null)
       , (failReason) ->
       ).done( =>
         @animationStarted = false

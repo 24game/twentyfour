@@ -20,22 +20,24 @@
           '0%': {
             'transform': "translateX(0px)"
           },
-          '100%': {
+          '99%': {
             'transform': "translateX(" + length + "px)"
-          }
+          },
+          'to': {}
         }, {
           name: "animation-b-to-a",
           '0%': {
             'transform': "translateX(0px)"
           },
-          '100%': {
+          '99%': {
             'transform': "translateX(" + (length * -1) + "px)"
-          }
+          },
+          'to': {}
         }
       ]);
       $(a).playKeyframe({
         name: 'animation-a-to-b',
-        duration: '0.30s',
+        duration: '0.3s',
         timingFunction: 'ease-out',
         delay: '0s',
         iterationCount: '1',
@@ -43,17 +45,15 @@
         fillMode: 'forwards',
         complete: (function(_this) {
           return function() {
-            $(a).resetKeyframe(null);
-            _this.completeState[a] = true;
             if (_this.completeState[a] && _this.completeState[b]) {
-              return deferred.resolve();
+              return deferred.resolve([a, b]);
             }
           };
         })(this)
       });
       $(b).playKeyframe({
         name: 'animation-b-to-a',
-        duration: '0.30s',
+        duration: '0.3s',
         timingFunction: 'ease-out',
         delay: '0s',
         iterationCount: '1',
@@ -61,10 +61,9 @@
         fillMode: 'forwards',
         complete: (function(_this) {
           return function() {
-            $(b).resetKeyframe(null);
             _this.completeState[b] = true;
             if (_this.completeState[a] && _this.completeState[b]) {
-              return deferred.resolve();
+              return deferred.resolve([a, b]);
             }
           };
         })(this)
@@ -93,14 +92,20 @@
         firstTile = this.tilesToSwap.pop();
         secondTile = this.tilesToSwap.pop();
         onAnimationComplete = Animator.animate(firstTile, secondTile);
-        return onAnimationComplete.then(function(successValue) {
-          var operator;
+        return onAnimationComplete.then(function(ab) {
+          var a, animatingAValue, animatingBValue, b, operator;
           operator = $('.animating-a').next();
-          $(".animating-b").before($(".animating-a"));
-          $(operator).before($(".animating-b"));
-          $(".animating-b").removeClass('animating-b');
+          animatingAValue = $(".animating-a .number").html();
+          animatingBValue = $(".animating-b .number").html();
+          $(".animating-a .number").html(animatingBValue);
+          $(".animating-b .number").html(animatingAValue);
           $('.animating-a').removeClass('animating-a');
-          return $('.swappable').removeClass('swappable');
+          $('.animating-b').removeClass('animating-b');
+          $('.swappable').removeClass('swappable');
+          a = ab[0];
+          b = ab[1];
+          $(a).resetKeyframe(null);
+          return $(b).resetKeyframe(null);
         }, function(failReason) {}).done((function(_this) {
           return function() {
             return _this.animationStarted = false;
