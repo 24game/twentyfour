@@ -156,8 +156,24 @@
 
   })();
 
+  this.OperatorSwitcher = (function() {
+    function OperatorSwitcher() {}
+
+    OperatorSwitcher.operators = ['+', '-', '×', '÷'];
+
+    OperatorSwitcher.process = function(tile) {
+      var nextOperatorValueIndex, operatorValue, operatorValueIndex;
+      operatorValue = $(tile).find('.operator').html();
+      operatorValueIndex = this.operators.indexOf(operatorValue);
+      nextOperatorValueIndex = (operatorValueIndex + 1) % this.operators.length;
+      return $(tile).find('.operator').html(this.operators[nextOperatorValueIndex]);
+    };
+
+    return OperatorSwitcher;
+
+  })();
+
   $('.number-tile').on('click', function(event) {
-    target;
     var target;
     if ($(event.target).hasClass('number')) {
       target = event.target.parentElement;
@@ -169,7 +185,6 @@
   });
 
   $('.number-tile').on('dblclick', function(event) {
-    target;
     var target;
     if ($(event.target).hasClass('number')) {
       target = event.target.parentElement;
@@ -177,6 +192,17 @@
       target = event.target;
     }
     Parenthetor.process(target);
+    return event.stopPropagation();
+  });
+
+  $('.operator-tile').on('click', function(event) {
+    var target;
+    if ($(event.target).hasClass('operator')) {
+      target = event.target.parentElement;
+    } else if ($(event.target).hasClass('operator-tile')) {
+      target = event.target;
+    }
+    OperatorSwitcher.process(target);
     return event.stopPropagation();
   });
 
