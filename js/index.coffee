@@ -84,6 +84,7 @@ class @TileSwap
       , (failReason) ->
       ).done( =>
         @animationStarted = false
+        $(HTMLActuator).trigger('onGameUpdated');
       )
 
 class @Parenthetor
@@ -113,6 +114,7 @@ class @Parenthetor
       $(firstTile).removeClass('enclosable')
       $(secondTile).removeClass('enclosable')
       @enclosingStarted = false
+      $(HTMLActuator).trigger('onGameUpdated');
 
 class @OperatorSwitcher
   @operators = ['+', '-', '×', '÷']
@@ -122,6 +124,7 @@ class @OperatorSwitcher
     operatorValueIndex = @operators.indexOf(operatorValue)
     nextOperatorValueIndex = (operatorValueIndex + 1) % @operators.length
     $(tile).find('.operator').html(@operators[nextOperatorValueIndex])
+    $(HTMLActuator).trigger('onGameUpdated');
 
 $('.number-tile').on('click', (event) ->
   if $(event.target).hasClass('number')
@@ -152,5 +155,6 @@ $('.operator-tile').on('click', (event) ->
 
 $('.page').on('dblclick', (event) ->
   $('.parenthesis-tile').remove();
+  $(HTMLActuator).trigger('onGameUpdated');
 )
 

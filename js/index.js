@@ -108,7 +108,8 @@
           return $(b).resetKeyframe(null);
         }, function(failReason) {}).done((function(_this) {
           return function() {
-            return _this.animationStarted = false;
+            _this.animationStarted = false;
+            return $(HTMLActuator).trigger('onGameUpdated');
           };
         })(this));
       }
@@ -148,7 +149,8 @@
         $(secondTile).after("<div class=\"parenthesis-tile\"><span class=\"unselectable parenthesis\">)</span></div>");
         $(firstTile).removeClass('enclosable');
         $(secondTile).removeClass('enclosable');
-        return this.enclosingStarted = false;
+        this.enclosingStarted = false;
+        return $(HTMLActuator).trigger('onGameUpdated');
       }
     };
 
@@ -166,7 +168,8 @@
       operatorValue = $(tile).find('.operator').html();
       operatorValueIndex = this.operators.indexOf(operatorValue);
       nextOperatorValueIndex = (operatorValueIndex + 1) % this.operators.length;
-      return $(tile).find('.operator').html(this.operators[nextOperatorValueIndex]);
+      $(tile).find('.operator').html(this.operators[nextOperatorValueIndex]);
+      return $(HTMLActuator).trigger('onGameUpdated');
     };
 
     return OperatorSwitcher;
@@ -207,7 +210,8 @@
   });
 
   $('.page').on('dblclick', function(event) {
-    return $('.parenthesis-tile').remove();
+    $('.parenthesis-tile').remove();
+    return $(HTMLActuator).trigger('onGameUpdated');
   });
 
 }).call(this);
