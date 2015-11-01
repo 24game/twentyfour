@@ -2,7 +2,6 @@ function Tile() {}
 
 Tile.prototype.number = function(numberValue) {
   this.numberValue = numberValue;
-  this.isClicked = false;
 };
 
 Tile.prototype.operator = function(operatorValue) {
