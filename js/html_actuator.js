@@ -1,17 +1,21 @@
 function HTMLActuator() {}
 
+// Returns all HTML tile elements.
 HTMLActuator.prototype.getHtmlTiles = function() {
   return $('[class*=tile]').children();
 }
 
+// Returns all number tiles.
 HTMLActuator.prototype.getNumberTiles = function() {
   return $('span.number');
 }
 
+// Returns all operator tiles.
 HTMLActuator.prototype.getOperatorTiles = function() {
   return $('span.operator');
 }
 
+// Returns a string that is ready to be evaluated
 HTMLActuator.prototype.getCurrentStateToEvaluate = function() {
   this.currentHtmlState = this.getHtmlTiles();
   this.currentStateToEvaluate = "";
@@ -33,6 +37,7 @@ HTMLActuator.prototype.getCurrentTileStates = function() {
   this.thirdOperator = Utils.cleanOperators(this.operatorTiles[2].innerHTML);
 };
 
+// Computes the value of getCurrentStateToEvaluate and sets that as the value.
 HTMLActuator.prototype.actuate = function() {
   $('.result').html(Calculator.compute(this.getCurrentStateToEvaluate()));
 };

@@ -1,16 +1,18 @@
+// Loads the json file of puzzles.
 function Game() {
   this.puzzles = new Puzzles();
 }
 
-Game.prototype.initializeGame = function() {
+Game.prototype.initializeTiles = function() {
   this.firstNumber = new Tile();
   this.secondNumber = new Tile();
   this.thirdNumber = new Tile();
   this.fourthNumber = new Tile();
 };
 
+// Selects one puzzle and sets each number tile accordingly
 Game.prototype.newGame = function() {
-  this.initializeGame();
+  this.initializeTiles();
   this.puzzle = this.puzzles.getNewPuzzle();
   this.firstNumber.number(this.puzzle[0]);
   this.secondNumber.number(this.puzzle[1]);

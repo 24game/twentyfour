@@ -31,6 +31,7 @@ Utils.randomize = function(array) {
   return array;
 };
 
+// Helper method for randomize. 
 Utils.swap = function(a, b, array) {
   var temp = array[a];
   array[a] = array[b];
