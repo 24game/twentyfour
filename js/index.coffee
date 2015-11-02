@@ -127,6 +127,7 @@ class @OperatorSwitcher
     $(HTMLActuator).trigger('onGameUpdated');
 
 $('.number-tile').on('click', (event) ->
+  return if window.gamewon
   if $(event.target).hasClass('number')
     target = event.target.parentElement;
   else if $(event.target).hasClass('number-tile')
@@ -136,6 +137,7 @@ $('.number-tile').on('click', (event) ->
 )
 
 $('.number-tile').on('dblclick', (event) ->
+  return if window.gamewon
   if $(event.target).hasClass('number')
     target = event.target.parentElement;
   else if $(event.target).hasClass('number-tile')
@@ -145,6 +147,7 @@ $('.number-tile').on('dblclick', (event) ->
 )
 
 $('.operator-tile').on('click', (event) ->
+  return if window.gamewon
   if $(event.target).hasClass('operator')
     target = event.target.parentElement;
   else if $(event.target).hasClass('operator-tile')
@@ -154,12 +157,17 @@ $('.operator-tile').on('click', (event) ->
 )
 
 $('.page').on('dblclick', (event) ->
+  return if window.gamewon
   $('.parenthesis-tile').remove();
   $(HTMLActuator).trigger('onGameUpdated');
 )
 
 $(HTMLActuator).on('onGameUpdated', ->
-  window.GameManager.actuator.actuate();
+  window.GameManager.actuator.actuate()
+  # Temporary you win hack!
+  if $('.result').html() == "24"
+    window.gamewon = true;
+    $('.result').addClass('correct');
 );
 
 @hack = (a, b, c, d) ->

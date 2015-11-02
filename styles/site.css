@@ -116,6 +116,9 @@ code {
 .drop-container {
   position: relative; }
 
+.correct {
+  color: green; }
+
 .parenthesis-tile {
   position: relative;
   font-size: 4.5rem;

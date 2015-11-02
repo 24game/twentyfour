@@ -48,3 +48,6 @@ crashlytics-build.properties
 fabric.properties
 
 .sass-cache/
+
+# SCSS compilation .map files
+*.css.map
