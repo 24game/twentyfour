@@ -2,6 +2,8 @@ function Tile() {}
 
 Tile.prototype.number = function(numberValue) {
   this.numberValue = numberValue;
+  this.isClicked = false;
+  this.isDoubleClicked = false;
 };
 
 Tile.prototype.operator = function(operatorValue) {
@@ -10,4 +12,5 @@ Tile.prototype.operator = function(operatorValue) {
 
 Tile.prototype.result = function(gameState) {
   this.computedResult = Calculator.compute(gameState);
+  this.isCorrectValue = false;
 };
