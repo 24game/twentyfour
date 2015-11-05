@@ -10,7 +10,7 @@ Tile.prototype.operator = function(operatorValue) {
   this.operatorValue = operatorValue;
 };
 
-Tile.prototype.result = function(gameState) {
-  this.computedResult = Calculator.compute(gameState);
+Tile.prototype.result = function(resultValue) {
+  this.resultValue = resultValue;
   this.isCorrectValue = false;
 };
