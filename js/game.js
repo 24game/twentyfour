@@ -1,22 +1,37 @@
+// Loads the json file.
 function Game() {
   this.puzzles = new Puzzles();
+  this.puzzleSize = this.puzzles.puzzleSize;
 }
 
-Game.prototype.initializeGame = function() {
-  this.firstNumber = new Tile();
-  this.secondNumber = new Tile();
-  this.thirdNumber = new Tile();
-  this.fourthNumber = new Tile();
+// Initializes the number tiles and operator tiles.
+Game.prototype.initializeTiles = function() {
+  this.numbers = new Array(this.puzzleSize);
+  for (var i = 0; i < this.numbers.length; i ++) {
+    this.numbers[i] = new Tile();
+  }
+  this.operators = new Array(this.numbers.length - 1);
+  for (var i = 0; i < this.operators.length; i ++) {
+    this.operators[i] = new Tile();
+  }
 };
 
+// Sets up the number tiles and operator tiles.
 Game.prototype.newGame = function() {
-  this.initializeGame();
+  this.initializeTiles();
   this.puzzle = this.puzzles.getNewPuzzle();
-  this.firstNumber.number(this.puzzle[0]);
-  this.secondNumber.number(this.puzzle[1]);
-  this.thirdNumber.number(this.puzzle[2]);
-  this.fourthNumber.number(this.puzzle[3]);
-  for (var i = 0; i < this.puzzle.length; i ++) {
-    $($('.number')[i]).html([this.puzzle[i]]);
+  for (var i = 0; i < this.numbers.length; i ++) {
+    this.numbers[i].number(this.puzzle[i]);
+  }
+  for (var i = 0; i < this.operators.length; i ++) {
+    this.operators[i].operator(Operators.getRandomOperator());
+  }
+
+  // This part will eventually go away after refactor.
+  for (var i = 0; i < this.numbers.length; i ++) {
+    $($('.number')[i]).html([this.numbers[i].numberValue]);
+  }
+  for (var i = 0; i < this.operators.length; i ++) {
+    $($('.operator')[i]).html([this.operators[i].operatorValue]);
   }
 };

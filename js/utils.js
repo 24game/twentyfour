@@ -23,6 +23,11 @@ Utils.cleanOperators = function(stringToClean) {
   return stringToClean.replace(/×+/g, '*').replace(/÷+/g, '/');
 };
 
+Utils.getRandomValueInArray = function(array) {
+  var random = Math.floor(Math.random() * array.length);
+  return array[random];
+}
+
 Utils.randomize = function(array) {
   for (var i = 0; i < array.length; i ++) {
     var random = Math.floor(Math.random() * array.length);
@@ -31,6 +36,7 @@ Utils.randomize = function(array) {
   return array;
 };
 
+// Helper method for randomize.
 Utils.swap = function(a, b, array) {
   var temp = array[a];
   array[a] = array[b];
