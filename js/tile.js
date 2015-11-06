@@ -12,5 +12,5 @@ Tile.prototype.operator = function(operatorValue) {
 
 Tile.prototype.result = function(resultValue) {
   this.resultValue = resultValue;
-  this.isCorrectValue = false;
+  this.isExpectedResult = false;
 };
