@@ -1,6 +1,7 @@
-function Operators() {}
-
-Operators.getRandomOperator = function() {
+function Operators() {
   this.possibleOperations = ['+', '-', '×', '÷'];
+}
+
+Operators.prototype.getRandomOperator = function() {
   return Utils.getRandomValueInArray(this.possibleOperations);
 };
