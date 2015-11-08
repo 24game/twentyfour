@@ -1,13 +1,22 @@
 // Loads the json file.
 function Game() {
   this.puzzles = new Puzzles();
-  this.operations = new Operators();
-  this.puzzleSize = this.puzzles.puzzleSize;
+  this.numbers = new Array(this.puzzles.length);
+  this.isDynamicValue = false;
 }
+
+Game.prototype.isDynamic = function(boolean) {
+  if (boolean === undefined) {
+    return this.isDynamicValue;
+  }
+  else {
+    this.isDynamicValue = boolean;
+    return this.isDynamicValue;
+  }
+};
 
 // Creates number tile and operator tile objects.
 Game.prototype.createTileObjects = function() {
-  this.numbers = new Array(this.puzzleSize);
   for (var i = 0; i < this.numbers.length; i ++) {
     this.numbers[i] = new Tile();
   }
