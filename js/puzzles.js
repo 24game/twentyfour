@@ -14,7 +14,8 @@ Puzzles.ctor = function() {
 
 // Returns a randomly selected puzzle in the puzzles in the json. This method is called whenever there is a new game.
 Puzzles.getNewPuzzle = function() {
-  var puzzleIndex = Math.floor(Math.random() * this.puzzles.length);
+  Puzzles.ctor();
+  var puzzleIndex = Math.floor(Math.random() * Puzzles.puzzles.length);
   var puzzle = this.puzzles[puzzleIndex];
   puzzle.numbers = Utils.randomize(puzzle.numbers);
   return puzzle;

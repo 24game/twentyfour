@@ -1,7 +1,20 @@
-function Operators() {
-  this.possibleOperations = ['+', '-', '×', '÷'];
-}
+function Operators() {}
 
-Operators.prototype.getRandomOperator = function() {
-  return Utils.getRandomValueInArray(this.possibleOperations);
+Operators.ctor = function() {
+  if (Operators.__ctor_initialized) {
+    return;
+  }
+  Operators.__ctor_initialized = true;
+};
+
+Operators.possibleOperators = Object.freeze({
+  'ADDITION' : '+',
+  'SUBTRACTION' : '-',
+  'MULTIPLICATION' : '×',
+  'DIVISION' : '÷'
+});
+
+Operators.getRandomOperator = function() {
+  Operators.ctor();
+  return Math.random();
 };
