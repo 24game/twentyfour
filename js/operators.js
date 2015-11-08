@@ -16,5 +16,22 @@ Operators.possibleOperators = Object.freeze({
 
 Operators.getRandomOperator = function() {
   Operators.ctor();
-  return Math.random();
+  return Operators.possibleOperators[Utils.getRandomValueInArray(Object.keys(Operators.possibleOperators))];
 };
+
+Operators.getNextOperator = function(currentOperator) {
+  switch(currentOperator) {
+    case '+':
+      return '-';
+      break;
+    case '-':
+      return '×';
+      break;
+    case '×':
+      return '÷';
+      break;
+    case '÷':
+      return '+';
+      break;
+  }
+}
