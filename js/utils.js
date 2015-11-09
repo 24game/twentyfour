@@ -8,7 +8,6 @@ Utils.loadJson = function(file) {
     'url': file,
     'dataType': "json",
     success: function(data) {
-      console.log('Successfully loaded json.');
       json = data;
     }
   });

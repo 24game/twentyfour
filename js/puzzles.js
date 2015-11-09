@@ -1,13 +1,22 @@
 // Loads the json file which specifies the puzzleSize, the expectedResult and contains an array of puzzles.
-function Puzzles() {
-  var json = Utils.loadJson('./puzzles.json');
-  this.puzzleSize = json.puzzleSize;
-  this.expectedResult = json.expectedResult;
-  this.puzzles = json.puzzles;
-}
+function Puzzles() { }
 
-// Returns a randomly selected puzzle in the puzzles in the json. This method is called whenever there is a newGame.
-Puzzles.prototype.getNewPuzzle = function() {
-  var randomIndex = Math.floor(Math.random() * this.puzzles.length);
-  return Utils.randomize(this.puzzles[randomIndex]);
+Puzzles.ctor = function() {
+  if (Puzzles.__ctor_initialized)
+    return;
+
+  var puzzlesJson = Utils.loadJson('./puzzles.json');
+  Puzzles.puzzles = puzzlesJson.puzzles;
+
+  Puzzles.__ctor_initialized = true;
+};
+
+
+// Returns a randomly selected puzzle in the puzzles in the json. This method is called whenever there is a new game.
+Puzzles.getNewPuzzle = function() {
+  Puzzles.ctor();
+  var puzzleIndex = Math.floor(Math.random() * Puzzles.puzzles.length);
+  var puzzle = this.puzzles[puzzleIndex];
+  puzzle.numbers = Utils.randomize(puzzle.numbers);
+  return puzzle;
 };

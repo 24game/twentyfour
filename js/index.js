@@ -162,6 +162,7 @@ OperatorSwitcher.process = function(tile) {
 };
 
 $('.number-tile').on('click', function(event) {
+  if (Game.isDyan)
   if ($(event.target).hasClass('number'))
     target = event.target.parentElement;
   else if ($(event.target).hasClass('number-tile'))
