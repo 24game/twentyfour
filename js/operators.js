@@ -16,7 +16,6 @@ Operators.possibleOperators = Object.freeze({
 
 Operators.getRandomOperator = function() {
   Operators.ctor();
-<<<<<<< HEAD
   return Operators.possibleOperators[Utils.getRandomValueInArray(Object.keys(Operators.possibleOperators))];
 };
 
@@ -35,8 +34,4 @@ Operators.getNextOperator = function(currentOperator) {
       return '+';
       break;
   }
-}
-=======
-  return Math.random();
-};
->>>>>>> 5acc2fdd5cb3d2c1ed63cb1f4b726890a69bf300
+}ß
