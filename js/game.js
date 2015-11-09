@@ -1,47 +1,61 @@
 // Loads the json file.
 function Game() {
-  this.puzzles = new Puzzles();
-  this.numbers = new Array(this.puzzles.length);
-  this.isDynamicValue = false;
+  this.puzzles = Puzzles.getNewPuzzle();
+  this.numberTiles = new Array(this.puzzles.numberTiles.length);
+  this.isGameUpdating = false;
+  this.newGame();
 }
 
-Game.prototype.isDynamic = function(boolean) {
-  if (boolean === undefined) {
-    return this.isDynamicValue;
+// Initializes the number tiles and operator tiles.
+Game.prototype.newGame = function() {
+  this.createTileObjects();
+  this.puzzle = Puzzles.getNewPuzzle();
+  for (var i = 0; i < this.numberTiles.length; i ++) {
+    this.numberTiles[i].number(this.puzzle.numberTiles[i]);
   }
-  else {
-    this.isDynamicValue = boolean;
-    return this.isDynamicValue;
+  for (var i = 0; i < this.operatorTiles.length; i ++) {
+    this.operatorTiles[i].operator(Operators.getRandomOperator());
+  }
+
+  // This part will eventually go away after refactor.
+  for (var i = 0; i < this.numberTiles.length; i ++) {
+    $($('.number')[i]).html([this.numberTiles[i].numberValue]);
+  }
+  for (var i = 0; i < this.operatorTiles.length; i ++) {
+    $($('.operator')[i]).html([this.operatorTiles[i].operatorValue]);
   }
 };
 
 // Creates number tile and operator tile objects.
 Game.prototype.createTileObjects = function() {
-  for (var i = 0; i < this.numbers.length; i ++) {
-    this.numbers[i] = new Tile();
+  for (var i = 0; i < this.numberTiles.length; i++) {
+    this.numberTiles[i] = new Tile();
   }
-  this.operators = new Array(this.numbers.length - 1);
-  for (var i = 0; i < this.operators.length; i ++) {
-    this.operators[i] = new Tile();
+  this.operatorTiles = new Array(this.numberTiles.length - 1);
+  for (var i = 0; i < this.operatorTiles.length; i++) {
+    this.operatorTiles[i] = new Tile();
   }
 };
 
-// Initializes the number tiles and operator tiles.
-Game.prototype.newGame = function() {
-  this.createTileObjects();
-  this.puzzle = this.puzzles.getNewPuzzle();
-  for (var i = 0; i < this.numbers.length; i ++) {
-    this.numbers[i].number(this.puzzle[i]);
+Game.prototype.isUpdating = function(updating) {
+  if (updating === undefined) {
+    return this.isGameUpdating;
   }
-  for (var i = 0; i < this.operators.length; i ++) {
-    this.operators[i].operator(this.operations.getRandomOperator());
+  else {
+    this.isGameUpdating = updating;
+    return this.isGameUpdating;
   }
+};
 
-  // This part will eventually go away after refactor.
-  for (var i = 0; i < this.numbers.length; i ++) {
-    $($('.number')[i]).html([this.numbers[i].numberValue]);
-  }
-  for (var i = 0; i < this.operators.length; i ++) {
-    $($('.operator')[i]).html([this.operators[i].operatorValue]);
-  }
+Game.prototype.updateFrontState = function() {
+ /*
+  1. Number values
+  2. Clicked state -> swappable
+  3. Double clicked state -> enclosable
+  4. POST - run hooks!
+   */
+  this.numberTiles.forEach(function(numberTile, index) {
+    var number = numberTile.numberValue;
+    $($($('#game').children('.number-tile')[index]).find('.number')).html(number);
+  });
 };

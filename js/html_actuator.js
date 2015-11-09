@@ -3,17 +3,17 @@ function HTMLActuator() {}
 // Returns all HTML tile elements.
 HTMLActuator.prototype.getHtmlTiles = function() {
   return $('[class*=tile]').children();
-}
+};
 
 // Returns all number tiles.
 HTMLActuator.prototype.getNumberTiles = function() {
   return $('span.number');
-}
+};
 
 // Returns all operator tiles.
 HTMLActuator.prototype.getOperatorTiles = function() {
   return $('span.operator');
-}
+};
 
 // Returns a string that is ready to be evaluated
 HTMLActuator.prototype.getCurrentStateToEvaluate = function() {

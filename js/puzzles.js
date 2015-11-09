@@ -17,6 +17,6 @@ Puzzles.getNewPuzzle = function() {
   Puzzles.ctor();
   var puzzleIndex = Math.floor(Math.random() * Puzzles.puzzles.length);
   var puzzle = this.puzzles[puzzleIndex];
-  puzzle.numbers = Utils.randomize(puzzle.numbers);
+  puzzle.numberTiles = Utils.randomize(puzzle.numberTiles);
   return puzzle;
 };

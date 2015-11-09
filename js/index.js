@@ -150,43 +150,68 @@ Parenthetor.process = function(tile) {
 
 function OperatorSwitcher() { }
 
-OperatorSwitcher.operators = ['+', '-', '×', '÷']
+OperatorSwitcher.operatorTiles = ['+', '-', '×', '÷']
 
 OperatorSwitcher.process = function(tile) {
   var self = OperatorSwitcher;
   operatorValue = $(tile).find('.operator').html()
-  operatorValueIndex = self.operators.indexOf(operatorValue)
-  nextOperatorValueIndex = (operatorValueIndex + 1) % self.operators.length
-  $(tile).find('.operator').html(self.operators[nextOperatorValueIndex])
+  operatorValueIndex = self.operatorTiles.indexOf(operatorValue)
+  nextOperatorValueIndex = (operatorValueIndex + 1) % self.operatorTiles.length
+  $(tile).find('.operator').html(self.operatorTiles[nextOperatorValueIndex])
   $(HTMLActuator).trigger('onGameUpdated');
 };
 
 $('.number-tile').on('click', function(event) {
-  if (Game.isDyan)
+  event.stopPropagation();
+  if (game.isUpdating()) {
+    return;
+  }
+
   if ($(event.target).hasClass('number'))
     target = event.target.parentElement;
   else if ($(event.target).hasClass('number-tile'))
     target = event.target;
-  TileSwap.process(target);
-  event.stopPropagation();
+
+  var numberTileIndex = $('#game').children('.number-tile').index(target)
+
+  game.numberTiles[numberTileIndex].clicked('toggle');
+  game.updateFrontState();
 });
 
 $('.number-tile').on('dblclick', function (event) {
+  event.stopPropagation();
+  if (game.isUpdating()) {
+    return;
+  }
+
   if ($(event.target).hasClass('number'))
     target = event.target.parentElement;
   else if ($(event.target).hasClass('number-tile'))
     target = event.target;
-  Parenthetor.process(target);
-  event.stopPropagation();
+
+  var numberTileIndex = $('#game').children('.number-tile').index(target)
+
+  game.numberTiles[numberTileIndex].doubleClicked('toggle');
+  game.updateFrontState();
 });
 
 $('.operator-tile').on('click', function (event) {
+  event.stopPropagation();
+  if (game.isUpdating()) {
+    return;
+  }
+
   if ($(event.target).hasClass('operator'))
     target = event.target.parentElement;
   else if ($(event.target).hasClass('operator-tile'))
     target = event.target;
-  OperatorSwitcher.process(target);
-  event.stopPropagation();
+
+  var operatorTileIndex = $('#game').children('.operator-tile').index(target)
+
+  var currentOperator = game.operatorTiles[operatorTileIndex].operator();
+  var nextOperator = Operators.getNextOperator(currentOperator);
+  game.operatorTiles[operatorTileIndex].operator(nextOperator);
+  game.updateFrontState();
 });
 
 $('.page').on('dblclick', function (event) {

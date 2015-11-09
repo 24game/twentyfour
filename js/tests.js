@@ -9,7 +9,7 @@ Tests.tests.push({
   test: function() {
     var puzzle = Puzzles.getNewPuzzle();
     if (puzzle === undefined) throw 'Puzzles.getNewPuzzle() returns undefined';
-    if (!puzzle.hasOwnProperty('numbers')) throw "puzzle does not have a 'numbers' property";
+    if (!puzzle.hasOwnProperty('numberTiles')) throw "puzzle does not have a 'numberTiles' property";
     if (!puzzle.hasOwnProperty('expectedResult')) throw "puzzle does not have a 'expectedResult' property";
   }
 });
