@@ -34,4 +34,4 @@ Operators.getNextOperator = function(currentOperator) {
       return '+';
       break;
   }
-}ß
+};
