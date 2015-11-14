@@ -48,3 +48,7 @@ crashlytics-build.properties
 fabric.properties
 
 .sass-cache/
+
+node_modules/
+*-compiled.js
+*-compiled.js.map
