@@ -46,6 +46,11 @@ def run
     browserify_command = "browserify #{working_dir}/#{relative_path}/*-compiled.js -o js/bundle.js"
     p browserify_command
     `#{browserify_command}`
+    unless ARGV.include?('--skip-uglify')
+        uglify_command = "uglifyjs js/bundle.js --mangle --compress -o js/bundle.js"
+        p uglify_command
+        `#{uglify_command}`
+    end
 end
 
 def skip_file?(file, exclude_files_with)

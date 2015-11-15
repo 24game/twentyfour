@@ -11,7 +11,8 @@
     "babel-preset-react": "^6.1.18",
     "jquery": "^2.1.4",
     "react": "^0.14.2",
-    "react-dom": "^0.14.2"
+    "react-dom": "^0.14.2",
+    "uglify-js": "^2.6.0"
   },
   "babel": {
     "presets": [
