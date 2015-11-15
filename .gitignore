@@ -52,3 +52,4 @@ fabric.properties
 node_modules/
 *-compiled.js
 *-compiled.js.map
+bundle.js # Compiled result, ignore
