@@ -17,7 +17,8 @@
     "livereload": "^0.4.0",
     "run-sequence": "^1.1.5",
     "webpack": "^1.12.8",
-    "webpack-dev-server": "^1.12.1"
+    "webpack-dev-server": "^1.12.1",
+    "react": "^0.13.1"
   },
   "scripts": {},
   "repository": {
