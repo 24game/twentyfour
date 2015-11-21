@@ -1,6 +1,7 @@
 var webpack = require("webpack");
 var path = require('path');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 var IS_PROD = false;
 
 
@@ -25,7 +26,7 @@ module.exports = {
       }
     }, {
       test: /\.scss$/,
-      loaders: IS_PROD ? ["style", "css", "sass"] : ["style", "css?sourceMap", "sass?sourceMap"]
+      loader: ExtractTextPlugin.extract('style', '!css?sourceMap!sass?sourceMap')
     }]
   },
   sassLoader: {
@@ -58,8 +59,9 @@ module.exports = {
       'process.env': {
         'NODE_ENV': JSON.stringify('production'),
       },
-    })
+    }),
+      new ExtractTextPlugin("./site.css")
   ] : [
-
+    new ExtractTextPlugin("./site.css")
   ]
 };
