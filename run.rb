@@ -1,7 +1,7 @@
 def run
     working_dir = File.expand_path File.dirname(__FILE__)
     relative_path = 'js'
-    include_files_with = ['.js']
+    include_files_with = ['.js', '.jsx']
     exclude_files_with = ['-compiled.js', 'bundle.js']
     delete_files_with = ['-compiled.js', '-compiled.js.map']
 
