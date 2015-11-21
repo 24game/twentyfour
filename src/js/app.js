@@ -1,3 +1,5 @@
+require("../styles/site.scss");
+
 function App() { }
 
 App.run = function() {

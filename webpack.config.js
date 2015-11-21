@@ -1,5 +1,6 @@
 var webpack = require("webpack");
 var path = require('path');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var IS_PROD = false;
 
 
@@ -22,7 +23,13 @@ module.exports = {
         presets: ['react', 'es2015'],
         cacheDirectory: true
       }
+    }, {
+      test: /\.scss$/,
+      loaders: IS_PROD ? ["style", "css", "sass"] : ["style", "css?sourceMap", "sass?sourceMap"]
     }]
+  },
+  sassLoader: {
+    includePaths: [path.resolve(__dirname, "./src/styles")]
   },
   debug: !IS_PROD,
   plugins: IS_PROD ? [
