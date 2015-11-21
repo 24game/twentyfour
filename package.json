@@ -1,0 +1,45 @@
+{
+  "name": "twentyfour",
+  "version": "1.0.0",
+  "description": "Combine four numbers using + - * / to make 24",
+  "main": "src/app.js",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.2.1",
+    "babel-loader": "^6.2.0",
+    "babel-preset-es2015": "^6.1.18",
+    "babel-preset-react": "*",
+    "gulp": "^3.9.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-shell": "^0.5.1",
+    "gulp-util": "^3.0.7",
+    "http-server": "^0.8.5",
+    "livereload": "^0.4.0",
+    "run-sequence": "^1.1.5",
+    "webpack": "^1.12.8",
+    "webpack-dev-server": "^1.12.1"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "github.com/24game/twentyfour"
+  },
+  "keywords": [
+    "24",
+    "twentyfour",
+    "2048",
+    "game",
+    "math",
+    "number",
+    "numbers",
+    "puzzle",
+    "logic",
+    "riddle"
+  ],
+  "author": "Jason Pang & Sebastian Liu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/24game/twentyfour/issues"
+  },
+  "homepage": "https://github.com/24game/twentyfour"
+}
