@@ -26,7 +26,7 @@ module.exports = {
       }
     }, {
       test: /\.scss$/,
-      loader: ExtractTextPlugin.extract('style', '!css?sourceMap!sass?sourceMap')
+      loader: ExtractTextPlugin.extract('style', IS_PROD ? '!css!sass' : '!css?sourceMap!sass?sourceMap')
     }]
   },
   sassLoader: {
