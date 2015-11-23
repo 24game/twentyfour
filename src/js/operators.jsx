@@ -1,81 +1,41 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var jquery = require('jquery');
-
 var Operators = React.createClass({
+
+  // Sets initial state to be a random operator.
   getInitialState: function() {
-    return {value: this.props.value};
+    var randomIndex = Math.floor(Math.random() * 4);
+    return {
+      operator: (this.getPossibleOperators())[randomIndex]
+    };
   },
 
-  propTypes: {
-    value: React.PropTypes.isRequired,
-    value: React.PropTypes.oneOf(['+', '-', '×', '÷'])
+  // Cycles through the operators in succession.
+  cycleOperator: function() {
+    var currentOperatorIndex = this.getCurrentOperatorIndex(this.state.operator);
+    var nextOperatorIndex = (currentOperatorIndex + 1) % (this.getPossibleOperators().length);
+    this.setState({
+      operator: (this.getPossibleOperators())[nextOperatorIndex]
+    })
   },
 
-  handleClick: function(event) {
-    this.setState(this.cycleOperators)
+  // Returns a list of possible operators.
+  getPossibleOperators: function() {
+    var possibleOperators = ['+', '-', '×', '÷'];
+    return possibleOperators;
   },
 
-  cycleOperators: function() {
-    return this.possibleOperators[(this.getOperatorIndex + 1) % 4]
+  // Returns the index of the current operator.
+  getCurrentOperatorIndex: function(currentOperator) {
+    return this.getPossibleOperators().indexOf(currentOperator);
   },
 
-  getOperatorIndex: function() {
-    return this.possibleOperators.indexOf(this.props.value)
-  },
-
-  possibleOperators: function() {
-    return ['+', '-', '×', '÷']
-  },
-  
   render: function() {
     return (
       <div className="operator-tile">
-        <span className="unselectable operator">+</span>
+        <span className="unselectable operator" onClick={this.cycleOperator}>{this.state.operator}</span>
       </div>
     )
   }
 });
 
-ReactDOM.render(
-  <Operators/>, document.getElementById('game'));
-
-// var Operators = React.createClass({
-//   getInitialState: function() {
-//     return {
-//       value: this.props.value
-//     };
-//   },
-//
-//   propTypes: {
-//     value: React.PropTypes.isRequired,
-//     value: React.PropTypes.oneOf(['+', '-', '×', '÷'])
-//   },
-//
-//   handleClick: function(event) {
-//     this.setState(this.cycleOperators)
-//   },
-//
-//   cycleOperators: function() {
-//     return this.possibleOperators[(this.getOperatorIndex + 1) % 4]
-//   },
-//
-//   getOperatorIndex: function() {
-//     return this.possibleOperators.indexOf(this.props.value)
-//   },
-//
-//   possibleOperators: function() {
-//     return ['+', '-', '×', '÷']
-//   },
-//
-//   render: function() {
-//     return (
-//       <div className="Operator"> {this.getInitialState} </div>
-//     )
-//   }
-// });
-//
-// ReactDOM.render(
-//   <Operators />,
-//   document.getElementById('game')
-// );
+React.render(
+  <Operators/>, document.getElementById("operators"));
