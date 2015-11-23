@@ -1,5 +1,5 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React from 'react'
+
 
 // The set of instructions for the game.
 var Instructions = React.createClass({
@@ -27,28 +27,4 @@ var Instructions = React.createClass({
   }
 });
 
-// Toggle the instructions on click.
-var HowToPlay = React.createClass({
-  // Initially hide the instructions.
-  getInitialState: function() {
-    return {instructionsVisible: false};
-  },
-
-  // Set toggle state based on clicks.
-  onClick: function() {
-    this.setState({
-      instructionsVisible: !this.state.instructionsVisible
-    });
-  },
-
-  render: function() {
-    return (
-        <section className="unselectable default-cursor flexible columns horizontally-centered instructions">
-          <span className="large uppercase" onClick={this.onClick}>How To Play</span>
-          {this.state.instructionsVisible ? <Instructions/> : null}
-        </section>
-    )
-  }
-});
-
-React.render(<HowToPlay/>, document.getElementsByTagName('footer')[0]);
+export default Instructions;
