@@ -1,4 +1,6 @@
-var Operators = React.createClass({
+import React from 'react';
+
+var Operator = React.createClass({
 
   // Sets initial state to be a random operator.
   getInitialState: function() {
@@ -19,7 +21,7 @@ var Operators = React.createClass({
 
   // Returns a list of possible operators.
   getPossibleOperators: function() {
-    var possibleOperators = ['+', '-', '×', '÷'];
+    var possibleOperators = ['+', '−', '×', '÷'];
     return possibleOperators;
   },
 
@@ -37,5 +39,4 @@ var Operators = React.createClass({
   }
 });
 
-React.render(
-  <Operators/>, document.getElementById("operators"));
+export default Operator;
