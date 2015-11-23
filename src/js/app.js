@@ -1,7 +1,8 @@
-require("../styles/site.scss");
+import '../styles/site.scss';
 
-function App() { }
+import Instructions from './Instructions.jsx'
+import HowToPlay from './HowToPlay.jsx'
 
-App.run = function() {
-  window.game = new Game();
-};
+import React from 'react'
+
+React.render(<HowToPlay/>, document.getElementsByTagName('footer')[0]);
