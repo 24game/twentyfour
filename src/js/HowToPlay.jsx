@@ -18,10 +18,12 @@ var HowToPlay = React.createClass({
 
   render: function() {
     return (
-        <section className="unselectable default-cursor flexible columns horizontally-centered instructions">
-          <span className="large uppercase" onClick={this.onClick}>How To Play</span>
-          {this.state.instructionsVisible ? <Instructions/> : null}
-        </section>
+      <section className="unselectable default-cursor flexible columns horizontally-centered instructions">
+        <span className="large uppercase" onClick={this.onClick}>How To Play</span>
+        {this.state.instructionsVisible
+          ? <Instructions/>
+          : null}
+      </section>
     )
   }
 });

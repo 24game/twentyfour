@@ -16,7 +16,7 @@ var Operator = React.createClass({
     var nextOperatorIndex = (currentOperatorIndex + 1) % (this.getPossibleOperators().length);
     this.setState({
       operator: (this.getPossibleOperators())[nextOperatorIndex]
-    })
+    });
   },
 
   // Returns a list of possible operators.

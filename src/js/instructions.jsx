@@ -1,28 +1,32 @@
 import React from 'react'
 
-
 // The set of instructions for the game.
 var Instructions = React.createClass({
   render: function() {
     return (
-        <section className="unselectable default-cursor flexible columns horizontally-centered instructions">
-          <p className="larger">Use <strong className="larger">
-              <code id="plus">+</code>
-              <code id="minus">−</code>
-              <code id="times">×</code>
-              <code id="divide">÷</code>
-            </strong> to make 24.</p>
-          <p>
-            <strong className="uppercase">Click </strong>on a pair of numbers to swap them.</p>
-          <p>
-            <strong className="uppercase">Double click </strong>on a pair of numbers to wrap them in
-            <strong className="large">
-              <code id="left-parenthesis">(</code>
-              <code id="right-parenthesis">)</code>
-            </strong>.</p>
-          <p>
-            <strong className="uppercase">Click </strong>on the operators to cycle between them.</p>
-        </section>
+      <section className="unselectable default-cursor flexible columns horizontally-centered instructions">
+        <p className="larger">Use&nbsp;
+          <strong className="larger">
+            <code id="plus">+</code>
+            <code id="minus">−</code>
+            <code id="times">×</code>
+            <code id="divide">÷</code>
+          </strong>
+          &nbsp;to make 24.</p>
+        <p>
+          <strong className="uppercase">Click
+          </strong>&nbsp;on a pair of numbers to swap them.</p>
+        <p>
+          <strong className="uppercase">Double click
+          </strong>&nbsp;on a pair of numbers to wrap them in
+          <strong className="large">
+            <code id="left-parenthesis">(</code>
+            <code id="right-parenthesis">)</code>
+          </strong>.</p>
+        <p>
+          <strong className="uppercase">Click
+          </strong>&nbsp;on the operators to cycle between them.</p>
+      </section>
     );
   }
 });
