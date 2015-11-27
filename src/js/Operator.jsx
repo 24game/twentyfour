@@ -32,8 +32,8 @@ var Operator = React.createClass({
 
   render: function() {
     return (
-      <div className="operator-tile">
-        <span className="unselectable operator" onClick={this.cycleOperator}>{this.state.operator}</span>
+      <div className="operator-tile" onClick={this.cycleOperator}>
+        <span className="unselectable operator" >{this.state.operator}</span>
       </div>
     )
   }
