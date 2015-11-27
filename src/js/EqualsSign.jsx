@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 var EqualsSign = React.createClass({
   render: function() {

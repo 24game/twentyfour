@@ -1,10 +1,11 @@
-import Tile from './Tile.jsx'
-import Operator from './Operator.jsx'
-import EqualsSign from './EqualsSign.jsx'
-import Result from './Result.jsx'
-import React from 'react'
+import Tile from './Tile.jsx';
+import Operator from './Operator.jsx';
+import EqualsSign from './EqualsSign.jsx';
+import Result from './Result.jsx';
+import React from 'react';
 
 var Game = React.createClass({
+  // Every game is required to have a puzzle array of four numbers.
   propTypes: {
     puzzle: React.PropTypes.array.isRequired,
   },

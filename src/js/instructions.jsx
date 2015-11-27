@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 // The set of instructions for the game.
 var Instructions = React.createClass({
