@@ -2,32 +2,30 @@ import React from 'react';
 
 var Operator = React.createClass({
 
+  propTypes: {
+    possibleOperators: React.PropTypes.array.isRequired
+  },
+
   // Sets initial state to be a random operator.
   getInitialState: function() {
     var randomIndex = Math.floor(Math.random() * 4);
     return {
-      operator: (this.getPossibleOperators())[randomIndex]
+      operator: this.props.possibleOperators[randomIndex]
     };
   },
 
   // Cycles through the operators in succession.
   cycleOperator: function() {
     var currentOperatorIndex = this.getCurrentOperatorIndex(this.state.operator);
-    var nextOperatorIndex = (currentOperatorIndex + 1) % (this.getPossibleOperators().length);
+    var nextOperatorIndex = (currentOperatorIndex + 1) % (this.props.possibleOperators.length);
     this.setState({
-      operator: (this.getPossibleOperators())[nextOperatorIndex]
+      operator: this.props.possibleOperators[nextOperatorIndex]
     });
-  },
-
-  // Returns a list of possible operators.
-  getPossibleOperators: function() {
-    var possibleOperators = ['+', '−', '×', '÷'];
-    return possibleOperators;
   },
 
   // Returns the index of the current operator.
   getCurrentOperatorIndex: function(currentOperator) {
-    return this.getPossibleOperators().indexOf(currentOperator);
+    return this.props.possibleOperators.indexOf(currentOperator);
   },
 
   render: function() {

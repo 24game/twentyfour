@@ -11,14 +11,15 @@ var Game = React.createClass({
   },
 
   render: function() {
+    var possibleOperators = ['+', '−', '×', '÷'];
     return (
       <section className="flexible rows horizontally-centered vertically-centered game">
         <Tile value={this.props.puzzle[0]} />
-        <Operator />
+        <Operator possibleOperators={possibleOperators}/>
         <Tile value={this.props.puzzle[1]} />
-        <Operator />
+        <Operator possibleOperators={possibleOperators}/>
         <Tile value={this.props.puzzle[2]} />
-        <Operator />
+        <Operator possibleOperators={possibleOperators}/>
         <Tile value={this.props.puzzle[3]} />
         <EqualsSign />
         <Result value={24} />
