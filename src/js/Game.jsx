@@ -11,13 +11,6 @@ var Game = React.createClass({
     possibleOperators: React.PropTypes.array.isRequired
   },
 
-  // <Tile value={this.props.puzzle[1]} />
-  // <Operator possibleOperators={possibleOperators}/>
-  // <Tile value={this.props.puzzle[2]} />
-  // <Operator possibleOperators={possibleOperators}/>
-  // <Tile value={this.props.puzzle[3]} />
-  // <EqualsSign />
-  // <Result value={24} />
   getInitialState: function() {
     return {
       firstOperatorState: this.props.possibleOperators[this.getRandomOperatorIndex()],
@@ -30,22 +23,33 @@ var Game = React.createClass({
     return Math.floor(Math.random() * this.props.possibleOperators.length);
   },
 
+  // Cycles through the operators in succession.
+  cycleOperator: function() {
+    var currentOperatorIndex = this.getCurrentOperatorIndex(this.state.firstOperatorState);
+    var nextOperatorIndex = (currentOperatorIndex + 1) % (this.props.possibleOperators.length);
+    console.log(nextOperatorIndex);
+    this.setState({
+      firstOperatorState: this.props.possibleOperators[nextOperatorIndex]
+    });
+  },
+
+  // Returns the index of the current operator.
+  getCurrentOperatorIndex: function(currentOperator) {
+    return this.props.possibleOperators.indexOf(currentOperator);
+  },
+
   render: function() {
     return (
       <section className="flexible rows horizontally-centered vertically-centered game">
         <Tile value={3} />
         <Operator
-          initialOperator={this.state.firstOperatorState}
+          operator={this.state.firstOperatorState}
           possibleOperators={this.props.possibleOperators}
+          cycleOperator={this.cycleOperator}
           />
-        <Operator
-          initialOperator={this.state.secondOperatorState}
-          possibleOperators={this.props.possibleOperators}
-          />
-        <Operator
-          initialOperator={this.state.thirdOperatorState}
-          possibleOperators={this.props.possibleOperators}
-          />
+        <div>
+          {this.state.firstOperatorState}
+        </div>
       </section>
     );
   }
