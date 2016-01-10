@@ -8,21 +8,40 @@ var Game = React.createClass({
   // Every game is required to have a puzzle array of four numbers.
   propTypes: {
     puzzle: React.PropTypes.array.isRequired,
+    possibleOperators: React.PropTypes.array.isRequired
+  },
+
+  // <Tile value={this.props.puzzle[1]} />
+  // <Operator possibleOperators={possibleOperators}/>
+  // <Tile value={this.props.puzzle[2]} />
+  // <Operator possibleOperators={possibleOperators}/>
+  // <Tile value={this.props.puzzle[3]} />
+  // <EqualsSign />
+  // <Result value={24} />
+  getInitialState: function() {
+    return {
+      firstOperatorState: this.props.possibleOperators[Math.floor(Math.random() * 4)],
+      secondOperatorState: this.props.possibleOperators[Math.floor(Math.random() * 4)],
+      thirdOperatorState: this.props.possibleOperators[Math.floor(Math.random() * 4)]
+    };
   },
 
   render: function() {
-    var possibleOperators = ['+', '−', '×', '÷'];
     return (
       <section className="flexible rows horizontally-centered vertically-centered game">
-        <Tile value={this.props.puzzle[0]} />
-        <Operator possibleOperators={possibleOperators}/>
-        <Tile value={this.props.puzzle[1]} />
-        <Operator possibleOperators={possibleOperators}/>
-        <Tile value={this.props.puzzle[2]} />
-        <Operator possibleOperators={possibleOperators}/>
-        <Tile value={this.props.puzzle[3]} />
-        <EqualsSign />
-        <Result value={24} />
+        <Tile value={3} />
+        <Operator
+          initialOperator={this.state.firstOperatorState}
+          possibleOperators={this.props.possibleOperators}
+          />
+        <Operator
+          initialOperator={this.state.secondOperatorState}
+          possibleOperators={this.props.possibleOperators}
+          />
+        <Operator
+          initialOperator={this.state.thirdOperatorState}
+          possibleOperators={this.props.possibleOperators}
+          />
       </section>
     );
   }

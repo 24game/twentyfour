@@ -3,14 +3,14 @@ import React from 'react';
 var Operator = React.createClass({
 
   propTypes: {
+    initialOperator: React.PropTypes.string.isRequired,
     possibleOperators: React.PropTypes.array.isRequired
   },
 
-  // Sets initial state to be a random operator.
+  // The initial operator state should be set in the parent component.
   getInitialState: function() {
-    var randomIndex = Math.floor(Math.random() * 4);
     return {
-      operator: this.props.possibleOperators[randomIndex]
+      operator: this.props.initialOperator
     };
   },
 
@@ -31,7 +31,7 @@ var Operator = React.createClass({
   render: function() {
     return (
       <div className="operator-tile" onClick={this.cycleOperator}>
-        <span className="unselectable operator" >{this.state.operator}</span>
+        <span className="unselectable operator"> {this.state.operator} </span>
       </div>
     )
   }
