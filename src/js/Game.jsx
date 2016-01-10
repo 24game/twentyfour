@@ -20,10 +20,14 @@ var Game = React.createClass({
   // <Result value={24} />
   getInitialState: function() {
     return {
-      firstOperatorState: this.props.possibleOperators[Math.floor(Math.random() * 4)],
-      secondOperatorState: this.props.possibleOperators[Math.floor(Math.random() * 4)],
-      thirdOperatorState: this.props.possibleOperators[Math.floor(Math.random() * 4)]
+      firstOperatorState: this.props.possibleOperators[this.getRandomOperatorIndex()],
+      secondOperatorState: this.props.possibleOperators[this.getRandomOperatorIndex()],
+      thirdOperatorState: this.props.possibleOperators[this.getRandomOperatorIndex()]
     };
+  },
+
+  getRandomOperatorIndex: function() {
+    return Math.floor(Math.random() * this.props.possibleOperators.length);
   },
 
   render: function() {
