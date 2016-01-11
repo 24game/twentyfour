@@ -14,9 +14,11 @@ var Game = React.createClass({
 
   getInitialState: function() {
     return {
-      operators: Array.from({length: this.props.puzzle.length - 1},
-        (v, k) => Utils.getRandomValueInArray(this.props.possibleOperators)
-      )
+      operators: Array.from(
+        {length: this.props.puzzle.length - 1},
+        () => Utils.getRandomValueInArray(this.props.possibleOperators)
+      ),
+      value: 0
     };
   },
 
@@ -33,7 +35,6 @@ var Game = React.createClass({
   },
 
   computeResult: function() {
-
   },
 
   cleanOperators(stringToClean) {
@@ -48,7 +49,7 @@ var Game = React.createClass({
           if (i < this.props.puzzle.length - 1) {
             var operator = <Operator
               index={i}
-              operator={this.state.operators[i].toString()}
+              operator={this.state.operators[i]}
               possibleOperators={this.props.possibleOperators}
               cycleOperator={this.cycleOperator}
               />;
