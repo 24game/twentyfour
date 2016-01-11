@@ -3,6 +3,7 @@ import Operator from './Operator.jsx';
 import EqualsSign from './EqualsSign.jsx';
 import Result from './Result.jsx';
 import React from 'react';
+import Utils from './utils.js';
 
 var Game = React.createClass({
   // Every game is required to have a puzzle array of four numbers.
@@ -13,50 +14,21 @@ var Game = React.createClass({
 
   getInitialState: function() {
     return {
-      firstOperatorState: this.props.possibleOperators[this.getRandomOperatorIndex()],
-      secondOperatorState: this.props.possibleOperators[this.getRandomOperatorIndex()],
-      thirdOperatorState: this.props.possibleOperators[this.getRandomOperatorIndex()]
+      operators: Array.from({length: this.props.puzzle.length - 1},
+        (v, k) => Utils.getRandomValueInArray(this.props.possibleOperators)
+      )
     };
   },
 
-  getRandomOperatorIndex: function() {
-    return Math.floor(Math.random() * this.props.possibleOperators.length);
-  },
-
-  // Cycles through the operators in succession.
-  cycleFirstOperator: function(event) {
-    var currentOperatorIndex = this.getCurrentOperatorIndex(event.currentTarget);
-    console.log(event.currentTarget);
+  // Cycles through the specified operator
+  cycleOperator: function(which) {
+    let operatorsStateClone = this.state.operators.slice(0);
+    let currentOperator = this.state.operators[which];
+    var currentOperatorIndex = this.props.possibleOperators.indexOf(currentOperator);
     var nextOperatorIndex = (currentOperatorIndex + 1) % (this.props.possibleOperators.length);
+    operatorsStateClone[which] = this.props.possibleOperators[nextOperatorIndex];
     this.setState({
-      firstOperatorState: this.props.possibleOperators[nextOperatorIndex]
-    });
-  },
-
-  cycleSecondOperator: function() {
-    var currentOperatorIndex = this.getCurrentOperatorIndex(this.state.secondOperatorState);
-    var nextOperatorIndex = (currentOperatorIndex + 1) % (this.props.possibleOperators.length);
-    this.setState({
-      secondOperatorState: this.props.possibleOperators[nextOperatorIndex]
-    });
-  },
-
-  cycleThirdOperator: function() {
-    var currentOperatorIndex = this.getCurrentOperatorIndex(this.state.thirdOperatorState);
-    var nextOperatorIndex = (currentOperatorIndex + 1) % (this.props.possibleOperators.length);
-    this.setState({
-      thirdOperatorState: this.props.possibleOperators[nextOperatorIndex]
-    });
-  },
-
-  cycleOperator: function(operator) {
-    var currentOperatorIndex = this.getCurrentOperatorIndex(operator);
-    console.log(operator);
-    console.log(currentOperatorIndex);
-    var nextOperatorIndex = (currentOperatorIndex + 1) % (this.props.possibleOperators.length);
-    console.log(nextOperatorIndex);
-    this.setState({
-      firstOperatorState: this.props.possibleOperators[nextOperatorIndex]
+      operators: operatorsStateClone
     });
   },
 
@@ -64,41 +36,30 @@ var Game = React.createClass({
 
   },
 
-  // Returns the index of the current operator.
-  getCurrentOperatorIndex: function(currentOperator) {
-    return this.props.possibleOperators.indexOf(currentOperator);
-  },
-
   cleanOperators(stringToClean) {
     return stringToClean.replace(/×+/g, '*').replace(/÷+/g, '/').replace(/−+/g, '-');
   },
 
   render: function() {
-    console.log('3' + this.state.firstOperatorState + '3')
-    console.log(eval('3' + this.cleanOperators(this.state.firstOperatorState) + '3'));
     return (
       <section className="flexible rows horizontally-centered vertically-centered game">
-        <Tile value={3} />
-        <Operator
-          operator={this.state.firstOperatorState}
-          possibleOperators={this.props.possibleOperators}
-          cycleOperator={this.cycleFirstOperator}
-          />
-        <Tile value={3} />
-        <Operator
-          operator={this.state.secondOperatorState}
-          possibleOperators={this.props.possibleOperators}
-          cycleOperator={this.cycleSecondOperator}
-          />
-        <Tile value={3} />
-        <Operator
-          operator={this.state.thirdOperatorState}
-          possibleOperators={this.props.possibleOperators}
-          cycleOperator={this.cycleThirdOperator}
-          />
-        <Tile value={3} />
+        {this.props.puzzle.map((value, i) => {
+          let tile = <Tile value={value} />;
+          if (i < this.props.puzzle.length - 1) {
+            var operator = <Operator
+              index={i}
+              operator={this.state.operators[i].toString()}
+              possibleOperators={this.props.possibleOperators}
+              cycleOperator={this.cycleOperator}
+              />;
+          }
+          return [
+            tile,
+            operator
+          ];
+        })}
         <EqualsSign />
-        <Result value={this.state.thirdOperatorState}/>
+        <Result value={this.state.operators[0]}/>
       </section>
     );
   }

@@ -21,7 +21,7 @@ export default class Utils {
     return stringToClean.replace(/×+/g, '*').replace(/÷+/g, '/').replace(/−+/g, '-');
   }
 
-  getRandomValueInArray(array) {
+  static getRandomValueInArray(array) {
     var random = Math.floor(Math.random() * array.length);
     return array[random];
   }
