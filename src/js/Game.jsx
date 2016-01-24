@@ -37,10 +37,6 @@ var Game = React.createClass({
   computeResult: function() {
   },
 
-  cleanOperators(stringToClean) {
-    return stringToClean.replace(/×+/g, '*').replace(/÷+/g, '/').replace(/−+/g, '-');
-  },
-
   render: function() {
     return (
       <section className="flexible rows horizontally-centered vertically-centered game">

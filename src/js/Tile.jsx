@@ -15,14 +15,6 @@ var Tile = React.createClass({
     };
   },
 
-  // Method used to toggle swappable state.
-  toggleSwappable: function() {
-    this.setState({
-      swappable: !this.state.swappable
-    });
-    console.log(this.state.swappable);
-  },
-
   // Method used to toggle parenthesizable state.
   toggleParenthesizable: function() {
     this.setState({
