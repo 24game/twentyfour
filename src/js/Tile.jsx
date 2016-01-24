@@ -1,6 +1,4 @@
 import React from 'react';
-import {Motion, spring} from 'react-motion';
-import Utils from './utils.js';
 
 var Tile = React.createClass({
 
@@ -15,14 +13,6 @@ var Tile = React.createClass({
       swappable: false,
       parenthesizable: false
     };
-  },
-
-  // Method used to toggle swappable state.
-  toggleSwappable: function() {
-    this.setState({
-      swappable: !this.state.swappable
-    });
-    console.log(this.state.swappable);
   },
 
   // Method used to toggle parenthesizable state.

@@ -1,5 +1,7 @@
+import $ from 'jquery';
+
 export default class Utils {
-  loadJson(file) {
+  static loadJson(file) {
     var json = null;
     $.ajax({
       'async': false,
@@ -7,18 +9,24 @@ export default class Utils {
       'url': file,
       'dataType': "json",
       success: function (data) {
+        console.log('success');
         json = data;
       }
     });
     return json;
   }
 
-  cleanStringToCompute(stringToCompute) {
+  static cleanStringToCompute(stringToCompute) {
     return stringToCompute.replace(/[^0-9\+\-\*\/\(\)]+/g, '');
   }
 
-  cleanOperators(stringToClean) {
+  static cleanOperators(stringToClean) {
     return stringToClean.replace(/×+/g, '*').replace(/÷+/g, '/').replace(/−+/g, '-');
+  }
+
+  static cleanComputedResult(stringToClean) {
+    var indexOfDecimal = stringToClean.indexOf('.');
+    return indexOfDecimal === -1 ? stringToClean : stringToClean.substring(0, (indexOfDecimal + 3));
   }
 
   static getRandomValueInArray(array) {
@@ -26,7 +34,12 @@ export default class Utils {
     return array[random];
   }
 
-  randomize(array) {
+  static getNewPuzzle(listOfPuzzles) {
+    var randomIndex = Math.floor(Math.random() * listOfPuzzles.length);
+    return listOfPuzzles[randomIndex].numberTiles;
+  }
+
+  static randomize(array) {
     for (var i = 0; i < array.length; i++) {
       var random = Math.floor(Math.random() * array.length);
       this.swap(i, random, array);
@@ -34,7 +47,7 @@ export default class Utils {
     return array;
   }
 
-  swap(a, b, array) {
+  static swap(a, b, array) {
     var temp = array[a];
     array[a] = array[b];
     array[b] = temp;

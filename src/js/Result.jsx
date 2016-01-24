@@ -2,17 +2,7 @@ import React from 'react';
 
 var Result = React.createClass({
   propTypes: {
-    value: React.PropTypes.number.isRequired
-  },
-
-  // Results are rounded to one decimal place.
-  formatResult: function(value) {
-    return value.toFixed(1);
-  },
-
-  computeResult: function() {
-    var value = this.formatResult(eval());
-    return value; 
+    value: React.PropTypes.string.isRequired
   },
 
   render: function() {

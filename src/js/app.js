@@ -4,9 +4,10 @@ import Game from './Game.jsx';
 import HowToPlay from './HowToPlay.jsx';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Utils from './utils.js';
 
-
-var currentPuzzle = [1, 3, 4, 6];
+var fullPuzzles = Utils.loadJson('./data/puzzles.json').puzzles;
+var currentPuzzle = Utils.randomize(Utils.getNewPuzzle(fullPuzzles));
 var operators = ['+', '−', '×', '÷'];
 
 ReactDOM.render(<Title />, document.querySelector('header'));

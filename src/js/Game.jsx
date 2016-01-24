@@ -82,6 +82,8 @@ var Game = React.createClass({
     const {mouse, isPressed, lastPressed, order} = this.state;
     const springConfig = {stiffness: 300, damping: 50};
 
+    var computedResult = eval('1' + Utils.cleanOperators(this.state.operators[0]) + '1' + Utils.cleanOperators(this.state.operators[1]) + '1' + Utils.cleanOperators(this.state.operators[2]) + '8').toString();
+    console.log(computedResult);
     return (
       <section className="flexible rows horizontally-centered vertically-centered game">
         {this.props.puzzle.map((value, i) => {
@@ -122,7 +124,9 @@ var Game = React.createClass({
             motionTile,
             operator
           ];
-        })} <EqualsSign /> <Result value={this.state.operators[0]}/>
+        })} 
+        <EqualsSign />
+        <Result value={Utils.cleanComputedResult(computedResult)}/>
       </section>
     );
   }
