@@ -38,6 +38,8 @@ var Game = React.createClass({
   },
 
   render: function() {
+    var computedResult = eval('1' + Utils.cleanOperators(this.state.operators[0]) + '1' + Utils.cleanOperators(this.state.operators[1]) + '1' + Utils.cleanOperators(this.state.operators[2]) + '8').toString();
+    console.log(computedResult);
     return (
       <section className="flexible rows horizontally-centered vertically-centered game">
         {this.props.puzzle.map((value, i) => {
@@ -56,7 +58,7 @@ var Game = React.createClass({
           ];
         })}
         <EqualsSign />
-        <Result value={this.state.operators[0]}/>
+        <Result value={Utils.cleanComputedResult(computedResult)}/>
       </section>
     );
   }
