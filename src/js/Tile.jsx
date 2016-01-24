@@ -1,4 +1,6 @@
 import React from 'react';
+import {Motion, spring} from 'react-motion';
+import Utils from './utils.js';
 
 var Tile = React.createClass({
 
@@ -33,9 +35,13 @@ var Tile = React.createClass({
 
   render: function() {
     return (
-      <div className="number-tile" onClick={this.toggleSwappable} onDoubleClick={this.toggleParenthesizable}>
-        <span className="unselectable number">{this.props.value}</span>
-      </div>
+        <div
+          className="number-tile"
+          onDoubleClick={this.toggleParenthesizable}
+          onMouseDown = {this.props.onMouseDownHandler}
+          style = {this.props.customStyles}>
+          <span className="unselectable number">{this.props.value}</span>
+        </div>
     )
   }
 });

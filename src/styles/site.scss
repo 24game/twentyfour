@@ -116,7 +116,7 @@ code {
 }
 
 @mixin tile-inner($background-color, $color) {
-    @include center-via-transform-translate();
+    //@include center-via-transform-translate();
     font-size: inherit;
     font-weight: inherit;
     background-color: $background-color;
