@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 export default class Utils {
   static loadJson(file) {
     var json = null;
@@ -7,6 +9,7 @@ export default class Utils {
       'url': file,
       'dataType': "json",
       success: function (data) {
+        console.log('success');
         json = data;
       }
     });
@@ -23,12 +26,17 @@ export default class Utils {
 
   static cleanComputedResult(stringToClean) {
     var indexOfDecimal = stringToClean.indexOf('.');
-    return indexOfDecimal === -1 ? stringToClean : stringToClean.substring(0, (indexOfDecimal + 3)); 
+    return indexOfDecimal === -1 ? stringToClean : stringToClean.substring(0, (indexOfDecimal + 3));
   }
 
   static getRandomValueInArray(array) {
     var random = Math.floor(Math.random() * array.length);
     return array[random];
+  }
+
+  static getNewPuzzle(listOfPuzzles) {
+    var randomIndex = Math.floor(Math.random() * listOfPuzzles.length);
+    return listOfPuzzles[randomIndex].numberTiles;
   }
 
   static randomize(array) {

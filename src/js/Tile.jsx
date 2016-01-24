@@ -25,7 +25,7 @@ var Tile = React.createClass({
 
   render: function() {
     return (
-      <div className="number-tile" onClick={this.toggleSwappable} onDoubleClick={this.toggleParenthesizable}>
+      <div className="number-tile" onDoubleClick={this.toggleParenthesizable}>
         <span className="unselectable number">{this.props.value}</span>
       </div>
     )
