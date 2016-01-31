@@ -94,6 +94,8 @@ code {
 
 @mixin tile($background-color: initial, $hover-background-color: $background-color, $color: initial, $width: initial, $height: initial, $margin: initial, $border: initial, $border-radius: initial, $font-size: inherit, $font-family: inherit, $font-weight: inherit, $hover-border: initial, $hover-color: initial) {
   position: relative;
+  //position: absolute !important;
+  //left: 0 !important;
   font-size: $font-size;
   cursor: pointer;
   font-family: $font-family;
@@ -116,7 +118,7 @@ code {
 }
 
 @mixin tile-inner($background-color, $color) {
-  //@include center-via-transform-translate();
+  @include center-via-transform-translate();
   font-size: inherit;
   font-weight: inherit;
   background-color: $background-color;
