@@ -14,8 +14,8 @@ var Instructions = React.createClass({
           </strong>
           &nbsp;to make 24.</p>
         <p>
-          <strong className="uppercase">Click
-          </strong>&nbsp;on a pair of numbers to swap them.</p>
+          <strong className="uppercase">Drag
+          </strong>&nbsp;numbers to reorder them.</p>
         <p>
           <strong className="uppercase">Double click
           </strong>&nbsp;on a pair of numbers to wrap them in
