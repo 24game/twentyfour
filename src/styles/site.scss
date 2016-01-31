@@ -93,35 +93,35 @@ code {
 }
 
 @mixin tile($background-color: initial, $hover-background-color: $background-color, $color: initial, $width: initial, $height: initial, $margin: initial, $border: initial, $border-radius: initial, $font-size: inherit, $font-family: inherit, $font-weight: inherit, $hover-border: initial, $hover-color: initial) {
-    position: relative;
-    font-size: $font-size;
-    cursor: pointer;
-    font-family: $font-family;
-    font-weight: $font-weight;
-    color: $color;
-    width: $width;
-    height: $height;
-    margin: $margin;
-    border: $border;
-    border-radius: $border-radius;
-    background-color: $background-color;
-    transition: background-color $tile-transition-duration ease-out;
-    transition: font-size $tile-transition-duration ease-in-out;
+  position: relative;
+  font-size: $font-size;
+  cursor: pointer;
+  font-family: $font-family;
+  font-weight: $font-weight;
+  color: $color;
+  width: $width;
+  height: $height;
+  margin: $margin;
+  border: $border;
+  border-radius: $border-radius;
+  background-color: $background-color;
+  transition: background-color $tile-transition-duration ease-out;
+  transition: font-size $tile-transition-duration ease-in-out;
 
-    &:hover {
-      background-color: $hover-background-color;
-      color: $hover-color;
-      border: $hover-border;
-    }
+  &:hover {
+    background-color: $hover-background-color;
+    color: $hover-color;
+    border: $hover-border;
+  }
 }
 
 @mixin tile-inner($background-color, $color) {
-    //@include center-via-transform-translate();
-    font-size: inherit;
-    font-weight: inherit;
-    background-color: $background-color;
-    color: $color;
-    transition: inherit;
+  //@include center-via-transform-translate();
+  font-size: inherit;
+  font-weight: inherit;
+  background-color: $background-color;
+  color: $color;
+  transition: inherit;
 }
 .parenthesis-tile {
   @include tile(
@@ -169,8 +169,8 @@ code {
   }
 
   &:hover .operator {
-   font-size: $tile-hover-font-size;
-   color: inherit;
+    font-size: $tile-hover-font-size;
+    color: inherit;
   }
 
   &:active {

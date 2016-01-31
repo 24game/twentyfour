@@ -8,9 +8,6 @@ import {Motion, spring} from 'react-motion';
 import range from 'lodash.range';
 
 const itemsCount = 4;
-const springConfig = {stiffness: 300, damping: 50};
-
-var willChange = true;
 
 var Game = React.createClass({
   // Every game is required to have a puzzle array of four numbers.
@@ -21,18 +18,6 @@ var Game = React.createClass({
 
   componentDidMount() {
     window.addEventListener('mousemove', this.handleMouseMove);
-    window.addEventListener('mouseup', this.handleMouseUp);
-
-
-    setInterval(() => {
-      if (window.lastStyle === undefined) {
-        window.lastStyle = {};
-      }
-      if (JSON.stringify(window.style) !== JSON.stringify(window.lastStyle)) {
-        console.warn(`Style changed from ${JSON.stringify(window.lastStyle, null, 4)} to ${JSON.stringify(window.style, null, 4)}`);
-        window.lastStyle = window.style;
-      }
-    }, 15);
   },
 
   getInitialState: function () {
@@ -77,106 +62,69 @@ var Game = React.createClass({
       const row = Utils.clamp(Math.round(mouse / 100), 0, itemsCount - 1);
       const newOrder = Utils.reinsert(order, order.indexOf(lastPressed), row);
       this.setState({mouse: mouse, order: newOrder});
-      //console.log(`Calling %chandleMouseMove.setState(mouse: ${mouse}, order: ${newOrder}).`, Utils.getConsoleStyle('code'));
+      console.log(`Calling %chandleMouseMove.setState(mouse: ${mouse}, order: ${newOrder}).`, Utils.getConsoleStyle('code'));
     }
   },
 
   handleMouseDown(pos, pressX, {pageX}) {
-    //console.log(`Calling %chandleMouseDown(pos: ${pos}, pressX: ${pressX}, pageX: {${pageX}}).`, Utils.getConsoleStyle('code'));
+    console.log(`Calling %chandleMouseDown(pos: ${pos}, pressX: ${pressX}, pageX: {${pageX}}).`, Utils.getConsoleStyle('code'));
     this.setState({
       delta: pageX - pressX,
       mouse: pressX,
       isPressed: true,
       lastPressed: pos,
     });
-
-    //console.log(`Calling %csetState(delta: ${pageX - pressX}, mouse: ${pressX}, isPressed: true, lastPressed: ${pos})`, Utils.getConsoleStyle('code'));
+    console.log(`Calling %csetState(delta: ${pageX - pressX}, mouse: ${pressX}, isPressed: true, lastPressed: ${pos})`, Utils.getConsoleStyle('code'));
   },
 
-  handleMouseUp() {
-    this.setState({isPressed: false, delta: 0});
-    //console.log(`Calling %csetState(isPressed: false, delta: 0).`, Utils.getConsoleStyle('code'));
-  },
 
-  render() {
+  render: function () {
     const {mouse, isPressed, lastPressed, order} = this.state;
+    const springConfig = {stiffness: 300, damping: 50};
 
     return (
-      <div className="demo8">
-        {range(itemsCount).map(i => {
+      <section className="flexible rows horizontally-centered vertically-centered game">
+        {this.props.puzzle.map((value, i) => {
           const style = lastPressed === i && isPressed
             ? {
-            scale: spring(20),
-            shadow: spring(30),
-            x: spring(order.indexOf(i) * 100, springConfig),
+            scale: spring(1.1, springConfig),
+            shadow: spring(16, springConfig),
+            x: mouse,
           }
             : {
-            scale: spring(2),
-            shadow: spring(3),
-            x: spring(order.indexOf(i) * 100, springConfig),
+            scale: spring(1, springConfig),
+            shadow: spring(1, springConfig),
+            x: mouse
           };
-          willChange = !willChange;
-          window.spring = spring(1.1, springConfig);
-          console.warn(window.spring);
-          window.style = style;
-          return (
+          let motionTile =
             <Motion style={style} key={i}>
               {({scale, shadow, x}) =>
-                <div
-                  onMouseDown={this.handleMouseDown.bind(null, i, x)}>
-                  {shadow}
-                </div>
+                <Tile
+                  onMouseDownHandler={this.handleMouseDown.bind(null, i, x)}
+                  value={scale}
+                  customStyles = {{
+                boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
+                transform: `translate3d(${x}px, 0, 0) scale(${scale})`,
+                WebkitTransform: `translate3d(${x}px, 0, 0) scale(${scale})`,
+                zIndex: i === lastPressed ? 99 : i,
+              }}/>
               }
-            </Motion>
-          );
-        })}
-      </div>
+            </Motion>;
+          if (i < this.props.puzzle.length - 1) {
+            var operator = <Operator
+              index={i}
+              operator={this.state.operators[i]}
+              possibleOperators={this.props.possibleOperators}
+              cycleOperator={this.cycleOperator}/>;
+          }
+          return [
+            motionTile,
+            operator
+          ];
+        })} <EqualsSign /> <Result value={this.state.operators[0]}/>
+      </section>
     );
-  },
-
-
-  //render: function () {
-  //  const {mouse, isPressed, lastPressed, order} = this.state;
-  //
-  //  var computedResult = eval('1' + Utils.cleanOperators(this.state.operators[0]) + '1' + Utils.cleanOperators(this.state.operators[1]) + '1' + Utils.cleanOperators(this.state.operators[2]) + '8').toString();
-  //  console.log(computedResult);
-  //  return (
-  //    <section className="flexible rows horizontally-centered vertically-centered game">
-  //      {this.props.puzzle.map((value, i) => {
-  //        console.log(lastPressed, i, isPressed);
-  //        const style = lastPressed === i && isPressed
-  //          ? {
-  //          scale: spring(1.1, springConfig),
-  //          shadow: spring(16, springConfig),
-  //          x: mouse,
-  //        }
-  //          : {
-  //          scale: spring(1, springConfig),
-  //          shadow: spring(1, springConfig),
-  //          x: mouse
-  //        };
-  //        return (
-  //          <Motion style={style} key={i}>
-  //            {({scale, shadow, x}) =>
-  //              <div
-  //                onMouseDown={this.handleMouseDown.bind(null, i, x)}
-  //                className="number-tile"
-  //                style={{
-  //                  boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
-  //                  transform: `translate3d(0, ${x}px, 0)`,
-  //                  zIndex: i === lastPressed ? 99 : i,
-  //                }}>
-  //                {shadow}
-  //              </div>
-  //            }
-  //          </Motion>
-  //        );
-  //      })}
-  //      <EqualsSign />
-  //      <Result value={Utils.cleanComputedResult(computedResult)}/>
-  //    </section>
-  //  );
-  //}
+  }
 });
 
 export default Game;

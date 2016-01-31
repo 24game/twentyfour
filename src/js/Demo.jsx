@@ -75,15 +75,15 @@ const Demo = React.createClass({
         {range(itemsCount).map(i => {
           const style = lastPressed === i && isPressed
             ? {
-                scale: spring(1.1, springConfig),
-                shadow: spring(16, springConfig),
-                y: mouse,
-              }
+            scale: spring(1.1, springConfig),
+            shadow: spring(16, springConfig),
+            y: mouse,
+          }
             : {
-                scale: spring(1, springConfig),
-                shadow: spring(1, springConfig),
-                y: spring(order.indexOf(i) * 100, springConfig),
-              };
+            scale: spring(1, springConfig),
+            shadow: spring(1, springConfig),
+            y: spring(order.indexOf(i) * 100, springConfig),
+          };
           return (
             <Motion style={style} key={i}>
               {({scale, shadow, y}) =>
