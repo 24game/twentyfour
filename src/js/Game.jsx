@@ -7,8 +7,6 @@ import Utils from './utils.js';
 import {Motion, spring} from 'react-motion';
 import range from 'lodash.range';
 
-const itemsCount = 4;
-
 var Game = React.createClass({
   // Every game is required to have a puzzle array of four numbers.
   propTypes: {
@@ -17,7 +15,10 @@ var Game = React.createClass({
   },
 
   componentDidMount() {
+    window.addEventListener('touchmove', this.handleTouchMove);
+    window.addEventListener('touchend', this.handleMouseUp);
     window.addEventListener('mousemove', this.handleMouseMove);
+    window.addEventListener('mouseup', this.handleMouseUp);
   },
 
   getInitialState: function () {
@@ -31,7 +32,7 @@ var Game = React.createClass({
       mouse: 0,
       isPressed: false,
       lastPressed: 0,
-      order: range(itemsCount),
+      order: range(this.props.puzzle.length),
     };
   },
 
@@ -59,11 +60,15 @@ var Game = React.createClass({
     const {isPressed, delta, order, lastPressed} = this.state;
     if (isPressed) {
       const mouse = pageX - delta;
-      const row = Utils.clamp(Math.round(mouse / 100), 0, itemsCount - 1);
+      const row = Utils.clamp(Math.round(mouse / 175), 0, this.props.puzzle.length - 1);
       const newOrder = Utils.reinsert(order, order.indexOf(lastPressed), row);
       this.setState({mouse: mouse, order: newOrder});
       console.log(`Calling %chandleMouseMove.setState(mouse: ${mouse}, order: ${newOrder}).`, Utils.getConsoleStyle('code'));
     }
+  },
+
+  handleMouseUp() {
+    this.setState({isPressed: false, delta: 0});
   },
 
   handleMouseDown(pos, pressX, {pageX}) {
@@ -79,9 +84,16 @@ var Game = React.createClass({
 
 
   render: function () {
-    const {mouse, isPressed, lastPressed, order} = this.state;
+    const {mouse, isPressed, lastPressed, delta, order} = this.state;
     const springConfig = {stiffness: 300, damping: 50};
-
+    let springValues = [];
+    this.props.puzzle.map((value, i) => {
+      if (lastPressed === i && isPressed)
+      {
+        springValues.push(delta);
+      }
+    });
+    console.info('Deltas:', springValues);
     return (
       <section className="flexible rows horizontally-centered vertically-centered game">
         {this.props.puzzle.map((value, i) => {
@@ -94,14 +106,15 @@ var Game = React.createClass({
             : {
             scale: spring(1, springConfig),
             shadow: spring(1, springConfig),
-            x: mouse
+            x: 0,
           };
+          
           let motionTile =
             <Motion style={style} key={i}>
               {({scale, shadow, x}) =>
                 <Tile
                   onMouseDownHandler={this.handleMouseDown.bind(null, i, x)}
-                  value={scale}
+                  value={value}
                   customStyles = {{
                 boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
                 transform: `translate3d(${x}px, 0, 0) scale(${scale})`,
