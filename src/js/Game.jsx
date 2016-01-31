@@ -6,6 +6,7 @@ import React from 'react';
 import Utils from './utils.js';
 import {Motion, spring} from 'react-motion';
 import range from 'lodash.range';
+import ReactDOM from 'react-dom';
 
 var Game = React.createClass({
   // Every game is required to have a puzzle array of four numbers.
@@ -22,6 +23,7 @@ var Game = React.createClass({
   },
 
   getInitialState: function () {
+    this.tileRefs = [];
     return {
       operators: Array.from(
         {length: this.props.puzzle.length - 1},
@@ -94,6 +96,40 @@ var Game = React.createClass({
       }
     });
     console.info('Deltas:', springValues);
+    var self = this;
+    function getTilePositions(i) {
+      return {
+        leftOrigin: ReactDOM.findDOMNode(self.tileRefs[i]).offsetLeft,
+        rightOrigin: ReactDOM.findDOMNode(self.tileRefs[i]).offsetLeft + ReactDOM.findDOMNode(self.tileRefs[i]).offsetWidth
+      };
+    }
+
+    /**
+     * Given the index of the pressed tile, returns the distance to the closest tile's closest edge.
+     */
+    function getSmallestNeighboringDistanceAndTile(pressedTileIndex) {
+      let pressedPosition = getTilePositions(pressedTileIndex);
+      let leftPosition = {leftOrigin: -window.width, rightOrigin: -window.width };
+      let leftTileIndex = pressedTileIndex;
+      if (pressedTileIndex > 0) {
+        leftTileIndex--;
+        leftPosition = getTilePositions(pressedTileIndex - 1);
+      }
+      let rightPosition = {leftOrigin: window.width, rightOrigin: window.width};
+      let rightTileIndex = pressedTileIndex;
+      if (pressedTileIndex < self.props.puzzle.length - 1) {
+        rightTileIndex++;
+        rightPosition = getTilePositions(pressedTileIndex + 1);
+      }
+      let leftMinDistance = Math.abs(Math.min(leftPosition.leftOrigin - pressedPosition.leftOrigin, leftPosition.leftOrigin - pressedPosition.rightOrigin, leftPosition.rightOrigin - pressedPosition.leftOrigin, leftPosition.rightOrigin - pressedPosition.rightOrigin));
+      let rightMinDistance = Math.abs(Math.min(rightPosition.leftOrigin - pressedPosition.leftOrigin, rightPosition.leftOrigin - pressedPosition.rightOrigin, rightPosition.rightOrigin - pressedPosition.leftOrigin, rightPosition.rightOrigin - pressedPosition.rightOrigin));
+      if (leftMinDistance < rightMinDistance) {
+        return {distance: leftMinDistance, tile: leftTileIndex};
+      } else {
+        return {distance: rightMinDistance, tile: rightTileIndex};
+      }
+    }
+    console.log(this.tileRefs.map(x => {  }));
     return (
       <section className="flexible rows horizontally-centered vertically-centered game">
         {this.props.puzzle.map((value, i) => {
@@ -108,13 +144,17 @@ var Game = React.createClass({
             shadow: spring(1, springConfig),
             x: 0,
           };
-          
+          if (isPressed) {
+            let smallestDistanceTile = getSmallestNeighboringDistanceAndTile(lastPressed);
+            console.log(smallestDistanceTile);
+          }
           let motionTile =
             <Motion style={style} key={i}>
               {({scale, shadow, x}) =>
                 <Tile
                   onMouseDownHandler={this.handleMouseDown.bind(null, i, x)}
                   value={value}
+                  ref={(ref) => this.tileRefs[i] = ref}
                   customStyles = {{
                 boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
                 transform: `translate3d(${x}px, 0, 0) scale(${scale})`,
