@@ -53,6 +53,15 @@ export default class Utils {
     array[b] = temp;
   }
 
+  static getTileOrder(initialPuzzle, indexOrder) {
+    var tileOrder = [];
+    tileOrder[0] = initialPuzzle[indexOrder[0]];
+    tileOrder[1] = initialPuzzle[indexOrder[1]];
+    tileOrder[2] = initialPuzzle[indexOrder[2]];
+    tileOrder[3] = initialPuzzle[indexOrder[3]];
+    return tileOrder;
+  }
+
 
   static getConsoleStyle(style) {
     if (style == 'code') {
