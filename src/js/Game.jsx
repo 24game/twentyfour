@@ -1,4 +1,4 @@
-import Tile from './Tile.jsx';
+import Tile from './Parenthesis.js';
 import Operator from './Operator.jsx';
 import EqualsSign from './EqualsSign.jsx';
 import Result from './Result.jsx';
@@ -121,15 +121,24 @@ var Game = React.createClass({
         rightTileIndex++;
         rightPosition = getTilePositions(pressedTileIndex + 1);
       }
-      let leftMinDistance = Math.abs(Math.min(leftPosition.leftOrigin - pressedPosition.leftOrigin, leftPosition.leftOrigin - pressedPosition.rightOrigin, leftPosition.rightOrigin - pressedPosition.leftOrigin, leftPosition.rightOrigin - pressedPosition.rightOrigin));
-      let rightMinDistance = Math.abs(Math.min(rightPosition.leftOrigin - pressedPosition.leftOrigin, rightPosition.leftOrigin - pressedPosition.rightOrigin, rightPosition.rightOrigin - pressedPosition.leftOrigin, rightPosition.rightOrigin - pressedPosition.rightOrigin));
+      let a = leftPosition.leftOrigin - pressedPosition.leftOrigin;
+      let b = leftPosition.leftOrigin - pressedPosition.rightOrigin;
+      let c = leftPosition.rightOrigin - pressedPosition.leftOrigin;
+      let d = leftPosition.rightOrigin - pressedPosition.rightOrigin;
+      let leftMinDistance = Math.abs(Math.min(a, b, c, d));
+      let a1 = rightPosition.leftOrigin - pressedPosition.leftOrigin;
+      let b1 = rightPosition.leftOrigin - pressedPosition.rightOrigin;
+      let c1 = rightPosition.rightOrigin - pressedPosition.leftOrigin;
+      let d1 = rightPosition.rightOrigin - pressedPosition.rightOrigin;
+      let rightMinDistance = Math.abs(Math.min(a1, b1, c1, d1));
+
       if (leftMinDistance < rightMinDistance) {
         return {distance: leftMinDistance, tile: leftTileIndex};
       } else {
         return {distance: rightMinDistance, tile: rightTileIndex};
       }
     }
-    console.log(this.tileRefs.map(x => {  }));
+
     return (
       <section className="flexible rows horizontally-centered vertically-centered game">
         {this.props.puzzle.map((value, i) => {
@@ -180,4 +189,6 @@ var Game = React.createClass({
   }
 });
 
+import $ from 'jquery';
+window.jQuery = $;
 export default Game;
