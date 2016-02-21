@@ -1,4 +1,4 @@
-import Tile from './Parenthesis.js';
+import Tile from './Parenthesis.jsx';
 import Operator from './Operator.jsx';
 import EqualsSign from './EqualsSign.jsx';
 import Result from './Result.jsx';
@@ -30,7 +30,7 @@ var Game = React.createClass({
       /* A hash containing various animation-related state data */
       anim: {
         /* Is a number tile currently being clicked on? */
-        isNumPressed: false,
+        numIndexPressed: false,
         /* The index of the last number that was pressed */
         lastNumIndexPressed: 0
       }

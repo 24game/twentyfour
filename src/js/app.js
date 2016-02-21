@@ -8,7 +8,7 @@ import Utils from './utils.js';
 
 Utils.loadJson('./data/puzzles.json')
   .done(data => {
-    let puzzle = Utils.randArrayValue(data.puzzles).numberTiles;
+    let puzzle = data.puzzles[0].numberTiles;
     let operators = ['+', '−', '×', '÷'];
 
     ReactDOM.render(<Title />, document.querySelector('header'));

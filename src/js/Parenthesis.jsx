@@ -3,14 +3,14 @@ import React from 'react';
 var Parenthesis = React.createClass({
 
   propTypes: {
-
     index: React.PropTypes.number.isRequired,
+    type: React.PropTypes.string.isRequired,
   },
 
   render: function() {
     return (
-      <div className="operator-tile" onClick={this.props.cycleOperator.bind(null, this.props.index)}>
-        <span className="unselectable operator"> {this.props.operator} </span>
+      <div className="parenthesis-tile">
+        <span className="unselectable parenthesis"> {this.props.type == 'left' ? '(' : ')'} </span>
       </div>
     )
   }

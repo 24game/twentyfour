@@ -1,4 +1,5 @@
-import Tile from './Parenthesis.js';
+import Tile from './Tile.jsx';
+import Parenthesis from './Parenthesis.jsx';
 import Operator from './Operator.jsx';
 import EqualsSign from './EqualsSign.jsx';
 import Result from './Result.jsx';
@@ -7,6 +8,7 @@ import Utils from './utils.js';
 import {Motion, spring} from 'react-motion';
 import range from 'lodash.range';
 import ReactDOM from 'react-dom';
+import update from 'react-addons-update';
 
 var Game = React.createClass({
 
@@ -29,13 +31,15 @@ var Game = React.createClass({
       /* An array containing the 4 standard operators as strings */
       operators: Utils.shuffle(this.props.operators),
       /* An array where the first value represents the position of the left parenthesis, the second the right, and null represents no left/right paren */
-      parentheses: [null, null],
+      parentheses: [0, 2],
       /* A hash containing various animation-related state data */
       anim: {
-        /* Is a number tile currently being clicked on? */
-        isNumPressed: false,
+        /* The index of the tile currently being clicked (-1 if no tile is being clicked) */
+        numIndexPressed: -1,
         /* The index of the last number that was pressed */
-        lastNumIndexPressed: 0
+        lastNumIndexPressed: -1,
+        /* The location of the cursor */
+        mouseX: 0,
       }
     };
   },
@@ -53,35 +57,34 @@ var Game = React.createClass({
     });
   },
 
-  handleMouseMove({pageX, pageY}) {
-    //console.log(`Calling %chandleMouseMove(pageX: ${pageX}, pageY: ${pageY}).`, Utils.getConsoleStyle('code'));
-    const {isPressed, delta, order, lastPressed} = this.state;
-    if (isPressed) {
-      const mouse = pageX - delta;
-      const row = Utils.clamp(Math.round(mouse / 175), 0, this.props.puzzle.length - 1);
-      const newOrder = Utils.swap(order, order.indexOf(lastPressed), row);
-      this.setState({mouse: mouse, order: newOrder});
-      console.log(`Calling %chandleMouseMove.setState(mouse: ${mouse}, order: ${newOrder}).`, Utils.getConsoleStyle('code'));
-    }
-  },
-
-  handleMouseUp() {
-    this.setState({isPressed: false, delta: 0});
-  },
-
-  handleMouseDown(pos, pressX, {pageX}) {
-    console.log(`Calling %chandleMouseDown(pos: ${pos}, pressX: ${pressX}, pageX: {${pageX}}).`, Utils.getConsoleStyle('code'));
-    this.setState({
-      delta: pageX - pressX,
-      mouse: pressX,
-      isPressed: true,
-      lastPressed: pos,
-    });
-    console.log(`Calling %csetState(delta: ${pageX - pressX}, mouse: ${pressX}, isPressed: true, lastPressed: ${pos})`, Utils.getConsoleStyle('code'));
-  },
-
   computeResult() {
     return '42';
+  },
+
+  onTileDownHandler(tileIndex, pressX, {pageX}) {
+    console.log(`Calling %conTileDownHandler(tileIndex: ${tileIndex}, pressX: ${pressX}, pageX: {${pageX}}).`, Utils.getConsoleStyle('code'));
+    this.setState(update(this.state, {
+      anim: {
+        numIndexPressed: {$set: tileIndex}
+      }
+    }));
+  },
+
+  onTileUpHandler(pos, pressX, {pageX}) {
+    console.log(`Calling %conTileUpHandler(pos: ${pos}, pressX: ${pressX}, pageX: {${pageX}}).`, Utils.getConsoleStyle('code'));
+    this.setState(update(this.state, {
+      anim: {
+        numIndexPressed: {$set: null}
+      }
+    }));
+  },
+
+  onTileMoveHandler(pos, pressX, {pageX}) {
+    console.log(`Calling %conTileMoveHandler(pos: ${pos}, pressX: ${pressX}, pageX: {${pageX}}).`, Utils.getConsoleStyle('code'));    this.setState(update(this.state, {
+      anim: {
+        mouseX: {$set: pageX}
+      }
+    }));
   },
 
   render: function () {
@@ -89,16 +92,59 @@ var Game = React.createClass({
     let numbers = this.state.numbers;
     let self = this;
 
-    function getLeftParensHtml(index) {
+    function getParensHtml(direction, index) {
+      let parensIndex = self.state.parentheses[direction == 'left' ? 0 : 1];
+      if (parensIndex == index) {
+        return <Parenthesis
+          index={parensIndex}
+          type={direction}
+          />;
+      }
+    }
 
+    function getTileMotionStyle(tileIndex) {
+      const { numIndexPressed, mouseX } = self.state.anim;
+      if (numIndexPressed == tileIndex) {
+        return {
+          scale: spring(1.1, self.springConfig),
+          shadow: spring(16, self.springConfig),
+          x: mouseX,
+        };
+      } else {
+        return {
+          scale: spring(1, self.springConfig),
+          shadow: spring(1, self.springConfig),
+          x: 0,
+        };
+      }
     }
 
     function getTileHtml(index) {
-
-    }
-
-    function getRightParensHtml(index) {
-
+      const { isNumPressed, lastNumIndexPressed } = self.state.anim;
+      let tileValue = self.state.numbers[index];
+      let tileStyle = getTileMotionStyle(index);
+      let html =
+        <Motion style={tileStyle} key={index}>
+          {({scale, shadow, x}) =>
+            <Tile
+              onMouseDownHandler={self.onTileDownHandler.bind(null, index, x)}
+              onTouchStartHandler={self.onTileDownHandler.bind(null, index, x)}
+              onMouseUpHandler={self.onTileUpHandler.bind(null, index, x)}
+              onTouchEndHandler={self.onTileUpHandler.bind(null, index, x)}
+              onTouchCancelHandler={self.onTileUpHandler.bind(null, index, x)}
+              onMouseMoveHandler={self.onTileMoveHandler.bind(null, index, x)}
+              onTouchMoveHandler={self.onTileMoveHandler.bind(null, index, x)}
+              value={tileValue}
+              ref={(ref) => self.tileRefs[index] = ref}
+              customStyles = {{
+                boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
+                transform: `translate3d(${x}px, 0, 0) scale(${scale})`,
+                WebkitTransform: `translate3d(${x}px, 0, 0) scale(${scale})`,
+                zIndex: index === lastNumIndexPressed ? 99 : index,
+              }}/>
+          }
+        </Motion>;
+      return html;
     }
 
     function getOperatorHtml(index) {
@@ -121,11 +167,11 @@ var Game = React.createClass({
         { range(numNumbers).map( index => {
           return [
             // Render left parenthesis
-            getLeftParensHtml(index),
+            getParensHtml('left', index),
             // Render number tile
             getTileHtml(index),
             // Render right parenthesis
-            getRightParensHtml(index),
+            getParensHtml('right', index),
             // Render operator
             getOperatorHtml(index),
           ];

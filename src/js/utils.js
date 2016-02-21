@@ -84,7 +84,7 @@ export default class Utils {
   */
   static shuffle(array) {
     for (var i = 0; i < array.length; i ++) {
-      array = swap(array, i, Math.floor(Math.random() * array.length));
+      array = Utils.swap(array, i, Math.floor(Math.random() * array.length));
     }
     return array;
   }
