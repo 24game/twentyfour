@@ -84,9 +84,17 @@ export default class Utils {
   */
   static shuffle(array) {
     for (var i = 0; i < array.length; i ++) {
-      array = swap(array, i, Math.floor(Math.random() * array.length));
+      array = this.swap(array, i, Math.floor(Math.random() * array.length));
     }
     return array;
+  }
+
+  /**
+  *  Returns a value in the array at random.
+  */
+  static randArrayValue(array) {
+    var random = Math.floor(Math.random() * array.length);
+    return array[random];
   }
 
   // tile is the tile which is double clicked.
