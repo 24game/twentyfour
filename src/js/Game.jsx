@@ -28,7 +28,8 @@ var Game = React.createClass({
       /* An array of 4 numbers */
       numbers: Utils.shuffle(this.props.puzzle),
       /* An array containing the 4 standard operators as strings */
-      operators: Utils.shuffle(this.props.operators),
+      /* We shuffle the operators and take the first three to set the initial state of the operators */
+      operators: Utils.shuffle(this.props.operators).slice(0, 3),
       /* An array where the first value represents the position of the left parenthesis, the second the right, and null represents no left/right paren */
       parentheses: [null, null],
       /* A hash containing various animation-related state data */
@@ -41,15 +42,26 @@ var Game = React.createClass({
     };
   },
 
+  // Returns a list of possible operators.
+  getPossibleOperators: function() {
+    let possibleOperators = this.props.operators;
+    return possibleOperators;
+  },
+
+  // Returns the index of the current operator.
+  getCurrentOperatorIndex: function(currentOperator) {
+    return this.getPossibleOperators().indexOf(currentOperator);
+  },
+
   /**
-   * Modifies state {operators} to cycle the operator at the specified index.
-   */
-  cycleOperator: function (operatorIndex) {
-    console.log()
-    let numOperators = this.state.operators.length;
+  * Modifies state {operators} to cycle the operator at the specified index.
+  */
+  cycleOperator: function (index, operator) {
+    let operatorIndex = this.getCurrentOperatorIndex(operator);
+    let numOperators = this.props.operators.length;
     let nextOperatorIndex = (operatorIndex + 1) % numOperators;
     let newOperators = this.state.operators.slice(0);
-    newOperators[operatorIndex] = this.props.operators[nextOperatorIndex];
+    newOperators[index] = this.props.operators[nextOperatorIndex];
     this.setState({
       operators: newOperators
     });
@@ -105,7 +117,7 @@ var Game = React.createClass({
 
     function getOperatorHtml(index) {
       if (index == numNumbers - 1)
-        return;
+      return;
 
       return <Operator
         index={index}
