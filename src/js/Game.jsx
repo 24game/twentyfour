@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import Tile from './Parenthesis.js';
 import Operator from './Operator.jsx';
 import EqualsSign from './EqualsSign.jsx';
@@ -44,6 +45,7 @@ var Game = React.createClass({
    * Modifies state {operators} to cycle the operator at the specified index.
    */
   cycleOperator: function (operatorIndex) {
+    console.log()
     let numOperators = this.state.operators.length;
     let nextOperatorIndex = (operatorIndex + 1) % numOperators;
     let newOperators = this.state.operators.slice(0);
@@ -137,6 +139,4 @@ var Game = React.createClass({
   }
 });
 
-import $ from 'jquery';
-window.jQuery = $;
 export default Game;
