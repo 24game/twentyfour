@@ -26,57 +26,67 @@ export default class Utils {
   static getConsoleStyle(style) {
     if (style == 'code') {
       return `
-    padding: 0 5px 2px;
-    border: 1px solid #ddd;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    background-clip: padding-box;
-    font-family: Monaco,"DejaVu Sans Mono","Courier New",monospace;
-    color: #666;
-    `
+      padding: 0 5px 2px;
+      border: 1px solid #ddd;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      background-clip: padding-box;
+      font-family: Monaco,"DejaVu Sans Mono","Courier New",monospace;
+      color: #666;
+      `
     } else if (style == 'bold') {
       return `
       font-weight: 600;
-    color: rgb(51, 51, 51);
-    `;
+      color: rgb(51, 51, 51);
+      `;
     } else if (style == 'alert') {
       return `
       font-weight: 600;
-    color: red;
-    `;
+      color: red;
+      `;
     } else if (style == 'event') {
       return `
-    color: green;
-    `;
+      color: green;
+      `;
     } else if (style == 'postmessage') {
       return `
-    color: orange;
-    `;
+      color: orange;
+      `;
     } else if (style == 'serviceworkermessage') {
       return `
-    color: purple;
-    `;
+      color: purple;
+      `;
     }
   }
 
   /**
-   * Returns n clamped to either the min or max if n is out of bounds.
-   */
+  * Returns n clamped to either the min or max if n is out of bounds.
+  */
   static clamp(n, min, max) {
     return Math.max(Math.min(n, max), min);
   }
 
   /**
-   * Returns a non-equivalent array with the element at index {from} swapped with the element at index {to}.
-   * Use this to update the React state object, since the object is different, compared to swapping by swapping values by index, which returns the same object.
-   */
+  * Returns a non-equivalent array with the element at index {from} swapped with the element at index {to}.
+  * Use this to update the React state object, since the object is different, compared to swapping by swapping values by index, which returns the same object.
+  */
   static swap(array, a, b) {
     const arr = array.slice(0);
     const val = arr[a];
     arr.splice(a, 1);
     arr.splice(b, 0, val);
     return arr;
+  }
+
+  /**
+  * Returns a non-equivalent array with the elements randomly shuffled.
+  */
+  static shuffle(array) {
+    for (var i = 0; i < array.length; i ++) {
+      array = swap(array, i, Math.floor(Math.random() * array.length));
+    }
+    return array;
   }
 
   // tile is the tile which is double clicked.
@@ -116,21 +126,6 @@ export default class Utils {
       }
 
     }
-  }
-
-  /**
-   *  Returns a value in the array at random.
-   */
-  static randArrayValue(array) {
-    var random = Math.floor(Math.random() * array.length);
-    return array[random];
-  }
-
-  /**
-   * Returns a non-equivalent array with the elements randomly shuffled.
-   */
-  static shuffle(array) {
-    return array;
   }
 
 }
