@@ -6,10 +6,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Utils from './utils.js';
 
-var fullPuzzles = Utils.loadJson('./data/puzzles.json').puzzles;
-var currentPuzzle = Utils.randomize(Utils.getNewPuzzle(fullPuzzles));
-var operators = ['+', '−', '×', '÷'];
+Utils.loadJson('./data/puzzles.json')
+  .done(data => {
+    let puzzle = Utils.randArrayValue(data.puzzles).numberTiles;
+    let operators = ['+', '−', '×', '÷'];
 
-ReactDOM.render(<Title />, document.querySelector('header'));
-ReactDOM.render(<Game puzzle={currentPuzzle} possibleOperators={operators} />, document.querySelector('#game'));
-ReactDOM.render(<HowToPlay />, document.querySelector('footer'));
+    ReactDOM.render(<Title />, document.querySelector('header'));
+    ReactDOM.render(<Game puzzle={puzzle} operators={operators} />, document.querySelector('#game'));
+    ReactDOM.render(<HowToPlay />, document.querySelector('footer'));
+  });
