@@ -1,19 +1,13 @@
 import $ from 'jquery';
 
 export default class Utils {
+
   static loadJson(file) {
     var json = null;
-    $.ajax({
-      'async': false,
-      'global': false,
-      'url': file,
-      'dataType': "json",
-      success: function (data) {
-        console.log('success');
-        json = data;
-      }
+    return $.ajax({
+      url: file,
+      dataType: 'json'
     });
-    return json;
   }
 
   static cleanStringToCompute(stringToCompute) {
@@ -28,40 +22,6 @@ export default class Utils {
     var indexOfDecimal = stringToClean.indexOf('.');
     return indexOfDecimal === -1 ? stringToClean : stringToClean.substring(0, (indexOfDecimal + 3));
   }
-
-  static getRandomValueInArray(array) {
-    var random = Math.floor(Math.random() * array.length);
-    return array[random];
-  }
-
-  static getNewPuzzle(listOfPuzzles) {
-    var randomIndex = Math.floor(Math.random() * listOfPuzzles.length);
-    return listOfPuzzles[randomIndex].numberTiles;
-  }
-
-  static randomize(array) {
-    for (var i = 0; i < array.length; i++) {
-      var random = Math.floor(Math.random() * array.length);
-      this.swap(i, random, array);
-    }
-    return array;
-  }
-
-  static swap(a, b, array) {
-    var temp = array[a];
-    array[a] = array[b];
-    array[b] = temp;
-  }
-
-  static getTileOrder(initialPuzzle, indexOrder) {
-    var tileOrder = [];
-    tileOrder[0] = initialPuzzle[indexOrder[0]];
-    tileOrder[1] = initialPuzzle[indexOrder[1]];
-    tileOrder[2] = initialPuzzle[indexOrder[2]];
-    tileOrder[3] = initialPuzzle[indexOrder[3]];
-    return tileOrder;
-  }
-
 
   static getConsoleStyle(style) {
     if (style == 'code') {
@@ -100,16 +60,23 @@ export default class Utils {
     }
   }
 
+  /**
+   * Returns n clamped to either the min or max if n is out of bounds.
+   */
   static clamp(n, min, max) {
     return Math.max(Math.min(n, max), min);
   }
 
-  static reinsert(arr, from, to) {
-    const _arr = arr.slice(0);
-    const val = _arr[from];
-    _arr.splice(from, 1);
-    _arr.splice(to, 0, val);
-    return _arr;
+  /**
+   * Returns a non-equivalent array with the element at index {from} swapped with the element at index {to}.
+   * Use this to update the React state object, since the object is different, compared to swapping by swapping values by index, which returns the same object.
+   */
+  static swap(array, a, b) {
+    const arr = array.slice(0);
+    const val = arr[a];
+    arr.splice(a, 1);
+    arr.splice(b, 0, val);
+    return arr;
   }
 
   // tile is the tile which is double clicked.
@@ -149,6 +116,21 @@ export default class Utils {
       }
 
     }
+  }
+
+  /**
+   *  Returns a value in the array at random.
+   */
+  static randArrayValue(array) {
+    var random = Math.floor(Math.random() * array.length);
+    return array[random];
+  }
+
+  /**
+   * Returns a non-equivalent array with the elements randomly shuffled.
+   */
+  static shuffle(array) {
+    return array;
   }
 
 }
