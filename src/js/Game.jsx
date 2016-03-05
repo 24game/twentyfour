@@ -46,6 +46,12 @@ var Game = React.createClass({
     };
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      numbers: Utils.shuffle(nextProps.puzzle)
+    });
+  },
+
   // Returns a list of possible operators.
   getPossibleOperators: function() {
     let possibleOperators = this.props.operators;
