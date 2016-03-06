@@ -53,7 +53,7 @@ class Game extends React.Component {
     // touchmove: a finger touches the screen
     window.addEventListener('touchmove', this.onPointerMove.bind(this));
     window.addEventListener('mousemove', this.onPointerMove.bind(this));
-    // touchend: a finger is lifted off the screen
+    // touchend: a finger is lifted off the screen`
     window.addEventListener('touchend', this.onPointerUp.bind(this));
     // touchcancel: too many fingers on screen, first finger touch canceled
     window.addEventListener('touchcancel', this.onPointerUp.bind(this));
@@ -128,6 +128,7 @@ class Game extends React.Component {
     console.log(`Calling %conPointerMove(pageX: ${pageX}}).`, Utils.getConsoleStyle('code'));
     this.setState(update(this.state, {
       anim: {
+        /* The current mouse position, relative to the page (layout viewport) */
         mouseX: {$set: pageX}
       }
     }));
@@ -153,14 +154,25 @@ class Game extends React.Component {
     this.setState(update(this.state, {
       anim: {
         numIndexPressed: {$set: tileIndex},
+        lastNumIndexPressed: {$set: tileIndex},
         tileClickMouseX: {$set: pageX},
         mouseX: {$set: pageX}
       }
     }));
   }
 
+  getTileZIndex(renderingTileIndex) {
+    // If the current tile being rendered is held down and moved, or mouse was released and last held tile is moving back to original position
+    let { numIndexPressed, lastNumIndexPressed } = this.state.anim;
+    if (renderingTileIndex == numIndexPressed || renderingTileIndex ==lastNumIndexPressed) {
+      return 99999;
+    } else {
+      return 100;
+    }
+  }
+
   getTileHtml(tileIndex) {
-    const { numIndexPressed, lastNumIndexPressed, tileClickMouseX } = this.state.anim;
+    const { numIndexPressed, lastNumIndexPressed } = this.state.anim;
     let tileValue = this.state.numbers[tileIndex];
     let tileStyle = this.getTileMotionStyle(tileIndex);
     let html =
@@ -171,9 +183,8 @@ class Game extends React.Component {
                 value={tileValue} ref={(ref) => this.tileRefs[tileIndex] = ref}
                 customStyles={{
                   boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
-                  transform: `translate3d(${offsetX == 0 ? 0 : offsetX - tileClickMouseX}px, 0, 0) scale(${scale})`,
-                  WebkitTransform: `translate3d(${offsetX == 0 ? 0 : offsetX - tileClickMouseX}px, 0, 0) scale(${scale})`,
-                  zIndex: tileIndex === numIndexPressed || lastNumIndexPressed ? 9999999 : tileIndex,
+                  transform: `translate3d(${offsetX}px, 0, 0) scale(${scale})`,
+                  zIndex: this.getTileZIndex(tileIndex),
                 }}/>
         }
       </Motion>;
@@ -181,13 +192,13 @@ class Game extends React.Component {
   }
 
   getTileMotionStyle(tileIndex) {
-    let { numIndexPressed, mouseX } = this.state.anim;
+    let { numIndexPressed, tileClickMouseX, mouseX } = this.state.anim;
     //console.log(`Calling %cgetTileMotionStyle(numIndexPressed: ${numIndexPressed}), mouseX: ${mouseX}.`, Utils.getConsoleStyle('code'));
     if (numIndexPressed == tileIndex) {
       return {
         scale: spring(1.1, this.springConfig),
         shadow: spring(16, this.springConfig),
-        offsetX: mouseX,
+        offsetX: mouseX - tileClickMouseX,
       };
     } else {
       return {
