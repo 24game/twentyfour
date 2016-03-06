@@ -22,7 +22,7 @@ gulp.task("reload-changes", ['reload-html', 'reload-js', 'reload-misc'], functio
 });
 
 gulp.task("transpile-javascript", shell.task([
-        'webpack --watch --colors'
+        'webpack --watch --colors --progress'
     ]));
 
 gulp.task("reload-html", function() {
