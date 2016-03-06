@@ -11,27 +11,22 @@ import range from 'lodash.range';
 import ReactDOM from 'react-dom';
 import update from 'react-addons-update';
 
-var Game = React.createClass({
+class Game extends React.Component {
 
-  propTypes: {
-    /* An array of 4 numbers */
-    puzzle: React.PropTypes.array.isRequired,
-    /* An array containing the allowed mathematical operators */
-    operators: React.PropTypes.array.isRequired
-  },
+  constructor(props) {
+    super(props);
 
-  getInitialState: function () {
     /* Default spring physics */
     this.springConfig = {stiffness: 300, damping: 50};
 
     /* Refs to later access each tile's position */
     this.tileRefs = [];
-    return {
+    this.state = {
       /* An array of 4 numbers */
-      numbers: Utils.shuffle(this.props.puzzle),
+      numbers: Utils.shuffle(props.puzzle),
       /* An array containing the 4 standard operators as strings */
       /* We shuffle the operators and take the first three to set the initial state of the operators */
-      operators: Utils.shuffle(this.props.operators).slice(0, 3),
+      operators: Utils.shuffle(props.operators).slice(0, 3),
       /* An array where the first value represents the position of the left parenthesis, the second the right, and null represents no left/right paren */
       parentheses: [0, 2],
       /* A hash containing various animation-related state data */
@@ -40,27 +35,54 @@ var Game = React.createClass({
         numIndexPressed: -1,
         /* The index of the last number that was pressed */
         lastNumIndexPressed: -1,
+        /* The location of the cursor, when first clicking the tile. This is subtracted from mouseX after */
+        tileClickMouseX: 0,
         /* The location of the cursor */
         mouseX: 0,
       }
+
     };
-  },
+
+    /* React's new ES6 class-based components do not have `this` autobinded */
+    this.cycleOperator = this.cycleOperator.bind(this);
+  }
+
+  componentDidMount() {
+    /* Mouse move and up event listeners must be added outside the React element */
+
+    // touchmove: a finger touches the screen
+    window.addEventListener('touchmove', this.onPointerMove.bind(this));
+    window.addEventListener('mousemove', this.onPointerMove.bind(this));
+    // touchend: a finger is lifted off the screen
+    window.addEventListener('touchend', this.onPointerUp.bind(this));
+    // touchcancel: too many fingers on screen, first finger touch canceled
+    window.addEventListener('touchcancel', this.onPointerUp.bind(this));
+    window.addEventListener('mouseup', this.onPointerUp.bind(this));
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('touchmove', this.onPointerMove);
+    window.removeEventListener('mousemove', this.onPointerMove);
+    window.removeEventListener('touchend', this.onPointerUp);
+    window.removeEventListener('touchcancel', this.onPointerUp);
+    window.removeEventListener('mouseup', this.onPointerUp);
+  }
 
   // Returns a list of possible operators.
-  getPossibleOperators: function() {
+  getPossibleOperators() {
     let possibleOperators = this.props.operators;
     return possibleOperators;
-  },
+  }
 
   // Returns the index of the current operator.
-  getCurrentOperatorIndex: function(currentOperator) {
+  getCurrentOperatorIndex(currentOperator) {
     return this.getPossibleOperators().indexOf(currentOperator);
-  },
+  }
 
   /**
   * Modifies state {operators} to cycle the operator at the specified index.
   */
-  cycleOperator: function (index, operator) {
+  cycleOperator(index, operator) {
     let operatorIndex = this.getCurrentOperatorIndex(operator);
     let numOperators = this.props.operators.length;
     let nextOperatorIndex = (operatorIndex + 1) % numOperators;
@@ -69,109 +91,112 @@ var Game = React.createClass({
     this.setState({
       operators: newOperators
     });
-  },
+  }
 
   computeResult() {
     return '42';
-  },
+  }
 
-  onTileDownHandler(tileIndex, pressX, {pageX}) {
-    console.log(`Calling %conTileDownHandler(tileIndex: ${tileIndex}, pressX: ${pressX}, pageX: {${pageX}}).`, Utils.getConsoleStyle('code'));
+  onPointerMove({pageX}) {
+    console.log(`Calling %conPointerMove(pageX: ${pageX}}).`, Utils.getConsoleStyle('code'));
     this.setState(update(this.state, {
-      anim: {
-        numIndexPressed: {$set: tileIndex}
-      }
-    }));
-  },
-
-  onTileUpHandler(pos, pressX, {pageX}) {
-    console.log(`Calling %conTileUpHandler(pos: ${pos}, pressX: ${pressX}, pageX: {${pageX}}).`, Utils.getConsoleStyle('code'));
-    this.setState(update(this.state, {
-      anim: {
-        numIndexPressed: {$set: null}
-      }
-    }));
-  },
-
-  onTileMoveHandler(pos, pressX, {pageX}) {
-    console.log(`Calling %conTileMoveHandler(pos: ${pos}, pressX: ${pressX}, pageX: {${pageX}}).`, Utils.getConsoleStyle('code'));    this.setState(update(this.state, {
       anim: {
         mouseX: {$set: pageX}
       }
     }));
-  },
+  }
 
-  render: function () {
+  onPointerUp(e) {
+    console.log(`Calling %conPointerUp(event: ${e}}).`, Utils.getConsoleStyle('code'));
+    let lastNumIndexPressed = this.state.anim.numIndexPressed;
+    this.setState(update(this.state, {
+      anim: {
+        // No tile is being pressed anymore
+        numIndexPressed: {$set: -1},
+        lastNumIndexPressed: {$set: lastNumIndexPressed},
+        // Reset the offset to 0 so the tile animates back to its starting position
+        tileClickMouseX: {$set: 0},
+        mouseX: {$set: 0}
+      }
+    }));
+  }
+
+  onTileDownHandler(tileIndex, {pageX}) {
+    console.log(`Calling %conTileDownHandler(tileIndex: ${tileIndex}, pageX: ${pageX}).`, Utils.getConsoleStyle('code'));
+    this.setState(update(this.state, {
+      anim: {
+        numIndexPressed: {$set: tileIndex},
+        tileClickMouseX: {$set: pageX},
+        mouseX: {$set: pageX}
+      }
+    }));
+  }
+
+  getTileHtml(tileIndex) {
+    const { numIndexPressed, lastNumIndexPressed, tileClickMouseX } = this.state.anim;
+    let tileValue = this.state.numbers[tileIndex];
+    let tileStyle = this.getTileMotionStyle(tileIndex);
+    let html =
+      <Motion style={tileStyle} key={tileIndex}>
+        {({scale, shadow, offsetX}) =>
+          <Tile onMouseDownHandler={this.onTileDownHandler.bind(this, tileIndex)}
+                onTouchStartHandler={this.onTileDownHandler.bind(this, tileIndex)}
+                value={tileValue} ref={(ref) => this.tileRefs[tileIndex] = ref}
+                customStyles={{
+                  boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
+                  transform: `translate3d(${offsetX == 0 ? 0 : offsetX - tileClickMouseX}px, 0, 0) scale(${scale})`,
+                  WebkitTransform: `translate3d(${offsetX == 0 ? 0 : offsetX - tileClickMouseX}px, 0, 0) scale(${scale})`,
+                  zIndex: tileIndex === numIndexPressed || lastNumIndexPressed ? 9999999 : tileIndex,
+                }}/>
+        }
+      </Motion>;
+    return html;
+  }
+
+  getTileMotionStyle(tileIndex) {
+    let { numIndexPressed, mouseX } = this.state.anim;
+    //console.log(`Calling %cgetTileMotionStyle(numIndexPressed: ${numIndexPressed}), mouseX: ${mouseX}.`, Utils.getConsoleStyle('code'));
+    if (numIndexPressed == tileIndex) {
+      return {
+        scale: spring(1.1, this.springConfig),
+        shadow: spring(16, this.springConfig),
+        offsetX: mouseX,
+      };
+    } else {
+      return {
+        scale: spring(1, this.springConfig),
+        shadow: spring(1, this.springConfig),
+        offsetX: spring(0, this.springConfig),
+      };
+    }
+  }
+
+  getOperatorHtml(index) {
     let numNumbers = this.state.numbers.length;
-    let numbers = this.state.numbers;
-    let self = this;
-
-    function getParensHtml(direction, index) {
-      let parensIndex = self.state.parentheses[direction == 'left' ? 0 : 1];
-      if (parensIndex == index) {
-        return <Parenthesis
-          index={parensIndex}
-          type={direction}
-          />;
-      }
-    }
-
-    function getTileMotionStyle(tileIndex) {
-      const { numIndexPressed, mouseX } = self.state.anim;
-      if (numIndexPressed == tileIndex) {
-        return {
-          scale: spring(1.1, self.springConfig),
-          shadow: spring(16, self.springConfig),
-          x: mouseX,
-        };
-      } else {
-        return {
-          scale: spring(1, self.springConfig),
-          shadow: spring(1, self.springConfig),
-          x: 0,
-        };
-      }
-    }
-
-    function getTileHtml(index) {
-      const { isNumPressed, lastNumIndexPressed } = self.state.anim;
-      let tileValue = self.state.numbers[index];
-      let tileStyle = getTileMotionStyle(index);
-      let html =
-        <Motion style={tileStyle} key={index}>
-          {({scale, shadow, x}) =>
-            <Tile
-              onMouseDownHandler={self.onTileDownHandler.bind(null, index, x)}
-              onTouchStartHandler={self.onTileDownHandler.bind(null, index, x)}
-              onMouseUpHandler={self.onTileUpHandler.bind(null, index, x)}
-              onTouchEndHandler={self.onTileUpHandler.bind(null, index, x)}
-              onTouchCancelHandler={self.onTileUpHandler.bind(null, index, x)}
-              onMouseMoveHandler={self.onTileMoveHandler.bind(null, index, x)}
-              onTouchMoveHandler={self.onTileMoveHandler.bind(null, index, x)}
-              value={tileValue}
-              ref={(ref) => self.tileRefs[index] = ref}
-              customStyles = {{
-                boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
-                transform: `translate3d(${x}px, 0, 0) scale(${scale})`,
-                WebkitTransform: `translate3d(${x}px, 0, 0) scale(${scale})`,
-                zIndex: index === lastNumIndexPressed ? 99 : index,
-              }}/>
-          }
-        </Motion>;
-      return html;
-    }
-
-    function getOperatorHtml(index) {
-      if (index == numNumbers - 1)
+    if (index == numNumbers - 1)
       return;
 
-      return <Operator
-        index={index}
-        operator={self.state.operators[index]}
-        possibleOperators={self.props.operators}
-        cycleOperatorFn={self.cycleOperator}
+    return <Operator
+      index={index}
+      operator={this.state.operators[index]}
+      possibleOperators={this.props.operators}
+      cycleOperatorFn={this.cycleOperator}
+      />;
+  }
+
+  getParensHtml(direction, index) {
+    let parensIndex = this.state.parentheses[direction == 'left' ? 0 : 1];
+    if (parensIndex == index) {
+      return <Parenthesis
+        index={parensIndex}
+        type={direction}
         />;
     }
+  }
+
+  render() {
+    let numNumbers = this.state.numbers.length;
+    let numbers = this.state.numbers;
 
     let result = this.computeResult();
 
@@ -181,13 +206,13 @@ var Game = React.createClass({
         { range(numNumbers).map( index => {
           return [
             // Render left parenthesis
-            getParensHtml('left', index),
+            this.getParensHtml('left', index),
             // Render number tile
-            getTileHtml(index),
+            this.getTileHtml(index),
             // Render right parenthesis
-            getParensHtml('right', index),
+            this.getParensHtml('right', index),
             // Render operator
-            getOperatorHtml(index),
+            this.getOperatorHtml(index),
           ];
         })}
         <EqualsSign/>
@@ -195,6 +220,13 @@ var Game = React.createClass({
       </section>
     );
   }
-});
+}
+
+Game.propTypes = {
+  /* An array of 4 numbers */
+  puzzle: React.PropTypes.array.isRequired,
+  /* An array containing the allowed mathematical operators */
+  operators: React.PropTypes.array.isRequired
+};
 
 export default Game;
