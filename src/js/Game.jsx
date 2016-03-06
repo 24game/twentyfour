@@ -68,6 +68,12 @@ class Game extends React.Component {
     window.removeEventListener('mouseup', this.onPointerUp);
   }
 
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      numbers: Utils.shuffle(nextProps.puzzle)
+    });
+  },
+
   // Returns a list of possible operators.
   getPossibleOperators() {
     let possibleOperators = this.props.operators;
