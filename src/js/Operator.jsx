@@ -10,7 +10,9 @@ var Operator = React.createClass({
 
   render: function() {
     return (
-      <div className="operator-tile" onClick={this.props.cycleOperatorFn.bind(null, this.props.index, this.props.operator)}>
+      <div className="operator-tile"
+           onClick={this.props.cycleOperatorFn.bind(null, this.props.index, this.props.operator)}
+           zIndex="1">
         <span className="unselectable operator"> {this.props.operator} </span>
       </div>
     )

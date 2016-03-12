@@ -5,6 +5,7 @@
   "main": "src/app.js",
   "dependencies": {
     "babel-core": "^6.4.5",
+    "debounce": "^1.0.0",
     "gulp-shell": "^0.5.2",
     "livereload": "^0.4.1",
     "react": "^0.14.7",
