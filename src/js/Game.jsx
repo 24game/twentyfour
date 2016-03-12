@@ -104,6 +104,29 @@ class Game extends React.Component {
     return JSON.stringify(eval(eval(resultString)));
   }
 
+  clearParentheses() {
+    let _parentheses = [null, null];
+    this.setState(update(this.state, {
+      parentheses: {$set: _parentheses}
+    }));
+  }
+
+  setLeftParenthesis(tilePosition) {
+    let _parentheses = this.state.parentheses.slice(0);
+    _parentheses[0] = tilePosition;
+    this.setState(update(this.state, {
+      parentheses: {$set: _parentheses}
+    }));
+  }
+
+  setRightParenthesis(tilePosition) {
+    let _parentheses = this.state.parentheses.slice(0);
+    _parentheses[1] = tilePosition;
+    this.setState(update(this.state, {
+      parentheses: {$set: _parentheses}
+    }));
+  }
+
   onPointerMove({pageX}) {
     console.log(`Calling %conPointerMove(pageX: ${pageX}}).`, Utils.getConsoleStyle('code'));
     this.setState(update(this.state, {

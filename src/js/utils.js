@@ -112,7 +112,7 @@ export default class Utils {
   static parentheses(tile, gameState) {
     const totalParentheses = gameState.totalParentheses;
     // We allow only one set of parenthesis. Clicking on a tile with parenthesis resets everything.
-    if (totalParentheses == 2 || tile.hasParenthesis) {
+    if (totalParentheses == 2 || tile.hasParenthesis()) {
       gameState.clearParentheses();
     } else {
 
@@ -125,10 +125,10 @@ export default class Utils {
       // is to the right of the left parethesis. If it is not we get rid of the left parenthesis
       // and set the left parenthesis to this tile.
       if (totalParentheses == 1) {
-        if (tile.getPosition > gameState.getParenthesizedTilePosition()) {
+        if (tile.getPosition() > gameState.getParenthesizedTilePosition()) {
           tile.setRightParenthesis();
         } else {
-          gameState.cleanParenthesesState();
+          gameState.clearParentheses();
           tile.setLeftParenthesis();
         }
       }
