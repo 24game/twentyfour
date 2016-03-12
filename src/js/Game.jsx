@@ -100,28 +100,8 @@ class Game extends React.Component {
   }
 
   computeResult() {
-    console.log(this.state.numbers[0],
-      Utils.cleanOperators(this.state.operators[0]),
-      this.state.numbers[1],
-      Utils.cleanOperators(this.state.operators[1]),
-      this.state.numbers[2],
-      Utils.cleanOperators(this.state.operators[2]),
-      this.state.numbers[3]);
-
-      console.log("eval", eval(this.state.numbers[0] +
-        Utils.cleanOperators(this.state.operators[0]) +
-        this.state.numbers[1] +
-        Utils.cleanOperators(this.state.operators[1]) +
-        this.state.numbers[2] +
-        Utils.cleanOperators(this.state.operators[2]) +
-        this.state.numbers[3]));
-    return "'" + eval(this.state.numbers[0] +
-      Utils.cleanOperators(this.state.operators[0]) +
-      this.state.numbers[1] +
-      Utils.cleanOperators(this.state.operators[1]) +
-      this.state.numbers[2] +
-      Utils.cleanOperators(this.state.operators[2]) +
-      this.state.numbers[3]) + "''";
+    let resultString = Utils.buildResultToCompute(this.state.numbers, this.state.operators, this.state.parentheses);
+    return JSON.stringify(eval(eval(resultString)));
   }
 
   onPointerMove({pageX}) {
