@@ -106,6 +106,32 @@ class Game extends React.Component {
     return JSON.stringify(eval(eval(resultString)));
   }
 
+  // Handles the logic of double clicking a tile to parenthesize it.
+  // tileIndex is the index of the tile being clicked, a value between 0 and 3, inclusive
+  parenthesize(tileIndex) {
+    // If there is a full set of parentheses already, or if the clicked tile already
+    // has parenthesis, then reset the parentheses state.
+    if (this.state.parentheses[1] !== null || tileIndex === this.state.parentheses[0]) {
+      this.clearParentheses();
+    } else {
+      // If there is no left parenthesis, then set that.
+      if (this.state.parentheses[0] === null) {
+        this.setLeftParenthesis();
+      } else {
+        // If there is a left parenthesis, then if the clicked tile comes after
+        // the left parenthesis, set the right parenthesis.
+        if (tileIndex > this.state.parentheses[0]) {
+          this.setRightParenthesis();
+        } else {
+          // Otherwise, the clicked tile comes before the left parenthesis, so
+          // reset the parentheses state and set the left parenthesis on the left tile.
+          this.clearParentheses();
+          this.setRightParenthesis();
+        }
+      }
+    }
+  }
+
   clearParentheses() {
     let _parentheses = [null, null];
     this.setState(update(this.state, {

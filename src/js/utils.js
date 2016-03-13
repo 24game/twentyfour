@@ -97,45 +97,6 @@ export default class Utils {
     return array[random];
   }
 
-  // tile is the tile which is double clicked.
-  // tile has the following methods:
-  // (i) hasParenthesis: a boolean determining whether or not this tile has left or right parentheses.
-  // (ii) setLeftParenthesis: sets parenthesis to the left of the tile.
-  // (iii) setRightParenthesis: sets parenthesis to the right of the tile.
-  // (iv) getPosition: returns the position of the current tile, a value between 0 and 3 inclusive.
-  //
-  // gameState is maintained by Game and has the following properties and methods:
-  // (i) totalParentheses: the total number of parentheses on the screen, a value between 0 and 2 inclusive.
-  // (ii) clearParentheses: function to reset all parentheses
-  // (iii) getParenthesizedTilePosition: function to return the position of the left parenthesis,
-  // a value between 0 and 3 inclusive.
-  static parentheses(tile, gameState) {
-    const totalParentheses = gameState.totalParentheses;
-    // We allow only one set of parenthesis. Clicking on a tile with parenthesis resets everything.
-    if (totalParentheses == 2 || tile.hasParenthesis()) {
-      gameState.clearParentheses();
-    } else {
-
-      // First parenthesis is always the left parenthesis. Allow it on any tile.
-      if (totalParentheses == 0) {
-        tile.setLeftParenthesis();
-      }
-
-      // Second parenthesis is always the right parenthesis. We check that the right parethensis
-      // is to the right of the left parethesis. If it is not we get rid of the left parenthesis
-      // and set the left parenthesis to this tile.
-      if (totalParentheses == 1) {
-        if (tile.getPosition() > gameState.getParenthesizedTilePosition()) {
-          tile.setRightParenthesis();
-        } else {
-          gameState.clearParentheses();
-          tile.setLeftParenthesis();
-        }
-      }
-
-    }
-  }
-
   // tiles is an array of the tiles (ex. [1, 4, 5, 6]).
   // operators is an array of the operators (ex. [+, +, -, *]).
   // parenthesesState is an array of the indecies of the left and right
@@ -173,6 +134,7 @@ export default class Utils {
       var rightParenthesized = parenthesesState[1] === 3 ? (leftParenthesized + ")")
       : ([leftParenthesized.slice(0, operatorIndecies[parenthesesState[1]] + 1), ")", leftParenthesized.slice(operatorIndecies[parenthesesState[1]] + 1)].join(''));
     }
+
     return this.cleanOperators(rightParenthesized);
   }
 
