@@ -121,18 +121,18 @@ export default class Utils {
       let operatorIndecies = [];
       for (let i = 0; i < initialStringToCompute.length; i ++) {
         let operator = this.cleanOperators(initialStringToCompute[i]);
-        if (operator === "+" || operator === "-" || operator === "*" || operator === "/") {
+        if (operator === '+' || operator === '-' || operator === '*' || operator === '/') {
           operatorIndecies.push(i);
         }
       }
 
       // First append the left parenthesis.
-      var leftParenthesized = parenthesesState[0] === 0 ? ("(" + initialStringToCompute)
-      : ([initialStringToCompute.slice(0, operatorIndecies[parenthesesState[0] - 1] + 1), "(", initialStringToCompute.slice(operatorIndecies[parenthesesState[0] - 1] + 1)].join(''));
+      var leftParenthesized = parenthesesState[0] === 0 ? ('(' + initialStringToCompute)
+      : ([initialStringToCompute.slice(0, operatorIndecies[parenthesesState[0] - 1] + 1), '(', initialStringToCompute.slice(operatorIndecies[parenthesesState[0] - 1] + 1)].join(''));
 
       // Then append the right parenthesis.
-      var rightParenthesized = parenthesesState[1] === 3 ? (leftParenthesized + ")")
-      : ([leftParenthesized.slice(0, operatorIndecies[parenthesesState[1]] + 1), ")", leftParenthesized.slice(operatorIndecies[parenthesesState[1]] + 1)].join(''));
+      var rightParenthesized = parenthesesState[1] === 3 ? (leftParenthesized +')')
+      : ([leftParenthesized.slice(0, operatorIndecies[parenthesesState[1]] + 1), ')', leftParenthesized.slice(operatorIndecies[parenthesesState[1]] + 1)].join(''));
     }
 
     return this.cleanOperators(rightParenthesized);
