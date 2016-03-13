@@ -70,7 +70,9 @@ class Game extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      numbers: Utils.shuffle(nextProps.puzzle)
+      numbers: Utils.shuffle(nextProps.puzzle),
+      operators: Utils.shuffle(nextProps.operators),
+      parentheses: [null, null]
     });
   }
 
