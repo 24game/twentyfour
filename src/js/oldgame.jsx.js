@@ -28,7 +28,7 @@ var Game = React.createClass({
       /* An array where the first value represents the position of the left parenthesis, the second the right, and null represents no left/right paren */
       parentheses: [null, null],
       /* A hash containing various animation-related state data */
-      anim: {
+      animating: {
         /* Is a number tile currently being clicked on? */
         numIndexPressed: false,
         /* The index of the last number that was pressed */
