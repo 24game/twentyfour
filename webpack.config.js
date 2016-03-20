@@ -21,7 +21,7 @@ module.exports = {
     path: path.join(__dirname, 'public'),
     filename: 'bundle.js'
   },
-  devtool: IS_PROD ? '' : 'inline-source-map',
+  //devtool: IS_PROD ? '' : 'inline-source-map',
   module: {
     loaders: [{
       test: /\.jsx?$/,
@@ -44,24 +44,24 @@ module.exports = {
   plugins: IS_PROD ? [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        sequences: false,
-        dead_code: false,
-        conditionals: false,
-        booleans: false,
-        unused: false,
-        if_return: false,
-        join_vars: false,
-        drop_console: false,
-        drop_debugger: false
-      },
-      mangle: false,
-      output: {
-        comments: false
-      }
-    }),
+    //new webpack.optimize.UglifyJsPlugin({
+    //  sourceMap: true,
+    //  compress: {
+    //    sequences: false,
+    //    dead_code: false,
+    //    conditionals: false,
+    //    booleans: false,
+    //    unused: false,
+    //    if_return: false,
+    //    join_vars: false,
+    //    drop_console: false,
+    //    drop_debugger: false
+    //  },
+    //  mangle: false,
+    //  output: {
+    //    comments: false
+    //  }
+    //}),
     function() {
       this.plugin('watch-run', function(watching, callback) {
         console.log();

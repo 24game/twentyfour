@@ -18,6 +18,21 @@ export default class Utils {
     return stringToClean.replace(/×+/g, '*').replace(/÷+/g, '/').replace(/−+/g, '-');
   }
 
+  static uniqueArray(arr) {
+    var i,
+      len=arr.length,
+      out=[],
+      obj={};
+
+    for (i=0;i<len;i++) {
+      obj[arr[i]]=0;
+    }
+    for (i in obj) {
+      out.push(i);
+    }
+    return out;
+  }
+
   static cleanComputedResult(stringToClean) {
     var indexOfDecimal = stringToClean.indexOf('.');
     return indexOfDecimal === -1 ? stringToClean : stringToClean.substring(0, (indexOfDecimal + 3));
