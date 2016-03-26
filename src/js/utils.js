@@ -138,4 +138,18 @@ export default class Utils {
     return this.cleanOperators(rightParenthesized);
   }
 
+  // Method to handle displaying the computed result.
+  // The parameter is a Fraction object from the Mathjs library. The fraction returned by the library
+  // is often an improper fraction, and this method cleans it.
+  // w is the whole number, n is the new numerator, and d is the denominator 
+  static cleanImproperFraction(improperFraction) {
+    let numerator = improperFraction.n;
+    let denominator = improperFraction.d;
+    return {
+      w: Math.floor(numerator / denominator),
+      n: numerator % denominator,
+      d: denominator
+    }
+  }
+
 }

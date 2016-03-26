@@ -7,6 +7,7 @@
     "babel-core": "^6.4.5",
     "gulp-shell": "^0.5.2",
     "livereload": "^0.4.1",
+    "mathjs": "^3.1.0",
     "react": "^0.14.7",
     "react-addons-update": "^0.14.7",
     "react-dom": "^0.14.7",
