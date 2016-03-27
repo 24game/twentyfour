@@ -69,12 +69,13 @@ class Game extends React.Component {
         isActive: false
       });
       window.isAnimating = this.isAnimating.bind(this);
-      window.getStaticTileOffset = this.getStaticTileOffset.bind(this);
-      window.getAnimatingTileOffset = this.getAnimatingTileOffset.bind(this);
+      window.getStaticTileOffset = this.getStaticTileOffsetByTargetIndex.bind(this);
+      window.getAnimatingTileOffset = this.getDynamicTileOffsetByTargetIndex.bind(this);
     }
 
     /* React's new ES6 class-based components do not have `this` autobinded */
     this.cycleOperator = this.cycleOperator.bind(this);
+    this.count = 0;
   }
 
   componentDidMount() {
@@ -142,7 +143,8 @@ class Game extends React.Component {
     return this.state.animating.tiles[index];
   }
 
-  getActiveAnimatingTile() {
+  /* Returns the animating tile that is being clicked on. */
+  getActiveTile() {
     let foundTile = null;
     this.state.animating.tiles.forEach((tile, index) => {
       if (tile.isActive) {
@@ -158,29 +160,44 @@ class Game extends React.Component {
     return tile && tile.isActive;
   }
 
-  updateAnimatingTile(index, tile) {
+  updateAnimatingTileByIndex(index, tile) {
     let originalTiles = this.state.animating.tiles;
     let newTiles = originalTiles.slice(0);
+    let originalTile = JSON.parse(JSON.stringify(newTiles[index]));
     newTiles[index] = tile;
-      this.setState(update(this.state, {
+    this.setState(update(this.state, {
       animating: {
         tiles: {$set: newTiles}
       }
     }));
+    console.log(`Updated tile (by index ${index}): From`, originalTile, 'to', tile);
+    console.log('Actual tile (by index ${index}):', this.state.animating.tiles[index]);
+  }
+
+  updateAnimatingTileByTargetIndex(index, tile) {
+    let originalTiles = this.state.animating.tiles;
+    let newTiles = originalTiles.slice(0);
+    var originalTile;
+    for (let i = 0; i < newTiles.length; i++) {
+      if (newTiles[i].targetIndex === index) {
+        originalTile = JSON.parse(JSON.stringify(newTiles[i]));
+        newTiles[i] = tile;
+      }
+    }
+    this.setState(update(this.state, {
+      animating: {
+        tiles: {$set: newTiles}
+      }
+    }));
+    console.log(`Updated tile (by target index ${index}): From`, originalTile, 'to', tile);
   }
 // calcuate based on where mouse's pageX is relative to the known tile offsetLeft (from getTileLeftEdge), these values are unaffected by transform
 
-  findAnimatingTileIndexWithTargetIndex(targetIndex) {
-    let foundIndex = -1;
-    this.state.animating.tiles.forEach((tile, index) => {
-      if (tile.targetIndex == targetIndex) {
-        foundIndex = index;
-      }
-    });
-    return foundIndex;
+  findAnimatingTileIndexByTargetIndex(targetIndex) {
+    return this.getDynamicTileByTargetIndex(targetIndex).index;
   }
 
-  findAnimatingTileWithTargetIndex(targetIndex) {
+  getDynamicTileByTargetIndex(targetIndex) {
     let foundTile = null;
     this.state.animating.tiles.forEach((tile, index) => {
       if (tile.targetIndex == targetIndex) {
@@ -190,7 +207,7 @@ class Game extends React.Component {
     return foundTile;
   }
 
-  findAnimatingTileWithNonTargetIndex(nonTargetIndex) {
+  findAnimatingTileByIndex(nonTargetIndex) {
     let foundTile = null;
     this.state.animating.tiles.forEach((tile, index) => {
       if (tile.index == nonTargetIndex) {
@@ -207,148 +224,133 @@ class Game extends React.Component {
     If overlap is detected, switches the transitioning tile layout.
    */
   updateAnimationState() {
-    let activeTile = this.getActiveAnimatingTile();
+    let activeTile = this.getActiveTile();
     if (!activeTile) {
       return;
     }
 
-    let activeTileIndex = activeTile.index;
-    let activeTileTargetIndex = activeTile.targetIndex;
-    let leftNeighborIndex = this.findAnimatingTileIndexWithTargetIndex(activeTileTargetIndex - 1);
-    let rightNeighborIndex = this.findAnimatingTileIndexWithTargetIndex(activeTileTargetIndex + 1);
-    //console.warn(`Target Neighbors: ${activeTileTargetIndex - 1}, ${activeTileTargetIndex + 1}`);
+    let leftNeighbor = this.getDynamicTileByTargetIndex(activeTile.targetIndex - 1);
+    let rightNeighbor = this.getDynamicTileByTargetIndex(activeTile.targetIndex + 1);
 
-    let leftNeighborExists = leftNeighborIndex !== -1;
-    let rightNeighborExists = rightNeighborIndex !== -1;
-
-    let leftNeighbor = this.findAnimatingTileWithNonTargetIndex(leftNeighborIndex);
-    let rightNeighbor = this.findAnimatingTileWithNonTargetIndex(rightNeighborIndex);
+    let leftNeighborExists = (leftNeighbor !== null);
+    let rightNeighborExists = (rightNeighbor !== null);;
 
     // Get active, left neighbor, and right neighbor edge offsets
-    let { left: activeTileLeftAnimating, right: activeTileRightAnimating } = this.getAnimatingTileOffset(activeTileTargetIndex);
-    let { left: activeTargetTileLeftStatic, right: activeTargetTileRightStatic } = this.getStaticTileOffset(activeTileTargetIndex);
-    let { left: activeTileLeftStatic, right: activeTileRightStatic } = this.getStaticTileOffset(activeTileIndex);
-    let { left: leftNeighborLeftStatic, right: leftNeighborRightStatic } = this.getStaticTileOffset(leftNeighborIndex);
-    let { left: rightNeighborLeftStatic, right: rightNeighborRightStatic } = this.getStaticTileOffset(rightNeighborIndex);
-    let { left: leftNeighborLeftAnimating, right: leftNeighborRightAnimating } = this.getAnimatingTileOffset(leftNeighborIndex);
-    let { left: rightNeighborLeftAnimating, right: rightNeighborRightAnimating } = this.getAnimatingTileOffset(rightNeighborIndex);
-    //console.warn(`leftNeighborIndex: ${leftNeighborIndex}`);
-    //console.warn(`rightNeighborIndex: ${rightNeighborIndex}`);
-    //console.warn(`activeTileRightAnimating: ${activeTileRightAnimating}`);
-    //console.warn(`rightNeighborLeftStatic: ${rightNeighborLeftStatic}`);
+    let { left: activeTargetTileLeftDynamic, right: activeTargetTileRightDynamic } = this.getDynamicTileOffsetByTargetIndex(activeTile.targetIndex);
+    let { left: activeTargetTileLeftStatic, right: activeTargetTileRightStatic } = this.getStaticTileOffsetByTargetIndex(activeTile.targetIndex);
 
-    //console.log(`rightNeighborExists: ${rightNeighborExists}`);
-    //console.log(`activeTileRightAnimating (${activeTileRightAnimating}) > rightNeighborLeftStatic (${rightNeighborLeftStatic}): ${activeTileRightAnimating > rightNeighborLeftStatic}`);
-    //console.log(`this.getAnimatingTile(rightNeighborIndex).isSwappable: ${this.getAnimatingTile(rightNeighborIndex).isSwappable}`);
+    if (leftNeighborExists) {
+      var { left: leftNeighborLeftStatic, right: leftNeighborRightStatic } = this.getStaticTileOffsetByTargetIndex(leftNeighbor.targetIndex);
+      var { left: leftNeighborLeftDynamic, right: leftNeighborRightDynamic } = this.getDynamicTileOffsetByTargetIndex(leftNeighbor.targetIndex);
+    }
 
-    //console.group();
-    //console.log('Active Tile Index:', activeTileIndex);
-    //console.log('Active Tile Animating Edge Offsets:', { left: activeTileLeftAnimating, right: activeTileRightAnimating });
-    //console.log('Active Tile Static Edge Offsets:', { left: activeTileLeftStatic, right: activeTileRightStatic });
-    //console.log('Left Neighbor Static Edge Offsets:', { left: leftNeighborLeftStatic, right: leftNeighborRightStatic });
-    //console.log('Right Neighbor Static Edge Offsets:', { left: rightNeighborLeftStatic, right: rightNeighborRightStatic });
-    //console.groupEnd();
+    if (rightNeighborExists) {
+      var { left: rightNeighborLeftStatic, right: rightNeighborRightStatic } = this.getStaticTileOffsetByTargetIndex(rightNeighbor.targetIndex);
+      var { left: rightNeighborLeftDynamic, right: rightNeighborRightDynamic } = this.getDynamicTileOffsetByTargetIndex(rightNeighbor.targetIndex);
+    }
 
+
+    //console.log(`Target Tile Indicies: Active (${activeTile.targetIndex}), Left (${leftNeighborExists ? leftNeighbor.targetIndex : 'N/A'}), Right (${rightNeighborExists ? rightNeighbor.targetIndex : 'N/A'})`);
     // Active tile crossed left neighbor
     if (leftNeighborExists &&
-        activeTileLeftAnimating < leftNeighborRightStatic &&
-        this.getAnimatingTile(leftNeighborIndex).isSwappable) {
+        activeTargetTileLeftDynamic < leftNeighborRightStatic &&
+        this.getDynamicTileByTargetIndex(leftNeighbor.targetIndex).isSwappable) {
+      return;
       console.log(`Active tile ${activeTile.number} crossed left neighbor ${leftNeighbor.number}.`);
 
-      let newLeftNeighborTargetIndex = activeTileIndex;
-      let newLeftNeighborIsSwappable = false;
-      let newLeftNeighborState = Game.TILE_STATES.TRANSITIONING;
-      let newLeftNeighborTargetOffset = leftNeighbor.targetOffset + (activeTileLeftStatic - leftNeighborLeftStatic);
-      console.info(`newLeftNeighborTargetOffset: ${newLeftNeighborTargetOffset} = activeTileLeftStatic (${activeTileLeftStatic}) - leftNeighborLeftStatic (${leftNeighborLeftStatic}`);
+      let preSwapLeftNeighborTargetIndex = leftNeighbor.targetIndex;
 
-      this.updateAnimatingTile(leftNeighborIndex, objectAssign(leftNeighbor, {
-        targetIndex: newLeftNeighborTargetIndex,
-        isSwappable: newLeftNeighborIsSwappable,
-        state: newLeftNeighborState,
-        targetOffset: newLeftNeighborTargetOffset,
+      let futureLeftNeighbor = objectAssign({}, leftNeighbor, {
+        targetIndex: activeTile.targetIndex,
+        isSwappable: false,
+        state: Game.TILE_STATES.TRANSITIONING,
+        targetOffset: leftNeighbor.targetOffset + (activeTargetTileLeftStatic - leftNeighborLeftStatic),
         swapState: {
           swappedRightToLeft: false,
-          neighborTileIndex: newLeftNeighborTargetIndex,
-          activeTileIndex: activeTileTargetIndex
+          neighborTargetTileIndex: activeTile.targetIndex,
+          activeTargetTileIndex: preSwapLeftNeighborTargetIndex
         }
-      }));
+      });
+      console.info(`newLeftNeighborTargetOffset: ${futureLeftNeighbor.targetOffset} = activeTileLeftStatic (${activeTargetTileLeftStatic}) - leftNeighborLeftStatic (${leftNeighborLeftStatic}`);
 
-      let oldLeftNeighborIndex = leftNeighborIndex;
-      let oldLeftNeighborOffset = leftNeighborLeftStatic - activeTargetTileLeftStatic;
+      this.updateAnimatingTileByIndex(leftNeighbor.index, futureLeftNeighbor);
 
-      this.updateAnimatingTile(activeTileIndex, objectAssign(activeTile, {
-        targetIndex: oldLeftNeighborIndex,
-        targetOffset: oldLeftNeighborOffset
+      let leftNeighborToActiveDistance = leftNeighborLeftStatic - activeTargetTileLeftStatic;
+
+      this.updateAnimatingTileByIndex(activeTile.index, objectAssign({}, activeTile, {
+        targetIndex: preSwapLeftNeighborTargetIndex,
+        targetOffset: leftNeighborToActiveDistance
       }));
     }
+
+    this.count++;
+    //console.log(`activeTargetTileRightDynamic: ${activeTargetTileRightDynamic}, rightNeighborLeftStatic: ${rightNeighborLeftStatic}, activeTargetTileRightDynamic > rightNeighborLeftStatic: ${activeTargetTileRightDynamic > rightNeighborLeftStatic} `)
+    console.log('rightNeighbor.targetIndex:', rightNeighbor.targetIndex);
+    console.log('getDynamicTileByTargetIndex(rightNeighbor.targetIndex):', JSON.stringify(this.getDynamicTileByTargetIndex(rightNeighbor.targetIndex)))
     if (rightNeighborExists &&
-             activeTileRightAnimating > rightNeighborLeftStatic &&
-             this.getAnimatingTile(rightNeighborIndex).isSwappable) {
+             activeTargetTileRightDynamic > rightNeighborLeftStatic &&
+             this.getDynamicTileByTargetIndex(rightNeighbor.targetIndex).isSwappable) {
+      if (this.count >= 5) {
+        return;
+      }
       console.log(`Active tile ${activeTile.number} crossed right neighbor ${rightNeighbor.number}.`);
       //console.log('Right neighbor:', rightNeighbor);
 
-      let newRightNeighborTargetIndex = activeTileIndex;
-      let newRightNeighborIsSwappable = false;
-      let newRightNeighborState = Game.TILE_STATES.TRANSITIONING;
-      let newRightNeighborTargetOffset = rightNeighbor.targetOffset + (activeTileLeftStatic - rightNeighborLeftStatic);
-      console.info(`newRightNeighborTargetOffset: ${newRightNeighborTargetOffset} = activeTileLeftStatic (${activeTileLeftStatic}) - rightNeighborLeftStatic (${rightNeighborLeftStatic}`);
-
-      //console.warn(`(before-update-animation) Right tile at ${rightNeighbor.number} swappable:`, this.getAnimatingTile(rightNeighborIndex).isSwappable);
-      this.updateAnimatingTile(rightNeighborIndex, objectAssign(rightNeighbor, {
-        targetIndex: newRightNeighborTargetIndex,
-        isSwappable: newRightNeighborIsSwappable,
-        state: newRightNeighborState,
-        targetOffset: newRightNeighborTargetOffset,
+      let futureRightNeighbor = objectAssign({}, rightNeighbor, {
+        targetIndex: activeTile.targetIndex,
+        isSwappable: false,
+        state: Game.TILE_STATES.TRANSITIONING,
+        targetOffset: rightNeighbor.targetOffset + (activeTargetTileLeftStatic - rightNeighborLeftStatic),
         swapState: {
           swappedRightToLeft: true,
-          neighborTileIndex: rightNeighborIndex,
-          activeTileIndex: activeTileIndex
+          neighborTargetTileIndex: activeTile.targetIndex,
+          activeTargetTileIndex: rightNeighbor.targetIndex
         }
-      }));
-      //console.warn(`(after-update-animation) Right tile at ${rightNeighbor.number} swappable:`, this.getAnimatingTile(rightNeighborIndex).isSwappable);
+      });
+      console.info(`newRightNeighborTargetOffset: ${futureRightNeighbor.targetOffset} = activeTileLeftStatic (${activeTargetTileLeftStatic}) - rightNeighborLeftStatic (${rightNeighborLeftStatic}`);
+      this.updateAnimatingTileByIndex(rightNeighbor.index, futureRightNeighbor);
+      let rightNeighborToActiveTileDistance = rightNeighborLeftStatic - activeTargetTileLeftStatic;
 
-      let oldRightNeighborIndex = rightNeighborIndex;
-      let oldRightNeighborOffset = rightNeighborLeftStatic - activeTargetTileLeftStatic;
-
-      this.updateAnimatingTile(activeTileIndex, objectAssign(activeTile, {
-        targetIndex: oldRightNeighborIndex,
-        targetOffset: oldRightNeighborOffset
+      this.updateAnimatingTileByIndex(activeTile.index, objectAssign({}, activeTile, {
+        targetIndex: futureRightNeighbor.targetIndex,
+        targetOffset: rightNeighborToActiveTileDistance
       }));
-      //console.log('Active Tile Offset:', this.getActiveAnimatingTile()['targetOffset']);
+      //console.log('Active Tile Offset:', this.getActiveTile()['targetOffset']);
     }
     if (rightNeighborExists) {
       //console.warn(`(post-animation) Right tile at ${rightNeighbor.number} swappable:`, this.getAnimatingTile(rightNeighborIndex).isSwappable);
     }
 
-    this.state.animating.tiles.forEach((neighborTile, neighborTileIndex) => {
+    this.state.animating.tiles.forEach((neighborTile) => {
       if (!neighborTile.isSwappable) {
-        this.allowIsSwappableIfReady(neighborTile.swapState.swappedRightToLeft, neighborTile.swapState.neighborTileIndex, neighborTile.swapState.activeTileIndex);
+        this.allowIsSwappableIfReady(neighborTile.swapState.swappedRightToLeft, neighborTile.swapState.neighborTargetTileIndex, neighborTile.swapState.activeTargetTileIndex);
       }
     });
   }
 
-  allowIsSwappableIfReady(swappedRightToLeft, neighborTileIndex, activeTileIndex) {
-    //console.log(`allowIsSwappableIfReady: swappedRightToLeft (${swappedRightToLeft}), neighborTileIndex (${neighborTileIndex}), activeTileIndex (${activeTileIndex})`);
-    let neighbor = this.findAnimatingTileWithNonTargetIndex(neighborTileIndex);
-    let activeTile = this.getActiveAnimatingTile(activeTileIndex);
-    let { left: neighborLeftAnimating, right: neighborRightAnimating } = this.getAnimatingNonTargetTileOffset(neighborTileIndex);
-    //console.log(`neighborLeftAnimating (${neighborLeftAnimating}), neighborRightAnimating (${neighborRightAnimating}) for neighbor tile ${neighborTileIndex}`);
-    let { left: activeTileLeftAnimating, right: activeTileRightAnimating } = this.getAnimatingNonTargetTileOffset(activeTileIndex);
-    //console.log(`activeTileLeftAnimating (${activeTileLeftAnimating}), activeTileRightAnimating (${activeTileRightAnimating}) for active tile ${activeTileIndex}`);
+  allowIsSwappableIfReady(swappedRightToLeft, neighborTileTargetIndex, activeTileTargetIndex) {
+    return;
+    console.log(`allowIsSwappableIfReady: swappedRightToLeft (${swappedRightToLeft}), neighborTileTargetIndex (${neighborTileTargetIndex}), activeTileTargetIndex (${activeTileTargetIndex})`);
+    let neighbor = this.getDynamicTileByTargetIndex(neighborTileTargetIndex);
+    let activeTile = this.getDynamicTileByTargetIndex(activeTileTargetIndex);
+    let { left: neighborLeftAnimating, right: neighborRightAnimating } = this.getDynamicTileOffsetByTargetIndex(neighborTileTargetIndex);
+    //console.log(`neighborLeftAnimating (${neighborLeftAnimating}), neighborRightAnimating (${neighborRightAnimating}) for neighbor tile ${neighborTargetTileIndex}`);
+    let { left: activeTargetTileLeftAnimating, right: activeTargetTileRightAnimating } = this.getDynamicTileOffsetByTargetIndex(activeTileTargetIndex);
+    //console.log(`activeTileLeftAnimating (${activeTileLeftAnimating}), activeTileRightAnimating (${activeTileRightAnimating}) for active tile ${activeTargetTileIndex}`);
     if (swappedRightToLeft) {
       //console.log(`neighborRightAnimating (${neighborRightAnimating}) < activeTileLeftAnimating (${activeTileLeftAnimating}) = ${neighborRightAnimating < activeTileLeftAnimating}`);
-      if (neighborRightAnimating < activeTileLeftAnimating) {
+      if (neighborRightAnimating < activeTargetTileLeftAnimating) {
         console.warn('Success! changing isswappable back to true');
-        this.updateAnimatingTile(neighborTileIndex, objectAssign(neighbor, {
+        this.updateAnimatingTileByIndex(neighbor.index, objectAssign({}, neighbor, {
           isSwappable: true,
           swapState: null
         }));
       }
     } else {
-      if (neighborLeftAnimating > activeTileRightAnimating) {
+      if (neighborLeftAnimating > activeTargetTileRightAnimating) {
         //console.log(`neighborLeftAnimating (${neighborLeftAnimating}) < activeTileRightAnimating (${activeTileRightAnimating}) = ${neighborLeftAnimating < activeTileRightAnimating}`);
         console.warn('Success! changing isswappable back to true');
-        this.updateAnimatingTile(neighborTileIndex, objectAssign(neighbor, {
+        this.updateAnimatingTileByIndex(neighbor.index, objectAssign({}, neighbor, {
           isSwappable: true,
           swapState: null
         }));
@@ -359,15 +361,15 @@ class Game extends React.Component {
   /*
     Given the tile index, returns the left and right edge offsets of the tile not affected by transforms.
    */
-  getStaticTileOffset(tileIndex) {
-    if (tileIndex < 0 || tileIndex > this.tileRefs.length) {
+  getStaticTileOffsetByTargetIndex(targetTileIndex) {
+    if (targetTileIndex < 0 || targetTileIndex > this.tileRefs.length) {
       return {
         left: null,
         right: null
       }
     }
-    let inAnimationTileIndex = this.state.animating.tiles[tileIndex].targetIndex;
-    let tileRef = this.tileRefs[inAnimationTileIndex];
+    let tileIndex = this.getDynamicTileByTargetIndex(targetTileIndex).index;
+    let tileRef = this.tileRefs[tileIndex];
     if (tileRef) {
       let domNode = ReactDOM.findDOMNode(tileRef);
       return {
@@ -386,41 +388,15 @@ class Game extends React.Component {
    Given the tile index, returns the accurate-as-displayed left and right edge offsets from the left of the viewport.
    The tiles checked are not the original tiles, but the temporary in-animation tiles number layout.
    */
-  getAnimatingTileOffset(tileIndex) {
-    if (tileIndex < 0 || tileIndex > this.tileRefs.length) {
+  getDynamicTileOffsetByTargetIndex(targetTileIndex) {
+    if (targetTileIndex < 0 || targetTileIndex > this.tileRefs.length) {
       return {
         left: null,
         right: null
       }
     }
-    let inAnimationTileIndex = this.state.animating.tiles[tileIndex].targetIndex;
-    let tileRef = this.tileRefs[inAnimationTileIndex];
-    if (tileRef) {
-      let domNode = ReactDOM.findDOMNode(tileRef);
-      let rect = domNode.getBoundingClientRect();
-      return {
-        left: rect.left,
-        right: rect.left + rect.width
-      }
-    } else {
-      return {
-        left: null,
-        right: null
-      };
-    }
-  }
-
-  /*
-   Given the tile index, returns the accurate-as-displayed left and right edge offsets from the left of the viewport.
-   The tiles checked are not the original tiles, but the temporary in-animation tiles number layout.
-   */
-  getAnimatingNonTargetTileOffset(tileIndex) {
-    if (tileIndex < 0 || tileIndex > this.tileRefs.length) {
-      return {
-        left: null,
-        right: null
-      }
-    }
+    let dynamicTile = this.getDynamicTileByTargetIndex(targetTileIndex);
+    let tileIndex = dynamicTile.index;
     let tileRef = this.tileRefs[tileIndex];
     if (tileRef) {
       let domNode = ReactDOM.findDOMNode(tileRef);
@@ -475,9 +451,9 @@ class Game extends React.Component {
   isTileTransitioning(tileIndex) {
     let originalTileOffsets = [];
     for (let i = 0; i < this.tileRefs.length; i++) {
-      originalTileOffsets.push(this.getStaticTileOffset(i)['left']);
+      originalTileOffsets.push(this.getStaticTileOffsetByTargetIndex(i)['left']);
     }
-    let activeLeftOffset = this.getAnimatingTileOffset(tileIndex)['left'];
+    let activeLeftOffset = this.getDynamicTileOffsetByTargetIndex(tileIndex)['left'];
     return originalTileOffsets.indexOf(activeLeftOffset) == -1;
   }
 
@@ -544,9 +520,9 @@ class Game extends React.Component {
     console.log(`Calling %conPointerUp(event: ${e}}).`, Utils.getConsoleStyle('code'));
     // TODO: Do not wait for animation to complete, use targetIndex to pre-emptively swap the tiles in a temp place and calculate the result to make the game seem faster
     //       In other words, the result should update immediately after the user releases their cursor and should not wait for the animation to finish
-    let activeTile = this.getActiveAnimatingTile();
+    let activeTile = this.getActiveTile();
     activeTile.isActive = false;
-    this.updateAnimatingTile(activeTile.index, activeTile)
+    this.updateAnimatingTileByIndex(activeTile.index, activeTile)
   }
 
   getTileZIndex(renderingTileIndex) {
@@ -564,10 +540,9 @@ class Game extends React.Component {
     let html =
       <Motion style={tileStyle} key={tileIndex}>
         {({scale, shadow, offsetX}) => {
-          //console.log(`Tile ${tileIndex}: Offset ${offsetX}px.`);
           return <Tile onMouseDownHandler={this.onTileDownHandler.bind(this, tileIndex)}
                 onTouchStartHandler={this.onTileDownHandler.bind(this, tileIndex)}
-                value={tileValue} ref={(ref) => this.tileRefs[tileIndex] = ref}
+                value={tileValue} ref={(ref) => { this.tileRefs[tileIndex] = ref; } }
                 customStyles={{
                   boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
                   transform: `translate3d(${offsetX}px, 0, 0) scale(${scale})`,
@@ -628,6 +603,7 @@ class Game extends React.Component {
    * Occurs after render() is called. Called by React.
    */
   componentDidUpdate(prevProps, prevState){
+    window.atiles = this.state.animating.tiles;
     if (this.isAnimating()) {
       this.updateAnimationState();
     }
