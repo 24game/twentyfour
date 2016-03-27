@@ -32,6 +32,8 @@ class Game extends React.Component {
 
     /* Refs to later access each tile's position */
     this.tileRefs = [];
+    this.lastOffsets = [0, 0, 0, 0];
+    this.lastOffsetsUnchanged = [true, true, true, true];
     this.state = {
       /* An array of 4 numbers */
       numbers: Utils.shuffle(props.puzzle),
@@ -69,7 +71,10 @@ class Game extends React.Component {
         targetOffset: 0,
         isActive: false
       });
+      this.justFinishedAnimation = false;
+      window.getTileHtml = this.getTileHtml.bind(this);
       window.isAnimating = this.isAnimating.bind(this);
+      window.isPostAnimating = this.isPostAnimating.bind(this);
       window.getStaticTileOffset = this.getStaticTileOffsetByTargetIndex.bind(this);
       window.getDynamicTileOffsetByTargetIndex = this.getDynamicTileOffsetByTargetIndex.bind(this);
       window.getDynamicTileByTargetIndex = this.getDynamicTileByTargetIndex.bind(this);
@@ -78,6 +83,7 @@ class Game extends React.Component {
     /* React's new ES6 class-based components do not have `this` autobinded */
     this.cycleOperator = this.cycleOperator.bind(this);
     this.count = 0;
+    this.animationMode = false;
   }
 
   componentDidMount() {
@@ -428,6 +434,14 @@ class Game extends React.Component {
     return false;
   }
 
+  isPostAnimating() {
+    this.lastOffsetsUnchanged.forEach(value => {
+      if (!value)
+        return true;
+    });
+    return false;
+  }
+
   /*
     Returns true if the tile's left offset matches any of the pre-transform left offsets.
    */
@@ -452,6 +466,7 @@ class Game extends React.Component {
     if (this.isAnimating()) {
       return;
     }
+    this.animationMode = true;
 
     let tiles = [];
     this.currentState.numbers.forEach((number, index) => {
@@ -504,8 +519,30 @@ class Game extends React.Component {
     // TODO: Do not wait for animation to complete, use targetIndex to pre-emptively swap the tiles in a temp place and calculate the result to make the game seem faster
     //       In other words, the result should update immediately after the user releases their cursor and should not wait for the animation to finish
     let activeTile = this.getActiveTile();
-    activeTile.isActive = false;
-    this.updateAnimatingTileByIndex(activeTile.index, activeTile)
+    if (activeTile) {
+      activeTile.isActive = false;
+      this.updateAnimatingTileByIndex(activeTile.index, activeTile)
+    }
+    function check() {
+      if (!isPostAnimating()) {
+        clearInterval(interval);
+        console.log('Not post animating anymore.')
+        let finalNumbersHash = {};
+        let finalNumbers = [];
+        console.log('Numbers before swap:', this.currentState.numbers);
+        this.currentState.animating.tiles.forEach(tile => {
+          finalNumbersHash[tile.targetIndex] = tile.number;
+        });
+        for (let i = 0; i < this.currentState.numbers.length; i++) {
+          finalNumbers.push(finalNumbersHash[i]);
+        }
+        console.log('Numbers after swap:', finalNumbers);
+        this.setState(update(this.state, {numbers: {$set: finalNumbers }}));
+        this.animationMode = false;
+        this.justFinishedAnimation = true;
+      }
+    }
+    let interval = setInterval(check.bind(this), 100);
   }
 
   getTileZIndex(renderingTileIndex) {
@@ -523,6 +560,12 @@ class Game extends React.Component {
     let html =
       <Motion style={tileStyle} key={tileIndex}>
         {({scale, shadow, offsetX}) => {
+            if (this.lastOffsets[tileIndex] === offsetX) {
+                  this.lastOffsetsUnchanged[tileIndex] = true;
+                } else {
+                this.lastOffsetsUnchanged[tileIndex] = false;
+                }
+            this.lastOffsets[tileIndex] = offsetX;
           return <Tile onMouseDownHandler={this.onTileDownHandler.bind(this, tileIndex)}
                 onTouchStartHandler={this.onTileDownHandler.bind(this, tileIndex)}
                 value={tileValue} ref={(ref) => { this.tileRefs[tileIndex] = ref; } }
@@ -538,10 +581,10 @@ class Game extends React.Component {
 
   getTileMotionStyle(tileIndex) {
     let { firstClickLocation, mouseLocation } = this.currentState.animating;
-    //console.log(`Calling %cgetTileMotionStyle(numIndexPressed: ${numIndexPressed}), mouseLocation: ${mouseLocation}.`, Utils.getConsoleStyle('code'));
+    //  console.log(`Calling %cgetTileMotionStyle(numIndexPressed: ${numIndexPressed}), mouseLocation: ${mouseLocation}.`, Utils.getConsoleStyle('code'));
     let inactiveTileOffset = 0;
     let animatingTile = this.currentState.animating.tiles[tileIndex];
-    if (animatingTile) {
+    if (animatingTile && this.animationMode) {
       inactiveTileOffset = animatingTile.targetOffset;
     }
     if (this.isActiveTile(tileIndex)) {
@@ -554,7 +597,7 @@ class Game extends React.Component {
       return {
         scale: spring(1, this.springConfig),
         shadow: spring(1, this.springConfig),
-        offsetX: spring(inactiveTileOffset, this.springConfig),
+        offsetX: this.justFinishedAnimation ? inactiveTileOffset : spring(inactiveTileOffset, this.springConfig)
       };
     }
   }
@@ -595,7 +638,7 @@ class Game extends React.Component {
   render() {
     let result = this.computeResult();
 
-    return (
+    let html = (
       <section className="flexible rows horizontally-centered vertically-centered game">
         {/* Do this 4 times .. */}
         { range(this.currentState.numbers.length).map( index => {
@@ -614,6 +657,10 @@ class Game extends React.Component {
         <Result value={Utils.cleanComputedResult(result)}/>
       </section>
     );
+    if (this.justFinishedAnimation) {
+      this.justFinishedAnimation = false;
+    }
+    return html;
   }
 }
 
