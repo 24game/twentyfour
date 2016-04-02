@@ -5,15 +5,19 @@
   "main": "src/app.js",
   "dependencies": {
     "babel-core": "^6.4.5",
+    "debounce": "^1.0.0",
     "gulp-shell": "^0.5.2",
+    "heir": "git@github.com:jasonpang/Heir.git#onesignal",
     "livereload": "^0.4.1",
     "mathjs": "^3.1.0",
+    "object-assign": "^4.0.1",
     "react": "^0.14.7",
     "react-addons-update": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-motion": "^0.4.2",
     "webpack": "^1.12.12",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.1",
+    "wolfy87-eventemitter": "^4.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.2.1",
