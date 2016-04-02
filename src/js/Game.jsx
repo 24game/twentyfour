@@ -106,25 +106,37 @@ class Game extends React.Component {
     return JSON.stringify(eval(eval(resultString)));
   }
 
+  onDoubleClick(tileIndex) {
+    console.log("Calling parenthesize().");
+    console.log("Previous state: ", this.state.parentheses);
+    this.parenthesize(tileIndex);
+    console.log("New state: ", this.state.parentheses);
+  }
+
   // Handles the logic of double clicking a tile to parenthesize it.
   // tileIndex is the index of the tile being clicked, a value between 0 and 3, inclusive
   parenthesize(tileIndex) {
     // If there is a full set of parentheses already, or if the clicked tile already
     // has parenthesis, then reset the parentheses state.
+    console.log("Tile index: ", tileIndex);
     if (this.state.parentheses[1] !== null || tileIndex === this.state.parentheses[0]) {
+      console.log("Clearing parentheses.");
       this.clearParentheses();
     } else {
       // If there is no left parenthesis, then set that.
       if (this.state.parentheses[0] === null) {
+        console.log("Setting left parenthesis.");
         this.setLeftParenthesis();
       } else {
         // If there is a left parenthesis, then if the clicked tile comes after
         // the left parenthesis, set the right parenthesis.
         if (tileIndex > this.state.parentheses[0]) {
+          console.log("Setting right parenthesis.");
           this.setRightParenthesis();
         } else {
           // Otherwise, the clicked tile comes before the left parenthesis, so
           // reset the parentheses state and set the left parenthesis on the left tile.
+          console.log("Clearing parentheses and setting left parenthesis.");
           this.clearParentheses();
           this.setRightParenthesis();
         }
@@ -139,24 +151,24 @@ class Game extends React.Component {
     }));
   }
 
-  setLeftParenthesis(tilePosition) {
+  setLeftParenthesis(tileIndex) {
     let _parentheses = this.state.parentheses.slice(0);
-    _parentheses[0] = tilePosition;
+    _parentheses[0] = tileIndex;
     this.setState(update(this.state, {
       parentheses: {$set: _parentheses}
     }));
   }
 
-  setRightParenthesis(tilePosition) {
+  setRightParenthesis(tileIndex) {
     let _parentheses = this.state.parentheses.slice(0);
-    _parentheses[1] = tilePosition;
+    _parentheses[1] = tileIndex;
     this.setState(update(this.state, {
       parentheses: {$set: _parentheses}
     }));
   }
 
   onPointerMove({pageX}) {
-    console.log(`Calling %conPointerMove(pageX: ${pageX}}).`, Utils.getConsoleStyle('code'));
+    // console.log(`Calling %conPointerMove(pageX: ${pageX}}).`, Utils.getConsoleStyle('code'));
     this.setState(update(this.state, {
       anim: {
         /* The current mouse position, relative to the page (layout viewport) */
@@ -166,7 +178,7 @@ class Game extends React.Component {
   }
 
   onPointerUp(e) {
-    console.log(`Calling %conPointerUp(event: ${e}}).`, Utils.getConsoleStyle('code'));
+    // console.log(`Calling %conPointerUp(event: ${e}}).`, Utils.getConsoleStyle('code'));
     let lastNumIndexPressed = this.state.anim.numIndexPressed;
     this.setState(update(this.state, {
       anim: {
@@ -181,7 +193,7 @@ class Game extends React.Component {
   }
 
   onTileDownHandler(tileIndex, {pageX}) {
-    console.log(`Calling %conTileDownHandler(tileIndex: ${tileIndex}, pageX: ${pageX}).`, Utils.getConsoleStyle('code'));
+    // console.log(`Calling %conTileDownHandler(tileIndex: ${tileIndex}, pageX: ${pageX}).`, Utils.getConsoleStyle('code'));
     this.setState(update(this.state, {
       anim: {
         numIndexPressed: {$set: tileIndex},
@@ -211,6 +223,7 @@ class Game extends React.Component {
         {({scale, shadow, offsetX}) =>
           <Tile onMouseDownHandler={this.onTileDownHandler.bind(this, tileIndex)}
                 onTouchStartHandler={this.onTileDownHandler.bind(this, tileIndex)}
+                onDoubleClick={this.onDoubleClick.bind(this, tileIndex)}
                 value={tileValue} ref={(ref) => this.tileRefs[tileIndex] = ref}
                 customStyles={{
                   boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
@@ -258,8 +271,7 @@ class Game extends React.Component {
     if (parensIndex == index) {
       return <Parenthesis
         index={parensIndex}
-        type={direction}
-        />;
+        type={direction} />;
     }
   }
 

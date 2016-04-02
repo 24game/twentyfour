@@ -18,7 +18,8 @@ var Tile = React.createClass({
           onTouchCancel = {this.props.onTouchCancelHandler}
           onMouseMove = {this.props.onMouseMoveHandler}
           onTouchMove = {this.props.onTouchMoveHandler}
-          style = {this.props.customStyles}>
+          style = {this.props.customStyles}
+          onDoubleClick={this.props.onDoubleClick}>
           <span className="unselectable number">{this.props.value}</span>
         </div>
     )
