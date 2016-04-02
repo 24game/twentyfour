@@ -350,6 +350,7 @@ class Game extends React.Component {
 
   /*
     Given the tile index, returns the left and right edge offsets of the tile not affected by transforms.
+    This has no real ByTargetIndex variant
    */
   getStaticTileOffsetByTargetIndex(tileIndex) {
     if (tileIndex < 0 || tileIndex > this.tileRefs.length) {
@@ -436,9 +437,12 @@ class Game extends React.Component {
 
   isPostAnimating() {
     this.lastOffsetsUnchanged.forEach(value => {
-      if (!value)
+      if (!value) {
+        console.log('isPostAnimating() check, last known values:', this.lastOffsets);
         return true;
+      }
     });
+    console.log('isPostAnimating() check, last known values:', this.lastOffsets);
     return false;
   }
 
@@ -526,7 +530,7 @@ class Game extends React.Component {
     function check() {
       if (!isPostAnimating()) {
         clearInterval(interval);
-        console.log('Not post animating anymore.')
+        console.log('Not post animating anymore.');
         let finalNumbersHash = {};
         let finalNumbers = [];
         console.log('Numbers before swap:', this.currentState.numbers);
@@ -540,6 +544,7 @@ class Game extends React.Component {
         this.setState(update(this.state, {numbers: {$set: finalNumbers }}));
         this.animationMode = false;
         this.justFinishedAnimation = true;
+        this.forceUpdate();
       }
     }
     let interval = setInterval(check.bind(this), 100);
