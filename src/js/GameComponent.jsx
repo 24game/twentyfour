@@ -1,5 +1,6 @@
 import React from 'react';
 import Game from './Game.jsx';
+import Utils from './utils.js';
 
 var GameComponent = React.createClass({
 
@@ -9,8 +10,12 @@ var GameComponent = React.createClass({
   },
 
   getRandomPuzzle: function() {
-    let random = Math.floor(Math.random() * this.puzzleSize - 1);
-    return this.props.puzzles[random].numberTiles;
+    let numberTiles = null;
+    do {
+      let random = Math.floor(Math.random() * this.puzzleSize - 1);
+      numberTiles = this.props.puzzles[random].numberTiles;
+    } while (Utils.uniqueArray(numberTiles).length !== 4);
+    return numberTiles;
   },
 
   getInitialState: function() {

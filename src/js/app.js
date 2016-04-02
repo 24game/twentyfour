@@ -12,7 +12,7 @@ Utils.loadJson('./data/puzzles.json')
     let puzzles = data.puzzles;
     let operators = ['+', '−', '×', '÷'];
 
-    ReactDOM.render(<Title />, document.querySelector('header'));
+    //ReactDOM.render(<Title />, document.querySelector('header'));
     ReactDOM.render(<GameComponent puzzles={puzzles} operators={operators} />, document.querySelector('#game'));
     // ReactDOM.render(<HowToPlay />, document.querySelector('footer'));
 });
