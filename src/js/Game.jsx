@@ -28,7 +28,7 @@ class Game extends React.Component {
       /* We shuffle the operators and take the first three to set the initial state of the operators */
       operators: Utils.shuffle(props.operators).slice(0, 3),
       /* An array where the first value represents the position of the left parenthesis, the second the right, and null represents no left/right paren */
-      parentheses: [0, 2],
+      parentheses: [null, null],
       /* A hash containing various animation-related state data */
       anim: {
         /* The index of the tile currently being clicked (-1 if no tile is being clicked) */
@@ -107,10 +107,7 @@ class Game extends React.Component {
   }
 
   onDoubleClick(tileIndex) {
-    console.log("Calling parenthesize().");
-    console.log("Previous state: ", this.state.parentheses);
     this.parenthesize(tileIndex);
-    console.log("New state: ", this.state.parentheses);
   }
 
   // Handles the logic of double clicking a tile to parenthesize it.
@@ -118,27 +115,22 @@ class Game extends React.Component {
   parenthesize(tileIndex) {
     // If there is a full set of parentheses already, or if the clicked tile already
     // has parenthesis, then reset the parentheses state.
-    console.log("Tile index: ", tileIndex);
     if (this.state.parentheses[1] !== null || tileIndex === this.state.parentheses[0]) {
-      console.log("Clearing parentheses.");
       this.clearParentheses();
     } else {
       // If there is no left parenthesis, then set that.
       if (this.state.parentheses[0] === null) {
-        console.log("Setting left parenthesis.");
-        this.setLeftParenthesis();
+        this.setLeftParenthesis(tileIndex);
       } else {
         // If there is a left parenthesis, then if the clicked tile comes after
         // the left parenthesis, set the right parenthesis.
         if (tileIndex > this.state.parentheses[0]) {
-          console.log("Setting right parenthesis.");
-          this.setRightParenthesis();
+          this.setRightParenthesis(tileIndex);
         } else {
           // Otherwise, the clicked tile comes before the left parenthesis, so
           // reset the parentheses state and set the left parenthesis on the left tile.
-          console.log("Clearing parentheses and setting left parenthesis.");
           this.clearParentheses();
-          this.setRightParenthesis();
+          this.setLeftParenthesis(tileIndex);
         }
       }
     }
