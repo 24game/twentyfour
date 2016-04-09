@@ -1,6 +1,7 @@
 import React from 'react';
 
 class Title extends React.Component {
+
   render() {
     return (
       <div className="centered">
@@ -8,6 +9,7 @@ class Title extends React.Component {
       </div>
     )
   }
+  
 }
 
 export default Title;
