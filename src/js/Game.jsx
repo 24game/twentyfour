@@ -242,7 +242,7 @@ class Game extends React.Component {
     let activeTile = this.getActiveTile();
     if (activeTile) {
       activeTile.isActive = false;
-      this.updateAnimatingTileByIndex(activeTile.index, activeTile)
+      this.updateAnimatingTileByIndex(activeTile.index, activeTile);
     }
     function check() {
       if (!isPostAnimating()) {
@@ -278,7 +278,7 @@ class Game extends React.Component {
     newState.animating.tiles[index] = tile;
     this.currentState = newState;
     this.setState(update(this.state, {$set: this.currentState}));
-    console.log(`Updated tile (by index ${index}): From`, originalTile, 'to', tile);
+    console.trace(`Updated tile (by index ${index}): From`, originalTile, 'to', tile);
   }
 
   updateAnimatingTileByTargetIndex(index, tile) {
@@ -490,6 +490,10 @@ class Game extends React.Component {
       }
     }
     let dynamicTile = this.getDynamicTileByTargetIndex(targetTileIndex);
+    if (!dynamicTile) {
+      console.trace('Dynamic tile not found for targetTileIndex:', targetTileIndex);
+      return;
+    }
     let tileIndex = dynamicTile.index;
     let tileRef = this.tileRefs[tileIndex];
     if (tileRef) {
@@ -540,13 +544,15 @@ class Game extends React.Component {
   }
 
   isPostAnimating() {
-    this.lastOffsetsUnchanged.forEach(value => {
-      if (!value) {
-        console.log('isPostAnimating() check, last known values:', this.lastOffsets);
+    for (let i = 0; i < this.state.numbers.length; i++) {
+      if (i !== 1)
+        continue;
+      let staticOffset = this.getStaticTileOffsetByTargetIndex(i).left;
+      let dynamicOffset = this.getDynamicTileOffsetByTargetIndex(i).left;
+      if (Math.abs(dynamicOffset - staticOffset) > 2.5) {
         return true;
       }
-    });
-    console.log('isPostAnimating() check, last known values:', this.lastOffsets);
+    }
     return false;
   }
 
@@ -572,6 +578,7 @@ class Game extends React.Component {
 
     // TODO: Wait for the tiles to drift back and finish animating (stop moving) before allowing another animation to take place
     if (this.isAnimating()) {
+      console.log('isAnimating() is true. Return');
       return;
     }
     this.animationMode = true;
@@ -617,28 +624,30 @@ class Game extends React.Component {
     if (activeTile) {
       activeTile.isActive = false;
       this.updateAnimatingTileByIndex(activeTile.index, activeTile)
-    }
-    function check() {
-      if (!isPostAnimating()) {
-        clearInterval(interval);
-        console.log('Not post animating anymore.');
-        let finalNumbersHash = {};
-        let finalNumbers = [];
-        console.log('Numbers before swap:', this.currentState.numbers);
-        this.currentState.animating.tiles.forEach(tile => {
-          finalNumbersHash[tile.targetIndex] = tile.number;
-        });
-        for (let i = 0; i < this.currentState.numbers.length; i++) {
-          finalNumbers.push(finalNumbersHash[i]);
+
+      function check() {
+        if (!isPostAnimating()) {
+          clearInterval(interval);
+          console.log('Not post animating anymore.');
+          let finalNumbersHash = {};
+          let finalNumbers = [];
+          console.log('Numbers before swap:', this.currentState.numbers);
+          this.currentState.animating.tiles.forEach(tile => {
+            finalNumbersHash[tile.targetIndex] = tile.number;
+          });
+          for (let i = 0; i < this.currentState.numbers.length; i++) {
+            finalNumbers.push(finalNumbersHash[i]);
+          }
+          console.log('Numbers after swap:', finalNumbers);
+          this.setState(update(this.state, {numbers: {$set: finalNumbers}}));
+          this.animationMode = false;
+          this.justFinishedAnimation = true;
+          this.forceUpdate();
         }
-        console.log('Numbers after swap:', finalNumbers);
-        this.setState(update(this.state, {numbers: {$set: finalNumbers }}));
-        this.animationMode = false;
-        this.justFinishedAnimation = true;
-        this.forceUpdate();
       }
+
+      let interval = setInterval(check.bind(this), 1);
     }
-    let interval = setInterval(check.bind(this), 100);
   }
 
   getTileZIndex(renderingTileIndex) {
