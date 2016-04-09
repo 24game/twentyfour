@@ -157,8 +157,12 @@ class Game extends React.Component {
   parenthesize(tileIndex) {
     // If there is a full set of parentheses already, or if the clicked tile already
     // has parenthesis, then reset the parentheses state.
-    if (this.state.parentheses[1] !== null || tileIndex === this.state.parentheses[0]) {
-      this.clearParentheses();
+    if (this.state.parentheses[1] !== null) {
+      if (tileIndex === this.state.parentheses[0] || tileIndex === this.state.parentheses[1]) {
+        this.clearParentheses();
+      } else {
+        this.setLeftParenthesis(tileIndex); 
+      }
     } else {
       // If there is no left parenthesis, then set that.
       if (this.state.parentheses[0] === null) {
@@ -187,7 +191,7 @@ class Game extends React.Component {
 
   setLeftParenthesis(tileIndex) {
     let _parentheses = this.state.parentheses.slice(0);
-    _parentheses[0] = tileIndex;
+    _parentheses = [tileIndex, this.state.parentheses[1]];
     this.setState(update(this.state, {
       parentheses: {$set: _parentheses}
     }));
@@ -195,7 +199,7 @@ class Game extends React.Component {
 
   setRightParenthesis(tileIndex) {
     let _parentheses = this.state.parentheses.slice(0);
-    _parentheses[1] = tileIndex;
+    _parentheses = [this.state.parentheses[0], tileIndex];
     this.setState(update(this.state, {
       parentheses: {$set: _parentheses}
     }));

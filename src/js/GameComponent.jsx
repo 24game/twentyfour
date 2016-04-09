@@ -31,20 +31,15 @@ var GameComponent = React.createClass({
     });
   },
 
-  resetGame: function() {
-    this.setState({
-      puzzle: this.props.puzzles
-    });
-  },
-
   render: function() {
     return (
       <div>
         <Game puzzle={this.state.puzzle} operators={this.props.operators}/>
-        <div>
-          <span onClick={this.getNewGame}>New Game</span>
-          <span onClick={this.resetGame}>Reset</span>
-          <span onClick={this.resetGame}>How To Play</span>
+        <div className="centered sub-items">
+          <span style={{padding: `10px`}} onClick={this.getNewGame}>New Game</span>
+          <span style={{padding: `10px`}} onClick={this.getNewGame}>How To Play</span>
+          <span style={{padding: `10px`}} onClick={this.getNewGame}>About</span>
+          <span style={{padding: `10px`}} >Share</span>
          </div>
       </div>
     )
