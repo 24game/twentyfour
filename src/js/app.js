@@ -14,5 +14,5 @@ Utils.loadJson('./data/puzzles.json')
 
     ReactDOM.render(<Title />, document.querySelector('header'));
     ReactDOM.render(<GameComponent puzzles={puzzles} operators={operators} />, document.querySelector('#game'));
-    ReactDOM.render(<HowToPlay />, document.querySelector('footer'));
+    // ReactDOM.render(<HowToPlay />, document.querySelector('footer'));
 });
