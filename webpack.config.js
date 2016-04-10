@@ -42,8 +42,8 @@ module.exports = {
   },
   debug: !IS_PROD,
   plugins: IS_PROD ? [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.AggressiveMergingPlugin(),
+    //new webpack.optimize.DedupePlugin(),
+    //new webpack.optimize.AggressiveMergingPlugin(),
     //new webpack.optimize.UglifyJsPlugin({
     //  sourceMap: true,
     //  compress: {

@@ -20,7 +20,7 @@ class Game extends React.Component {
     return {
       STATIC: 'static',
       TRANSITIONING: 'transitioning',
-      ACTIVE: 'active',
+      ACTIVE: 'active'
     }
   }
 
@@ -56,6 +56,7 @@ class Game extends React.Component {
       }
     };
     this.currentState = objectAssign({}, this.state);
+    window.currentState = this.currentState;
     for (let i = 0; i < this.currentState.numbers.length; i++) {
       this.currentState.animating.tiles.push({
         /* Note this is actually set in onTileDownHandler */
@@ -82,7 +83,6 @@ class Game extends React.Component {
 
     /* React's new ES6 class-based components do not have `this` autobinded */
     this.cycleOperator = this.cycleOperator.bind(this);
-    this.count = 0;
     this.animationMode = false;
   }
 
@@ -111,11 +111,9 @@ class Game extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.emit('gameReset', nextProps);
-    this.setState({
-      numbers: Utils.shuffle(nextProps.puzzle),
-      operators: Utils.shuffle(nextProps.operators),
-      parentheses: [null, null]
-    });
+    this.currentState.numbers = Utils.shuffle(nextProps.puzzle);
+    this.currentState.operators = Utils.shuffle(nextProps.operators);
+    this.currentState.parentheses = [null, null];
   }
 
   // Returns a list of possible operators.
@@ -138,9 +136,8 @@ class Game extends React.Component {
     let nextOperatorIndex = (operatorIndex + 1) % numOperators;
     let newOperators = this.currentState.operators.slice(0);
     newOperators[index] = this.props.operators[nextOperatorIndex];
-    this.setState({
-      operators: newOperators
-    });
+    this.currentState.operators = newOperators;
+    this.updateState();
   }
 
   computeResult() {
@@ -157,16 +154,16 @@ class Game extends React.Component {
   parenthesize(tileIndex) {
     // If there is a full set of parentheses already, or if the clicked tile already
     // has parenthesis, then reset the parentheses state.
-    if (this.state.parentheses[1] !== null || tileIndex === this.state.parentheses[0]) {
+    if (this.currentState.parentheses[1] !== null || tileIndex === this.currentState.parentheses[0]) {
       this.clearParentheses();
     } else {
       // If there is no left parenthesis, then set that.
-      if (this.state.parentheses[0] === null) {
+      if (this.currentState.parentheses[0] === null) {
         this.setLeftParenthesis(tileIndex);
       } else {
         // If there is a left parenthesis, then if the clicked tile comes after
         // the left parenthesis, set the right parenthesis.
-        if (tileIndex > this.state.parentheses[0]) {
+        if (tileIndex > this.currentState.parentheses[0]) {
           this.setRightParenthesis(tileIndex);
         } else {
           // Otherwise, the clicked tile comes before the left parenthesis, so
@@ -179,26 +176,19 @@ class Game extends React.Component {
   }
 
   clearParentheses() {
-    let _parentheses = [null, null];
-    this.setState(update(this.state, {
-      parentheses: {$set: _parentheses}
-    }));
+    this.currentState.parentheses = [null, null];
   }
 
   setLeftParenthesis(tileIndex) {
-    let _parentheses = this.state.parentheses.slice(0);
+    let _parentheses = this.currentState.parentheses.slice(0);
     _parentheses[0] = tileIndex;
-    this.setState(update(this.state, {
-      parentheses: {$set: _parentheses}
-    }));
+    this.currentState.parentheses = _parentheses;
   }
 
   setRightParenthesis(tileIndex) {
-    let _parentheses = this.state.parentheses.slice(0);
+    let _parentheses = this.currentState.parentheses.slice(0);
     _parentheses[1] = tileIndex;
-    this.setState(update(this.state, {
-      parentheses: {$set: _parentheses}
-    }));
+    this.currentState.parentheses = _parentheses;
   }
 
   /**
@@ -206,13 +196,10 @@ class Game extends React.Component {
    * @param pageX The cursor's current location relative to the page.
    */
   onPointerMove({pageX}) {
-    //console.log(`Calling %conPointerMove(pageX: ${pageX}}).`, Utils.getConsoleStyle('code'));
+    // console.log(`Calling %conPointerMove(pageX: ${pageX}}).`, Utils.getConsoleStyle('code'));
     // Update the state with the current cursor's location to be used when rendering the active tile later
-    this.setState(update(this.state, {
-      animating: {
-        mouseLocation: {$set: pageX}
-      }
-    }));
+    this.currentState.animating.mouseLocation = pageX;
+    this.updateState();
   }
 
   getAnimatingTile(index) {
@@ -231,63 +218,32 @@ class Game extends React.Component {
     return foundTile;
   }
 
-  onPointerUp(e) {
-    console.log(`Calling %conPointerUp(event: ${e}}).`, Utils.getConsoleStyle('code'));
-    // TODO: Do not wait for animation to complete, use targetIndex to pre-emptively swap the tiles in a temp place and calculate the result to make the game seem faster
-    //       In other words, the result should update immediately after the user releases their cursor and should not wait for the animation to finish
-    let activeTile = this.getActiveTile();
-    if (activeTile) {
-      activeTile.isActive = false;
-      this.updateAnimatingTileByIndex(activeTile.index, activeTile);
-    }
-    function check() {
-      if (!isPostAnimating()) {
-        clearInterval(interval);
-        console.log('Not post animating anymore.');
-        let finalNumbersHash = {};
-        let finalNumbers = [];
-        console.log('Numbers before swap:', this.currentState.numbers);
-        this.currentState.animating.tiles.forEach(tile => {
-          finalNumbersHash[tile.targetIndex] = tile.number;
-        });
-        for (let i = 0; i < this.currentState.numbers.length; i++) {
-          finalNumbers.push(finalNumbersHash[i]);
-        }
-        console.log('Numbers after swap:', finalNumbers);
-        this.setState(update(this.state, {numbers: {$set: finalNumbers }}));
-        this.animationMode = false;
-        this.justFinishedAnimation = true;
-        this.forceUpdate();
-      }
-    }
-    let interval = setInterval(check.bind(this), 100);
-  }
-
   isActiveTile(index) {
     let tile = this.currentState.animating.tiles[index];
     return tile && tile.isActive;
   }
 
-  updateAnimatingTileByIndex(index, tile) {
-    let newState = objectAssign({}, this.currentState);
-    let originalTile = newState.animating.tiles[index];
-    newState.animating.tiles[index] = tile;
-    this.currentState = newState;
+  /**
+   * Creates a copy of the `currentState` and requests this.state
+   * to update to `currentState` by the next render() call.
+   */
+  updateState(options) {
+    if (options && options.debug) {
+      console.log('Updating state:', this.currentState);
+    }
     this.setState(update(this.state, {$set: this.currentState}));
-    console.trace(`Updated tile (by index ${index}): From`, originalTile, 'to', tile);
   }
 
-  updateAnimatingTileByTargetIndex(index, tile) {
-    let updateCommand = {
-      animating: {
-        tiles: {}
-      }
-    };
-    updateCommand.animating.tiles[index] = {$set: tile};
-    this.setState(update(this.state, updateCommand));
-    console.log(`Updated tile (by target index ${index}): From`, originalTile, 'to', tile);
+  updateAnimatingTileByIndex(index, newTile) {
+    let originalTile = this.currentState.animating.tiles[index];
+    this.currentState.animating.tiles[index] = newTile;
+    if (originalTile.number === newTile.number) {
+      console.trace(`Updated tile ${originalTile.number}:`, JSON.stringify(originalTile), '=>', JSON.stringify(newTile));
+    } else {
+      console.trace(`Updated tile ${originalTile.number} -> ${newTile.number}:`, JSON.stringify(originalTile), '=>', JSON.stringify(newTile));
+    }
+    this.updateState();
   }
-// calcuate based on where mouse's pageX is relative to the known tile offsetLeft (from getTileLeftEdge), these values are unaffected by transform
 
   findAnimatingTileIndexByTargetIndex(targetIndex) {
     return this.getDynamicTileByTargetIndex(targetIndex).index;
@@ -396,7 +352,7 @@ class Game extends React.Component {
           activeTargetTileIndex: rightNeighbor.targetIndex
         }
       });
-      console.info(`Right Neighbor Offset: ${futureRightNeighbor.targetOffset} = activeTileLeftStatic (${activeTargetTileLeftStatic}) - rightNeighborLeftStatic (${rightNeighborLeftStatic}`);
+      //console.log(`Right Neighbor Offset: ${futureRightNeighbor.targetOffset} = activeTileLeftStatic (${activeTargetTileLeftStatic}) - rightNeighborLeftStatic (${rightNeighborLeftStatic}`);
       this.updateAnimatingTileByIndex(rightNeighbor.index, futureRightNeighbor);
       let rightNeighborToActiveTileDistance = activeTile.targetOffset + (rightNeighborLeftStatic - activeTargetTileLeftStatic);
 
@@ -404,7 +360,7 @@ class Game extends React.Component {
         targetIndex: rightNeighbor.targetIndex,
         targetOffset: rightNeighborToActiveTileDistance
       });
-      console.info(`Active Tile Offset: ${rightNeighborToActiveTileDistance} = rightNeighborLeftStatic (${rightNeighborLeftStatic}) - activeTargetTileLeftStatic (${activeTargetTileLeftStatic}`);
+      //console.log(`Active Tile Offset: ${rightNeighborToActiveTileDistance} = rightNeighborLeftStatic (${rightNeighborLeftStatic}) - activeTargetTileLeftStatic (${activeTargetTileLeftStatic}`);
       this.updateAnimatingTileByIndex(activeTile.index, futureActiveTile);
       //console.log('Active Tile Offset:', this.getActiveTile()['targetOffset']);
     }
@@ -540,12 +496,12 @@ class Game extends React.Component {
   }
 
   isPostAnimating() {
-    for (let i = 0; i < this.state.numbers.length; i++) {
+    for (let i = 0; i < this.currentState.numbers.length; i++) {
       if (i !== 1)
         continue;
       let staticOffset = this.getStaticTileOffsetByTargetIndex(i).left;
       let dynamicOffset = this.getDynamicTileOffsetByTargetIndex(i).left;
-      if (Math.abs(dynamicOffset - staticOffset) > 2.5) {
+      if (Math.abs(dynamicOffset - staticOffset) > 2) {
         return true;
       }
     }
@@ -603,13 +559,12 @@ class Game extends React.Component {
       }
     });
 
-    this.setState(update(this.state, {
-      animating: {
-        firstClickLocation: {$set: mouseLocation},
-        mouseLocation: {$set: mouseLocation},
-        tiles: { $set: tiles },
-      }
-    }));
+    this.currentState.animating = {
+      firstClickLocation: mouseLocation,
+      mouseLocation: mouseLocation,
+      tiles: tiles
+    };
+    this.updateState();
   }
 
   onPointerUp(e) {
@@ -619,11 +574,10 @@ class Game extends React.Component {
     let activeTile = this.getActiveTile();
     if (activeTile) {
       activeTile.isActive = false;
-      this.updateAnimatingTileByIndex(activeTile.index, activeTile)
+      this.updateAnimatingTileByIndex(activeTile.index, activeTile);
 
       function check() {
         if (!isPostAnimating()) {
-          clearInterval(interval);
           console.log('Not post animating anymore.');
           let finalNumbersHash = {};
           let finalNumbers = [];
@@ -635,14 +589,23 @@ class Game extends React.Component {
             finalNumbers.push(finalNumbersHash[i]);
           }
           console.log('Numbers after swap:', finalNumbers);
-          this.setState(update(this.state, {numbers: {$set: finalNumbers}}));
+          this.currentState.numbers = finalNumbers;
           this.animationMode = false;
           this.justFinishedAnimation = true;
-          this.forceUpdate();
+          setTimeout(() => {
+            this.updateState({debug: true});
+            this.justFinishedAnimation = false;
+            document.body.style.display = 'none';
+            document.body.offsetHeight;
+            document.body.style.display = '';
+          }, 0);
+         }
+         else {
+          window.requestAnimationFrame(check.bind(this));
         }
       }
 
-      let interval = setInterval(check.bind(this), 1);
+      window.requestAnimationFrame(check.bind(this));
     }
   }
 
@@ -662,10 +625,10 @@ class Game extends React.Component {
       <Motion style={tileStyle} key={tileIndex}>
         {({scale, shadow, offsetX}) => {
             if (this.lastOffsets[tileIndex] === offsetX) {
-                  this.lastOffsetsUnchanged[tileIndex] = true;
-                } else {
-                this.lastOffsetsUnchanged[tileIndex] = false;
-                }
+                this.lastOffsetsUnchanged[tileIndex] = true;
+            } else {
+              this.lastOffsetsUnchanged[tileIndex] = false;
+            }
             this.lastOffsets[tileIndex] = offsetX;
           return <Tile onMouseDownHandler={this.onTileDownHandler.bind(this, tileIndex)}
                 onTouchStartHandler={this.onTileDownHandler.bind(this, tileIndex)}
@@ -737,6 +700,7 @@ class Game extends React.Component {
   }
 
   render() {
+    console.log('Called render.');
     let result = this.computeResult();
 
     let html = (
@@ -758,9 +722,6 @@ class Game extends React.Component {
         <Result value={Utils.cleanComputedResult(result)}/>
       </section>
     );
-    if (this.justFinishedAnimation) {
-      this.justFinishedAnimation = false;
-    }
     return html;
   }
 }
