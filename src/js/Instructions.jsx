@@ -1,8 +1,8 @@
 import React from 'react';
 
-// The set of instructions for the game.
-var Instructions = React.createClass({
-  render: function() {
+class Instructions extends React.Component {
+
+  render() {
     return (
       <section className="unselectable default-cursor flexible columns horizontally-centered instructions">
         <p className="larger">Use&nbsp;
@@ -29,6 +29,7 @@ var Instructions = React.createClass({
       </section>
     );
   }
-});
+
+}
 
 export default Instructions;

@@ -700,7 +700,6 @@ class Game extends React.Component {
   }
 
   render() {
-    console.log('Called render.');
     let result = this.computeResult();
 
     let html = (
