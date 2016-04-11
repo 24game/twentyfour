@@ -152,10 +152,14 @@ class Game extends React.Component {
   // Handles the logic of double clicking a tile to parenthesize it.
   // tileIndex is the index of the tile being clicked, a value between 0 and 3, inclusive
   parenthesize(tileIndex) {
-    // If there is a full set of parentheses already, or if the clicked tile already
-    // has parenthesis, then reset the parentheses state.
-    if (this.currentState.parentheses[1] !== null || tileIndex === this.currentState.parentheses[0]) {
+    // If the clicked tile is parenthesized already, then unparenthesize it.
+    if (tileIndex === this.currentState.parentheses[0] || tileIndex === this.currentState.parentheses[1]) {
       this.clearParentheses();
+    } else if (this.currentState.parentheses[1] !== null) {
+      // If there is a full set of parentheses, and the clicked tile is not a parenthesized tile,
+      // then clear parentheses and left parenthesize the clicked tile.
+      this.clearParentheses();
+      this.setLeftParenthesis(tileIndex);
     } else {
       // If there is no left parenthesis, then set that.
       if (this.currentState.parentheses[0] === null) {
@@ -229,7 +233,7 @@ class Game extends React.Component {
    */
   updateState(options) {
     if (options && options.debug) {
-      console.log('Updating state:', this.currentState);
+     console.log('Updating state:', this.currentState);
     }
     this.setState(update(this.state, {$set: this.currentState}));
   }
@@ -238,7 +242,7 @@ class Game extends React.Component {
     let originalTile = this.currentState.animating.tiles[index];
     this.currentState.animating.tiles[index] = newTile;
     if (originalTile.number === newTile.number) {
-      console.trace(`Updated tile ${originalTile.number}:`, JSON.stringify(originalTile), '=>', JSON.stringify(newTile));
+     console.trace(`Updated tile ${originalTile.number}:`, JSON.stringify(originalTile), '=>', JSON.stringify(newTile));
     } else {
       console.trace(`Updated tile ${originalTile.number} -> ${newTile.number}:`, JSON.stringify(originalTile), '=>', JSON.stringify(newTile));
     }
@@ -306,7 +310,7 @@ class Game extends React.Component {
     if (leftNeighborExists &&
         activeTargetTileLeftDynamic < leftNeighborRightStatic &&
         this.getDynamicTileByTargetIndex(leftNeighbor.targetIndex).isSwappable) {
-      console.log(`Active tile ${activeTile.number} crossed left neighbor ${leftNeighbor.number}.`);
+     console.log(`Active tile ${activeTile.number} crossed left neighbor ${leftNeighbor.number}.`);
 
       let futureLeftNeighbor = objectAssign({}, leftNeighbor, {
         targetIndex: activeTile.targetIndex,
@@ -319,7 +323,7 @@ class Game extends React.Component {
           activeTargetTileIndex: leftNeighbor.targetIndex
         }
       });
-      console.info(`Left Neighbor Offset: ${futureLeftNeighbor.targetOffset} = activeTargetTileLeftStatic (${activeTargetTileLeftStatic}) - leftNeighborLeftStatic (${leftNeighborLeftStatic}`);
+     console.info(`Left Neighbor Offset: ${futureLeftNeighbor.targetOffset} = activeTargetTileLeftStatic (${activeTargetTileLeftStatic}) - leftNeighborLeftStatic (${leftNeighborLeftStatic}`);
 
       this.updateAnimatingTileByIndex(leftNeighbor.index, futureLeftNeighbor);
 
@@ -338,7 +342,7 @@ class Game extends React.Component {
     if (rightNeighborExists &&
              activeTargetTileRightDynamic > rightNeighborLeftStatic &&
              this.getDynamicTileByTargetIndex(rightNeighbor.targetIndex).isSwappable) {
-      console.log(`Active tile ${activeTile.number} crossed right neighbor ${rightNeighbor.number}.`);
+     console.log(`Active tile ${activeTile.number} crossed right neighbor ${rightNeighbor.number}.`);
       //console.log('Right neighbor:', rightNeighbor);
 
       let futureRightNeighbor = objectAssign({}, rightNeighbor, {
@@ -386,7 +390,7 @@ class Game extends React.Component {
     if (swappedRightToLeft) {
       //console.log(`neighborRightAnimating (${neighborRightAnimating}) < activeTileLeftAnimating (${activeTileLeftAnimating}) = ${neighborRightAnimating < activeTileLeftAnimating}`);
       if (neighborRightAnimating < activeTargetTileLeftAnimating) {
-        console.warn(`Setting neighbor tile ${neighborTileTargetIndex} to be swappable.`);
+       console.warn(`Setting neighbor tile ${neighborTileTargetIndex} to be swappable.`);
         this.updateAnimatingTileByIndex(neighbor.index, objectAssign({}, neighbor, {
           isSwappable: true,
           swapState: null
@@ -395,7 +399,7 @@ class Game extends React.Component {
     } else {
       if (neighborLeftAnimating > activeTargetTileRightAnimating) {
         //console.log(`neighborLeftAnimating (${neighborLeftAnimating}) < activeTileRightAnimating (${activeTileRightAnimating}) = ${neighborLeftAnimating < activeTileRightAnimating}`);
-        console.warn(`Setting neighbor tile ${neighborTileTargetIndex} to be swappable.`);
+       console.warn(`Setting neighbor tile ${neighborTileTargetIndex} to be swappable.`);
         this.updateAnimatingTileByIndex(neighbor.index, objectAssign({}, neighbor, {
           isSwappable: true,
           swapState: null
@@ -443,7 +447,7 @@ class Game extends React.Component {
     }
     let dynamicTile = this.getDynamicTileByTargetIndex(targetTileIndex);
     if (!dynamicTile) {
-      console.trace('Dynamic tile not found for targetTileIndex:', targetTileIndex);
+     console.trace('Dynamic tile not found for targetTileIndex:', targetTileIndex);
       return;
     }
     let tileIndex = dynamicTile.index;
@@ -526,11 +530,11 @@ class Game extends React.Component {
    * @param pageX
    */
   onTileDownHandler(tileIndex, {pageX: mouseLocation}) {
-    console.log(`Calling %conTileDownHandler(tileIndex: ${tileIndex}, mouseLocation: ${mouseLocation}).`, Utils.getConsoleStyle('code'));
+   console.log(`Calling %conTileDownHandler(tileIndex: ${tileIndex}, mouseLocation: ${mouseLocation}).`, Utils.getConsoleStyle('code'));
 
     // TODO: Wait for the tiles to drift back and finish animating (stop moving) before allowing another animation to take place
     if (this.isAnimating()) {
-      console.log('isAnimating() is true. Return');
+     console.log('isAnimating() is true. Return');
       return;
     }
     this.animationMode = true;
@@ -568,7 +572,7 @@ class Game extends React.Component {
   }
 
   onPointerUp(e) {
-    console.log(`Calling %conPointerUp(event: ${e}}).`, Utils.getConsoleStyle('code'));
+   console.log(`Calling %conPointerUp(event: ${e}}).`, Utils.getConsoleStyle('code'));
     // TODO: Do not wait for animation to complete, use targetIndex to pre-emptively swap the tiles in a temp place and calculate the result to make the game seem faster
     //       In other words, the result should update immediately after the user releases their cursor and should not wait for the animation to finish
     let activeTile = this.getActiveTile();
@@ -578,17 +582,17 @@ class Game extends React.Component {
 
       function check() {
         if (!isPostAnimating()) {
-          console.log('Not post animating anymore.');
+         console.log('Not post animating anymore.');
           let finalNumbersHash = {};
           let finalNumbers = [];
-          console.log('Numbers before swap:', this.currentState.numbers);
+         console.log('Numbers before swap:', this.currentState.numbers);
           this.currentState.animating.tiles.forEach(tile => {
             finalNumbersHash[tile.targetIndex] = tile.number;
           });
           for (let i = 0; i < this.currentState.numbers.length; i++) {
             finalNumbers.push(finalNumbersHash[i]);
           }
-          console.log('Numbers after swap:', finalNumbers);
+         console.log('Numbers after swap:', finalNumbers);
           this.currentState.numbers = finalNumbers;
           this.animationMode = false;
           this.justFinishedAnimation = true;
@@ -646,7 +650,7 @@ class Game extends React.Component {
 
   getTileMotionStyle(tileIndex) {
     let { firstClickLocation, mouseLocation } = this.currentState.animating;
-    //  console.log(`Calling %cgetTileMotionStyle(numIndexPressed: ${numIndexPressed}), mouseLocation: ${mouseLocation}.`, Utils.getConsoleStyle('code'));
+    // console.log(`Calling %cgetTileMotionStyle(numIndexPressed: ${numIndexPressed}), mouseLocation: ${mouseLocation}.`, Utils.getConsoleStyle('code'));
     let inactiveTileOffset = 0;
     let animatingTile = this.currentState.animating.tiles[tileIndex];
     if (animatingTile && this.animationMode) {
