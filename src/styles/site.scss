@@ -92,10 +92,6 @@ code {
   position: relative;
 }
 
-.correct {
-  color: green !important;
-}
-
 @mixin tile($background-color: initial, $hover-background-color: $background-color, $color: initial, $width: initial, $height: initial, $margin: initial, $border: initial, $border-radius: initial, $font-size: inherit, $font-family: inherit, $font-weight: inherit, $hover-border: initial, $hover-color: initial) {
   position: relative;
   font-size: $font-size;
