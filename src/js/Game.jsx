@@ -27,6 +27,13 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
 
+    window.addEventListener('newGame', event => {
+      this.currentState.numbers = Utils.shuffle(Utils.getRandomPuzzle(props.puzzles));
+      this.currentState.operators = Utils.shuffle(props.operators).slice(0, 3);
+      this.currentState.parentheses = [null, null];
+      this.updateState(); 
+    });
+
     /* Default spring physics */
     this.springConfig = {stiffness: 300, damping: 50};
 
