@@ -29,6 +29,8 @@ $tile-hover-border-color: darken($tile-background, 25%);
 $tile-hover-font-size: $tile-font-size * 1.15;
 $tile-active-background: lighten(invert($tile-color), 10%);
 
+$operator-font: 'Times New Roman';
+$operator-font-weight: 900;
 $operator-size: 6rem;
 $operator-color: #879093;
 $operator-space-between: $base-space-between / 2;
@@ -107,12 +109,6 @@ code {
   background-color: $background-color;
   transition: background-color $tile-transition-duration ease-out;
   transition: font-size $tile-transition-duration ease-in-out;
-
-  //&:hover {
-  //  background-color: $hover-background-color;
-  //  color: $hover-color;
-  //  border: $hover-border;
-  //}
 }
 
 @mixin tile-inner($background-color, $color) {
@@ -147,18 +143,15 @@ code {
 
 .operator-tile {
   @include tile(
-  $hover-background-color: lighten(#879093, 30%),
   $font-size: $tile-font-size,
-  $font-family: $font-montserrat,
-  $font-weight: 400,
+  $font-family: $operator-font,
+  $font-weight: $operator-font-weight,
   $color: $operator-color,
   $width: $operator-size,
   $height: $operator-size,
   $margin: $operator-space-between,
   $border: $tile-border-width dashed transparent,
-  $border-radius: 50%,
-  $hover-border: $tile-border-width dashed lighten(#879093, 15%),
-  $hover-color: darken(#879093, 25%)
+  $border-radius: 50%
   );
 
   .operator {
@@ -168,9 +161,14 @@ code {
     );
   }
 
-  &:hover .operator {
-    font-size: $tile-hover-font-size;
-    color: inherit;
+  &:hover {
+    .operator {
+      font-size: $tile-hover-font-size;
+      color: inherit;
+    }
+    background-color: lighten(#879093, 30%);
+    color: darken(#879093, 25%);
+    border: $tile-border-width dashed lighten(#879093, 15%);
   }
 
   &:active {
@@ -207,11 +205,6 @@ code {
     $color: inherit
     );
   }
-
-  //&:hover .number {
-  //  font-size: $tile-hover-font-size;
-  //  color: inherit;
-  //}
 
   &.swappable {
     background-color: $tile-active-background;
