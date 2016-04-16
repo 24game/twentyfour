@@ -29,6 +29,8 @@ $tile-hover-border-color: darken($tile-background, 25%);
 $tile-hover-font-size: $tile-font-size * 1.15;
 $tile-active-background: lighten(invert($tile-color), 10%);
 
+$operator-font: 'Times New Roman';
+$operator-font-weight: 900;
 $operator-size: 6rem;
 $operator-color: #879093;
 $operator-space-between: $base-space-between / 2;
@@ -142,8 +144,8 @@ code {
 .operator-tile {
   @include tile(
   $font-size: $tile-font-size,
-  $font-family: $font-montserrat,
-  $font-weight: 400,
+  $font-family: $operator-font,
+  $font-weight: $operator-font-weight,
   $color: $operator-color,
   $width: $operator-size,
   $height: $operator-size,
