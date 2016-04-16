@@ -156,7 +156,7 @@ export default class Utils {
   // Method to handle displaying the computed result.
   // The parameter is a Fraction object from the Mathjs library. The fraction returned by the library
   // is often an improper fraction, and this method cleans it.
-  // w is the whole number, n is the new numerator, and d is the denominator 
+  // w is the whole number, n is the new numerator, and d is the denominator
   static cleanImproperFraction(improperFraction) {
     let numerator = improperFraction.n;
     let denominator = improperFraction.d;
@@ -165,46 +165,6 @@ export default class Utils {
       n: numerator % denominator,
       d: denominator
     }
-  }
-
-  // tiles is an array of the tiles (ex. [1, 4, 5, 6]).
-  // operators is an array of the operators (ex. [+, +, -, *]).
-  // parenthesesState is an array of the indecies of the left and right
-  // parentheses with respect to the tile positions. parenthesesState[0]
-  // is the index of the left parenthesis and parenthesesState[1] is the index
-  // of the right parenthesis.
-  static buildResultToCompute(tiles, operators, parenthesesState) {
-    // Build the initial string, ignoring parentheses.
-    let initialStringToCompute = tiles[0] + operators[0]
-    + tiles[1] + operators[1] + tiles[2] + operators[2] + tiles[3];
-
-    // If there are no parentheses evaluate the result as is.
-    // If there is only one parenthesis, then evaluate
-    // the result disregarding that parenthesis (the first parenthesis)
-    // is always the left parenthesis.
-    // Clean operators and return the stringToCompute.
-    if (parenthesesState[0] === null || parenthesesState[1] === null) {
-      return this.cleanOperators(initialStringToCompute);
-    } else {
-      // We will append parentheses with respect to the position of
-      // the operators, which is invariant.
-      let operatorIndecies = [];
-      for (let i = 0; i < initialStringToCompute.length; i ++) {
-        let operator = this.cleanOperators(initialStringToCompute[i]);
-        if (operator === "+" || operator === "-" || operator === "*" || operator === "/") {
-          operatorIndecies.push(i);
-        }
-      }
-
-      // First append the left parenthesis.
-      var leftParenthesized = parenthesesState[0] === 0 ? ("(" + initialStringToCompute)
-      : ([initialStringToCompute.slice(0, operatorIndecies[parenthesesState[0] - 1] + 1), "(", initialStringToCompute.slice(operatorIndecies[parenthesesState[0] - 1] + 1)].join(''));
-
-      // Then append the right parenthesis.
-      var rightParenthesized = parenthesesState[1] === 3 ? (leftParenthesized + ")")
-      : ([leftParenthesized.slice(0, operatorIndecies[parenthesesState[1]] + 1), ")", leftParenthesized.slice(operatorIndecies[parenthesesState[1]] + 1)].join(''));
-    }
-    return this.cleanOperators(rightParenthesized);
   }
 
 }
