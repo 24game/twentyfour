@@ -497,8 +497,6 @@ class Game extends React.Component {
 
   isPostAnimating() {
     for (let i = 0; i < this.currentState.numbers.length; i++) {
-      if (i !== 1)
-        continue;
       let staticOffset = this.getStaticTileOffsetByTargetIndex(i).left;
       let dynamicOffset = this.getDynamicTileOffsetByTargetIndex(i).left;
       if (Math.abs(dynamicOffset - staticOffset) > 2) {
