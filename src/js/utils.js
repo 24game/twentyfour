@@ -3,10 +3,16 @@ import $ from 'jquery';
 export default class Utils {
 
   static loadJson(file) {
-    var json = null;
-    return $.ajax({
-      url: file,
-      dataType: 'json'
+    return new Promise((resolve, reject) => {
+      return $.ajax({
+        url: file,
+        dataType: 'json'
+      }).done(json => {
+        resolve(json);
+      }).fail((xhr, status, error) => {
+        console.error('Unable to load JSON file.', file);
+        reject(xhr, status, error);
+      });
     });
   }
 
@@ -110,6 +116,14 @@ export default class Utils {
   static randArrayValue(array) {
     var random = Math.floor(Math.random() * array.length);
     return array[random];
+  }
+
+  /**
+  * Returns a random puzzle from an array of puzzles.
+  */
+  static getRandomPuzzle(puzzles) {
+    let puzzle = this.randArrayValue(puzzles);
+    return puzzle.numberTiles;
   }
 
   // tiles is an array of the tiles (ex. [1, 4, 5, 6]).

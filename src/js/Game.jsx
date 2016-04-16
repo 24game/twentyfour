@@ -37,7 +37,7 @@ class Game extends React.Component {
     this.lastOffsetsUnchanged = [true, true, true, true];
     this.state = {
       /* An array of 4 numbers */
-      numbers: Utils.shuffle(props.puzzle),
+      numbers: Utils.shuffle(Utils.getRandomPuzzle(props.puzzles)),
       /* An array containing the 4 standard operators as strings */
       /* We shuffle the operators and take the first three to set the initial state of the operators */
       operators: Utils.shuffle(props.operators).slice(0, 3),
@@ -108,13 +108,6 @@ class Game extends React.Component {
     window.removeEventListener('touchend', this.onPointerUp);
     window.removeEventListener('touchcancel', this.onPointerUp);
     window.removeEventListener('mouseup', this.onPointerUp);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.emit('gameReset', nextProps);
-    this.currentState.numbers = Utils.shuffle(nextProps.puzzle);
-    this.currentState.operators = Utils.shuffle(nextProps.operators);
-    this.currentState.parentheses = [null, null];
   }
 
   // Returns a list of possible operators.
@@ -730,7 +723,7 @@ class Game extends React.Component {
 
 Game.propTypes = {
   /* An array of 4 numbers */
-  puzzle: React.PropTypes.array.isRequired,
+  puzzles: React.PropTypes.array.isRequired,
   /* An array containing the allowed mathematical operators */
   operators: React.PropTypes.array.isRequired
 };

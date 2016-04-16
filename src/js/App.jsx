@@ -8,11 +8,11 @@ import ReactDOM from 'react-dom';
 import Utils from './utils.js';
 
 Utils.loadJson('./data/puzzles.json')
-  .done(data => {
+  .then(data => {
     let puzzles = data.puzzles;
     let operators = ['+', '−', '×', '÷'];
 
     ReactDOM.render(<Title />, document.querySelector('header'));
-    ReactDOM.render(<GameComponent puzzles={puzzles} operators={operators} />, document.querySelector('#game'));
-    // ReactDOM.render(<HowToPlay />, document.querySelector('footer'));
+    ReactDOM.render(<Game puzzles={puzzles} operators={operators} />, document.querySelector('#game'));
+    ReactDOM.render(<HowToPlay />, document.querySelector('footer'));
 });
