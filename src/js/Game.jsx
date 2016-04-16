@@ -28,7 +28,8 @@ class Game extends React.Component {
     super(props);
 
     /* Default spring physics */
-    this.springConfig = {stiffness: 300, damping: 50};
+    this.springConfig = {stiffness: 300, damping: 50, precision: 1};
+    this.scaleSpringConfig = {stiffness: 250, damping: 50, precision: 0.0001};
 
     /* Refs to later access each tile's position */
     this.tileRefs = [];
@@ -656,14 +657,14 @@ class Game extends React.Component {
     }
     if (this.isActiveTile(tileIndex)) {
       return {
-        scale: spring(1.1, this.springConfig),
-        shadow: spring(16, this.springConfig),
+        scale: spring(1.1, this.scaleSpringConfig),
+        shadow: spring(16, this.scaleSpringConfig),
         offsetX: mouseLocation - firstClickLocation,
       };
     } else {
       return {
-        scale: spring(1, this.springConfig),
-        shadow: spring(1, this.springConfig),
+        scale: spring(1, this.scaleSpringConfig),
+        shadow: spring(1, this.scaleSpringConfig),
         offsetX: this.justFinishedAnimation ? inactiveTileOffset : spring(inactiveTileOffset, this.springConfig)
       };
     }
