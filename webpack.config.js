@@ -15,7 +15,7 @@ Date.prototype.timeNow = function() {
 
 module.exports = {
   entry: [
-    './src/js/app.js',
+    './src/js/App.jsx',
   ],
   output: {
     path: path.join(__dirname, 'public'),

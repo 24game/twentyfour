@@ -4,6 +4,7 @@ import Utils from './utils.js';
 import Instructions from './Instructions.jsx';
 import About from './About.jsx';
 
+// DEPRECATED. WILL BE REMOVED IN THE NEAR FUTURE. 
 class GameComponent extends React.Component {
 
   constructor(props) {
