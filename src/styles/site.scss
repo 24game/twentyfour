@@ -251,4 +251,6 @@ code {
   $hover-color: $tile-color
   );
 
+  // Keeps the entire game from shifting around as the size of the result changes
+  width: 5rem;
 }
