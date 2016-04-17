@@ -53,7 +53,7 @@ class Footer extends React.Component {
      let display = (this.state.showInstructions ? <Instructions /> :
        (this.state.showAbout ? <About /> : (this.state.showShare ? <Share /> : null)));
     return (
-      <section className="unselectable default-cursor horizontally-centered footer">
+      <section className="unselectable default-cursor centered footer">
         <span className="newGame" onClick={this.getNewGame}>New Game</span>
         <span className="instructions" onClick={this.displayInstructions}>How To Play</span>
         <span className="about" onClick={this.displayAbout}>About</span>

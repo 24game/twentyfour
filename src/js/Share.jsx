@@ -4,7 +4,7 @@ class Share extends React.Component {
 
   render() {
     return(
-      <p>Share!</p>
+      <p className="centered">Share!</p>
     );
   }
 

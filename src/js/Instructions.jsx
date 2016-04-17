@@ -4,7 +4,7 @@ class Instructions extends React.Component {
 
   render() {
     return (
-      <section className="unselectable default-cursor flexible columns horizontally-centered">
+      <section className="unselectable default-cursor flexible columns centered">
       <p>Use + - * / to make 24. Drag tiles to reorder them. Double-click on a pair of numbers
       to wrap them in parentheses. Click on the operators to cycle through them. </p>
       </section>
