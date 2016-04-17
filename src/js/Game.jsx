@@ -35,7 +35,7 @@ class Game extends React.Component {
     });
 
     /* Default spring physics */
-    this.springConfig = {stiffness: 300, damping: 50, precision: 1};
+    this.springConfig = {stiffness: 450, damping: 50, precision: 1};
     this.scaleSpringConfig = {stiffness: 250, damping: 50, precision: 0.0001};
 
     /* Refs to later access each tile's position */
