@@ -577,7 +577,6 @@ class Game extends React.Component {
 
   onTouchStartHandler(tileIndex, e) {
     console.log(`Called %conTouchStartHandler(tileIndex: ${tileIndex}, e: ${e})`, Utils.getConsoleStyle('code'));
-    window.e = e.changedTouches;
     this.onTileDownHandler(tileIndex, {pageX: e.touches[0].pageX});
     e.preventDefault();
   }
