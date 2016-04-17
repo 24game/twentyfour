@@ -575,9 +575,11 @@ class Game extends React.Component {
     this.updateState();
   }
 
-  onTouchStartHandler(tileIndex, {pageX: pointerLocation}) {
-    log.debug('Called %conTouchStartHandler', Utils.getConsoleStyle('code'));
-    this.onTileDownHandler(tileIndex, {pageX: pointerLocation});
+  onTouchStartHandler(tileIndex, e) {
+    console.log(`Called %conTouchStartHandler(tileIndex: ${tileIndex}, e: ${e})`, Utils.getConsoleStyle('code'));
+    window.e = e.changedTouches;
+    this.onTileDownHandler(tileIndex, {pageX: e.touches[0].pageX});
+    e.preventDefault();
   }
 
   onPointerUp(e) {
