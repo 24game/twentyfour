@@ -100,7 +100,7 @@ class Game extends React.Component {
     /* Mouse move and up event listeners must be added outside the React element */
 
     // touchmove: a finger touches the screen
-    window.addEventListener('touchmove', this.onPointerMove.bind(this));
+    window.addEventListener('touchmove', this.onTouchMove.bind(this));
     window.addEventListener('mousemove', this.onPointerMove.bind(this));
     // touchend: a finger is lifted off the screen`
     window.addEventListener('touchend', this.onPointerUp.bind(this));
@@ -110,7 +110,7 @@ class Game extends React.Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('touchmove', this.onPointerMove);
+    window.removeEventListener('touchmove', this.onTouchMove);
     window.removeEventListener('mousemove', this.onPointerMove);
     window.removeEventListener('touchend', this.onPointerUp);
     window.removeEventListener('touchcancel', this.onPointerUp);
@@ -209,6 +209,10 @@ class Game extends React.Component {
 
   getAnimatingTile(index) {
     return this.currentState.animating.tiles[index];
+  }
+
+  onTouchMove(e) {
+    this.onPointerMove(e.touches[0]);
   }
 
   /* Returns the animating tile that is being clicked on. */
