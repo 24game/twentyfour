@@ -4,7 +4,7 @@ class About extends React.Component {
 
   render() {
     return (
-      <p>This game was made by Jason Pang and Sebastian Liu!</p>
+      <p className="centered">This game was made by Jason Pang and Sebastian Liu!</p>
     );
   }
 }
