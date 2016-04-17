@@ -42,6 +42,8 @@ class Game extends React.Component {
     this.tileRefs = [];
     this.lastOffsets = [0, 0, 0, 0];
     this.lastOffsetsUnchanged = [true, true, true, true];
+    this.lastTouchTimes = [];
+    window.lastTouchTimes = this.lastTouchTimes;
     this.state = {
       /* An array of 4 numbers */
       numbers: Utils.shuffle(Utils.getRandomPuzzle(props.puzzles)),
@@ -575,9 +577,29 @@ class Game extends React.Component {
     this.updateState();
   }
 
+  isDoubleTap() {
+    if (this.lastTouchTimes.length <= 1) {
+      return false;
+    }
+    let tappedTwice = this.lastTouchTimes[1] - this.lastTouchTimes[0] <= 300;
+    // Only keep the last 2 elements at all times
+    this.lastTouchTimes = this.lastTouchTimes.slice(-2);
+    if (tappedTwice) {
+      // If the user tapped twice within the last X milliseconds
+      // We consider this a double tap
+      return true;
+    }
+  }
+
   onTouchStartHandler(tileIndex, e) {
     console.log(`Called %conTouchStartHandler(tileIndex: ${tileIndex}, e: ${e})`, Utils.getConsoleStyle('code'));
-    this.onTileDownHandler(tileIndex, {pageX: e.touches[0].pageX});
+    this.lastTouchTimes.push(performance.now());
+    let tappedTwice = this.isDoubleTap();
+    if (tappedTwice) {
+      this.onDoubleClick(tileIndex);
+    } else {
+      this.onTileDownHandler(tileIndex, {pageX: e.touches[0].pageX});
+    }
     e.preventDefault();
   }
 
