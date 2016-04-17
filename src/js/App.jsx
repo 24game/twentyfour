@@ -1,7 +1,6 @@
 import '../styles/site.scss';
 import Title from './Title.jsx';
 import Game from './Game.jsx';
-import HowToPlay from './HowToPlay.jsx';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Utils from './utils.js';
