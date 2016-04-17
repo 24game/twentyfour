@@ -212,6 +212,7 @@ class Game extends React.Component {
   }
 
   onTouchMove(e) {
+    log.debug('Called %conTouchMove.', Utils.getConsoleStyle('code'));
     this.onPointerMove(e.touches[0]);
   }
 
@@ -574,6 +575,11 @@ class Game extends React.Component {
     this.updateState();
   }
 
+  onTouchStartHandler(tileIndex, {pageX: pointerLocation}) {
+    log.debug('Called %conTouchStartHandler', Utils.getConsoleStyle('code'));
+    this.onTileDownHandler(tileIndex, {pageX: pointerLocation});
+  }
+
   onPointerUp(e) {
    console.log(`Calling %conPointerUp(event: ${e}}).`, Utils.getConsoleStyle('code'));
     // TODO: Do not wait for animation to complete, use targetIndex to pre-emptively swap the tiles in a temp place and calculate the result to make the game seem faster
@@ -638,7 +644,7 @@ class Game extends React.Component {
             }
             this.lastOffsets[tileIndex] = offsetX;
           return <Tile onMouseDownHandler={this.onTileDownHandler.bind(this, tileIndex)}
-                onTouchStartHandler={this.onTileDownHandler.bind(this, tileIndex)}
+                onTouchStartHandler={this.onTouchStartHandler.bind(this, tileIndex)}
                 onDoubleClick={this.onDoubleClick.bind(this, tileIndex)}
                 value={tileValue} ref={(ref) => this.tileRefs[tileIndex] = ref}
                 customStyles={{
