@@ -35,6 +35,8 @@ $operator-size: 6rem;
 $operator-color: #879093;
 $operator-space-between: $base-space-between / 2;
 
+$equals-sign-margin: 4rem;
+
 * {
 }
 
@@ -227,9 +229,11 @@ code {
   $font-weight: 400,
   $color: $tile-color,
   $height: $tile-size,
-  $margin: 4.5rem,
+  $margin: $equals-sign-margin,
   $hover-color: $tile-color
   );
+
+  margin-right: #{$equals-sign-margin/2};
 
   .equals {
     @include center-via-transform-translate();
@@ -243,12 +247,8 @@ code {
   $font-family: $font-montserrat,
   $font-weight: 400,
   $color: $tile-color,
-  $height: $tile-size,
-  $margin: 2rem,
+  $margin: #{$equals-sign-margin/2},
   $hover-color: $tile-color
   );
 
-  .result {
-    @include center-via-transform-translate();
-  }
 }
