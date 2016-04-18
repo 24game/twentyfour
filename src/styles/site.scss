@@ -272,8 +272,6 @@ code {
     text-transform: lowercase;
     letter-spacing: 0px;
     color: $footer-item-color;
-    padding-left: $footer-item-padding;
-    padding-right: $footer-item-padding;
     &:hover {
       font-weight: 350;
       color: darken($footer-item-color, 75%);
@@ -281,9 +279,11 @@ code {
   }
   .divider {
     color: lighten($footer-item-color, 25%);
+    padding-left: $footer-item-padding;
+    padding-right: $footer-item-padding;
   }
   .footer-details {
-    padding: $footer-details-padding;
+    font-size: ($base-font-size * 0.95);
     color: darken($footer-item-color, 10%);
   }
 
