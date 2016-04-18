@@ -40,6 +40,9 @@ $equals-sign-margin: 4rem;
 $footer-margin: 1rem;
 $footer-item-padding: 0.5rem;
 $footer-item-color: #707070;
+$facebook-blue: #3B5998;
+$twitter-blue: #55ACEE;
+$google-red: #DD4B39;
 
 * {
 }
@@ -274,6 +277,7 @@ code {
     &:hover {
       font-weight: 350;
       color: darken($footer-item-color, 75%);
+      border-bottom: 1px dotted;
     }
   }
   .divider {
@@ -295,6 +299,27 @@ code {
         border-bottom: 1px dotted;
       }
     }
-  }
 
+    #fbShare {
+      &:hover {
+        color: $facebook-blue;
+        font-weight: 350;
+        border-bottom: 1px dotted $facebook-blue;
+      }
+    }
+    #twitterShare {
+      &:hover {
+        color: $twitter-blue;
+        font-weight: 350;
+        border-bottom: 1px dotted $twitter-blue;
+      }
+    }
+    #googleShare {
+      &:hover {
+        color: $google-red;
+        font-weight: 350;
+        border-bottom: 1px dotted $google-red;
+      }
+    }
+  }
 }
