@@ -173,7 +173,7 @@ code {
     );
   }
 
-  &:hover {
+  &.operator-hover {
     .operator {
       font-size: $tile-hover-font-size;
       color: inherit;
