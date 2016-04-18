@@ -4,9 +4,19 @@ class Instructions extends React.Component {
 
   render() {
     return (
-      <section className="unselectable default-cursor flexible columns centered">
-      <p>Use + - * / to make 24. Drag tiles to reorder them. Double-click on a pair of numbers
-      to wrap them in parentheses. Click on the operators to cycle through them. </p>
+      <section className="centered footer-details">
+        <p>
+          <strong className="uppercase">Drag
+          </strong>&nbsp;number tiles to reorder them.
+        </p>
+        <p>
+          <strong className="uppercase">Double click
+          </strong>&nbsp;on number tiles to toggle parentheses.
+        </p>
+        <p>
+          <strong className="uppercase">Click
+          </strong>&nbsp;on operators to cycle between them.
+        </p>
       </section>
 
       // <section className="unselectable default-cursor flexible columns horizontally-centered instructions">

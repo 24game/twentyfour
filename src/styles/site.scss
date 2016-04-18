@@ -40,6 +40,7 @@ $equals-sign-margin: 4rem;
 $footer-margin: 1rem;
 $footer-item-padding: 0.5rem;
 $footer-item-color: #707070;
+$footer-details-padding: 1.5rem;
 
 * {
 }
@@ -58,6 +59,12 @@ h1 {
   color: $tile-color;
   letter-spacing: 0.3rem;
   word-spacing: 1rem;
+  margin-bottom: 0rem;
+}
+
+h3 {
+  margin: 0.5rem;
+  color: lighten($tile-color, 5%);
 }
 
 section.instructions {
@@ -274,6 +281,21 @@ code {
   }
   .divider {
     color: lighten($footer-item-color, 25%);
+  }
+  .footer-details {
+    padding: $footer-details-padding;
+    color: darken($footer-item-color, 10%);
+  }
+
+  section {
+    a {
+      text-decoration: none;
+      color: $footer-item-color;
+      &:hover {
+        color: darken($footer-item-color, 75%);
+        border-bottom: 1px dotted;
+      }
+    }
   }
 
 }
