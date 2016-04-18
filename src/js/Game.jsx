@@ -215,7 +215,7 @@ class Game extends React.Component {
   }
 
   onTouchMove(e) {
-    log.debug('Called %conTouchMove.', Utils.getConsoleStyle('code'));
+    console.log('Called %conTouchMove.', Utils.getConsoleStyle('code'));
     this.onPointerMove(e.touches[0]);
   }
 
