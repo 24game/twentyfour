@@ -180,6 +180,7 @@ class Game extends React.Component {
         }
       }
     }
+    this.updateState();
   }
 
   clearParentheses() {
