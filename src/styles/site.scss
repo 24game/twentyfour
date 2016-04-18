@@ -13,13 +13,13 @@ $color-forest: #c0ccbb;
 
 $base-font: $font-montserrat;
 $base-font-size: 14px;
-$base-space-between: 1rem;
+$base-space-between: 0.778vw;
 
 $tile-transition-duration: 75ms;
 
 $tile-background: lighten($color-wood, 2%);
 $tile-color: darken($tile-background, 75%);
-$tile-size: 9rem;
+$tile-size: 7vw;
 $tile-font-size: $tile-size * 0.45;
 $tile-border-width: 4px;
 $tile-border-radius: 6px;
@@ -31,19 +31,18 @@ $tile-active-background: lighten(invert($tile-color), 10%);
 
 $operator-font: 'Times New Roman';
 $operator-font-weight: 900;
-$operator-size: 6rem;
+$operator-size: 4.62vw;
 $operator-color: #879093;
 $operator-space-between: $base-space-between / 2;
 
-$equals-sign-margin: 4rem;
+$equals-sign-margin: 3.11vw;
 
-$footer-margin: 1rem;
-$footer-item-padding: 0.5rem;
+$footer-margin: 0.77778rem;
+$footer-item-padding: 0.38889vw;
 $footer-item-color: #707070;
-$footer-details-padding: 1.5rem;
+$footer-details-padding: 1.928vw;
 
-* {
-}
+$title-size: 3.11vw;
 
 html {
   font-size: $base-font-size;
@@ -55,7 +54,7 @@ body {
 }
 
 h1 {
-  font-size: 4rem;
+  font-size: $title-size;
   color: $tile-color;
   letter-spacing: 0.3rem;
   word-spacing: 1rem;
@@ -63,6 +62,7 @@ h1 {
 }
 
 h3 {
+  font-size: #{$title-size * 0.5};
   margin: 0.5rem;
   color: lighten($tile-color, 5%);
 }
