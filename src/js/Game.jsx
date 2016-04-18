@@ -582,10 +582,13 @@ class Game extends React.Component {
     if (this.lastTouchTimes.length <= 1) {
       return false;
     }
-    let tappedTwice = this.lastTouchTimes[1] - this.lastTouchTimes[0] <= 300;
+    let lastTouchTimesCount = this.lastTouchTimes.length;
+    let tappedTwice = this.lastTouchTimes[lastTouchTimesCount - 1] - this.lastTouchTimes[lastTouchTimesCount - 2] <= 300;
     // Only keep the last 2 elements at all times
     this.lastTouchTimes = this.lastTouchTimes.slice(-2);
+    window.lastTouchTimes = this.lastTouchTimes;
     if (tappedTwice) {
+      this.lastTouchTimes = [];
       // If the user tapped twice within the last X milliseconds
       // We consider this a double tap
       return true;
@@ -595,6 +598,7 @@ class Game extends React.Component {
   onTouchStartHandler(tileIndex, e) {
     console.log(`Called %conTouchStartHandler(tileIndex: ${tileIndex}, e: ${e})`, Utils.getConsoleStyle('code'));
     this.lastTouchTimes.push(performance.now());
+    window.lastTouchTimes = this.lastTouchTimes;
     let tappedTwice = this.isDoubleTap();
     if (tappedTwice) {
       this.onDoubleClick(tileIndex);
