@@ -42,6 +42,8 @@ class Game extends React.Component {
     this.tileRefs = [];
     this.lastOffsets = [0, 0, 0, 0];
     this.lastOffsetsUnchanged = [true, true, true, true];
+    this.lastTouchTimes = [];
+    window.lastTouchTimes = this.lastTouchTimes;
     this.state = {
       /* An array of 4 numbers */
       numbers: Utils.shuffle(Utils.getRandomPuzzle(props.puzzles)),
@@ -100,7 +102,7 @@ class Game extends React.Component {
     /* Mouse move and up event listeners must be added outside the React element */
 
     // touchmove: a finger touches the screen
-    window.addEventListener('touchmove', this.onPointerMove.bind(this));
+    window.addEventListener('touchmove', this.onTouchMove.bind(this));
     window.addEventListener('mousemove', this.onPointerMove.bind(this));
     // touchend: a finger is lifted off the screen`
     window.addEventListener('touchend', this.onPointerUp.bind(this));
@@ -110,7 +112,7 @@ class Game extends React.Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('touchmove', this.onPointerMove);
+    window.removeEventListener('touchmove', this.onTouchMove);
     window.removeEventListener('mousemove', this.onPointerMove);
     window.removeEventListener('touchend', this.onPointerUp);
     window.removeEventListener('touchcancel', this.onPointerUp);
@@ -178,6 +180,7 @@ class Game extends React.Component {
         }
       }
     }
+    this.updateState();
   }
 
   clearParentheses() {
@@ -209,6 +212,11 @@ class Game extends React.Component {
 
   getAnimatingTile(index) {
     return this.currentState.animating.tiles[index];
+  }
+
+  onTouchMove(e) {
+    log.debug('Called %conTouchMove.', Utils.getConsoleStyle('code'));
+    this.onPointerMove(e.touches[0]);
   }
 
   /* Returns the animating tile that is being clicked on. */
@@ -570,6 +578,36 @@ class Game extends React.Component {
     this.updateState();
   }
 
+  isDoubleTap() {
+    if (this.lastTouchTimes.length <= 1) {
+      return false;
+    }
+    let lastTouchTimesCount = this.lastTouchTimes.length;
+    let tappedTwice = this.lastTouchTimes[lastTouchTimesCount - 1] - this.lastTouchTimes[lastTouchTimesCount - 2] <= 300;
+    // Only keep the last 2 elements at all times
+    this.lastTouchTimes = this.lastTouchTimes.slice(-2);
+    window.lastTouchTimes = this.lastTouchTimes;
+    if (tappedTwice) {
+      this.lastTouchTimes = [];
+      // If the user tapped twice within the last X milliseconds
+      // We consider this a double tap
+      return true;
+    }
+  }
+
+  onTouchStartHandler(tileIndex, e) {
+    console.log(`Called %conTouchStartHandler(tileIndex: ${tileIndex}, e: ${e})`, Utils.getConsoleStyle('code'));
+    this.lastTouchTimes.push(performance.now());
+    window.lastTouchTimes = this.lastTouchTimes;
+    let tappedTwice = this.isDoubleTap();
+    if (tappedTwice) {
+      this.onDoubleClick(tileIndex);
+    } else {
+      this.onTileDownHandler(tileIndex, {pageX: e.touches[0].pageX});
+    }
+    e.preventDefault();
+  }
+
   onPointerUp(e) {
    console.log(`Calling %conPointerUp(event: ${e}}).`, Utils.getConsoleStyle('code'));
     // TODO: Do not wait for animation to complete, use targetIndex to pre-emptively swap the tiles in a temp place and calculate the result to make the game seem faster
@@ -634,7 +672,7 @@ class Game extends React.Component {
             }
             this.lastOffsets[tileIndex] = offsetX;
           return <Tile onMouseDownHandler={this.onTileDownHandler.bind(this, tileIndex)}
-                onTouchStartHandler={this.onTileDownHandler.bind(this, tileIndex)}
+                onTouchStartHandler={this.onTouchStartHandler.bind(this, tileIndex)}
                 onDoubleClick={this.onDoubleClick.bind(this, tileIndex)}
                 value={tileValue} ref={(ref) => this.tileRefs[tileIndex] = ref}
                 customStyles={{
