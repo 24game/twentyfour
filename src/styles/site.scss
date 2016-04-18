@@ -37,6 +37,10 @@ $operator-space-between: $base-space-between / 2;
 
 $equals-sign-margin: 4rem;
 
+$footer-margin: 1rem;
+$footer-item-padding: 0.5rem;
+$footer-item-color: #707070;
+
 * {
 }
 
@@ -253,4 +257,23 @@ code {
 
   // Keeps the entire game from shifting around as the size of the result changes
   width: 5rem;
+}
+
+.footer {
+  margin: $footer-margin;
+  .footer-item {
+    text-transform: lowercase;
+    letter-spacing: 0px;
+    color: $footer-item-color;
+    padding-left: $footer-item-padding;
+    padding-right: $footer-item-padding;
+    &:hover {
+      font-weight: 350;
+      color: darken($footer-item-color, 75%);
+    }
+  }
+  .divider {
+    color: lighten($footer-item-color, 25%);
+  }
+
 }
