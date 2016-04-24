@@ -10,11 +10,11 @@ class Share extends React.Component {
     return(
       <section className="centered footer-details">
         <p>
-          <a className="sharelink" href={fbshare} target="_blank">Facebook</a>
+          <a id="fbShare" href={fbshare} target="_blank">facebook</a>
           <span className="divider"> · </span>
-          <a className="sharelink" href={twittershare} target="_blank">Twitter</a>
+          <a id="twitterShare" href={twittershare} target="_blank">twitter</a>
           <span className="divider"> · </span>
-          <a className="sharelink" href={googleshare} target="_blank">Google</a>
+          <a id="googleShare" href={googleshare} target="_blank">google</a>
         </p>
       </section>
     );

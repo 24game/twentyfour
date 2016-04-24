@@ -41,6 +41,9 @@ $footer-margin: 0.77778rem;
 $footer-item-padding: 0.38889vw;
 $footer-item-color: #707070;
 $footer-details-padding: 1.928vw;
+$facebook-blue: #3B5998;
+$twitter-blue: #55ACEE;
+$google-red: #DD4B39;
 
 $title-size: 3.11vw;
 
@@ -267,14 +270,16 @@ code {
 }
 
 .footer {
+  font-weight: 300;
   margin: $footer-margin;
   .footer-item {
     text-transform: lowercase;
     letter-spacing: 0px;
     color: $footer-item-color;
     &:hover {
-      font-weight: 350;
+      font-weight: 300;
       color: darken($footer-item-color, 75%);
+      border-bottom: 1px dotted;
     }
   }
   .divider {
@@ -296,6 +301,27 @@ code {
         border-bottom: 1px dotted;
       }
     }
-  }
 
+    #fbShare {
+      &:hover {
+        color: $facebook-blue;
+        font-weight: 300;
+        border-bottom: 1px dotted $facebook-blue;
+      }
+    }
+    #twitterShare {
+      &:hover {
+        color: $twitter-blue;
+        font-weight: 300;
+        border-bottom: 1px dotted $twitter-blue;
+      }
+    }
+    #googleShare {
+      &:hover {
+        color: $google-red;
+        font-weight: 300;
+        border-bottom: 1px dotted $google-red;
+      }
+    }
+  }
 }
