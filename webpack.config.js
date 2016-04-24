@@ -1,8 +1,8 @@
 var webpack = require("webpack");
 var path = require('path');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var IS_PROD = process.argv.indexOf('--production') >= 0;
 
-var IS_PROD = false;
 
 Date.prototype.timeNow = function() {
   var hours = this.getHours();
@@ -12,7 +12,6 @@ Date.prototype.timeNow = function() {
   return ((hours < 10) ? "0" : "") + hours + ":" + ((this.getMinutes() < 10) ? "0" : "") + this.getMinutes() + ":" + ((this.getSeconds() < 10) ? "0" : "") + this.getSeconds() + " " + ampm;
 };
 
-
 module.exports = {
   entry: [
     './src/js/App.jsx',
@@ -21,7 +20,7 @@ module.exports = {
     path: path.join(__dirname, 'public'),
     filename: 'bundle.js'
   },
-  //devtool: IS_PROD ? '' : 'inline-source-map',
+  devtool: IS_PROD ? 'source-map' : 'inline-source-map',
   module: {
     loaders: [{
       test: /\.jsx?$/,
@@ -42,26 +41,26 @@ module.exports = {
   },
   debug: !IS_PROD,
   plugins: IS_PROD ? [
-    //new webpack.optimize.DedupePlugin(),
-    //new webpack.optimize.AggressiveMergingPlugin(),
-    //new webpack.optimize.UglifyJsPlugin({
-    //  sourceMap: true,
-    //  compress: {
-    //    sequences: false,
-    //    dead_code: false,
-    //    conditionals: false,
-    //    booleans: false,
-    //    unused: false,
-    //    if_return: false,
-    //    join_vars: false,
-    //    drop_console: false,
-    //    drop_debugger: false
-    //  },
-    //  mangle: false,
-    //  output: {
-    //    comments: false
-    //  }
-    //}),
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.AggressiveMergingPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
+      compress: {
+        sequences: true,
+        dead_code: true,
+        conditionals: true,
+        booleans: true,
+        unused: true,
+        if_return: true,
+        join_vars: true,
+        drop_console: true,
+        drop_debugger: true
+      },
+      mangle: true,
+      output: {
+        comments: false
+      }
+    }),
     function() {
       this.plugin('watch-run', function(watching, callback) {
         console.log();
