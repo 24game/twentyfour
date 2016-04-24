@@ -12,14 +12,14 @@ $color-fern: #a2b1a6;
 $color-forest: #c0ccbb;
 
 $base-font: $font-montserrat;
-$base-font-size: 14px;
-$base-space-between: 0.778vw;
+$base-font-size: 1.5vw;
+$base-space-between: 1vw;
 
 $tile-transition-duration: 75ms;
 
 $tile-background: lighten($color-wood, 2%);
 $tile-color: darken($tile-background, 75%);
-$tile-size: 7vw;
+$tile-size: 9vw;
 $tile-font-size: $tile-size * 0.45;
 $tile-border-width: 4px;
 $tile-border-radius: 6px;
