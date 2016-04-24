@@ -512,7 +512,7 @@ class Game extends React.Component {
     for (let i = 0; i < this.currentState.numbers.length; i++) {
       let staticOffset = this.getStaticTileOffsetByTargetIndex(i).left;
       let dynamicOffset = this.getDynamicTileOffsetByTargetIndex(i).left;
-      if (Math.abs(dynamicOffset - staticOffset) > 2) {
+      if (Math.abs(dynamicOffset - staticOffset) > 0.85) {
         return true;
       }
     }
@@ -692,6 +692,13 @@ class Game extends React.Component {
     let animatingTile = this.currentState.animating.tiles[tileIndex];
     if (animatingTile && this.animationMode) {
       inactiveTileOffset = animatingTile.targetOffset;
+    }
+    if (this.justFinishedAnimation) {
+      return {
+        scale: 1,
+        shadow: 1,
+        offsetX: inactiveTileOffset
+      };
     }
     if (this.isActiveTile(tileIndex)) {
       return {
