@@ -3,6 +3,7 @@ var gutil = require('gulp-util');
 var shell = require('gulp-shell');
 var runSequence = require('run-sequence');
 var livereload = require('gulp-livereload');
+var IS_PRODUCTION_BUILD = process.argv.indexOf('--production') >= 0 || false;
 
 
 gulp.task("default", ["main-task"]);
@@ -22,7 +23,7 @@ gulp.task("reload-changes", ['reload-html', 'reload-js', 'reload-misc'], functio
 });
 
 gulp.task("transpile-javascript", shell.task([
-        'webpack --watch --colors --progress'
+        'webpack --watch --colors --progress ' + (IS_PRODUCTION_BUILD ? '--production' : '')
     ]));
 
 gulp.task("reload-html", function() {

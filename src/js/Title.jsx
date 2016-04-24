@@ -6,14 +6,14 @@ class Title extends React.Component {
     return (
       <div className="unselectable centered title">
         <h1 className="default-cursor uppercase">Twenty Four</h1>
-        <h3>Use&nbsp;
-            <strong className="larger">
+        <h3 className="larger">use&nbsp;
+            <strong className="larger subtitle-operators">
               <code id="plus">+</code>
               <code id="minus">−</code>
               <code id="times">×</code>
               <code id="divide">÷</code>
             </strong>
-            &nbsp;to make 24.
+            &nbsp;to make 24
         </h3>
       </div>
     )
