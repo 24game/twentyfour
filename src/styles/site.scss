@@ -45,15 +45,21 @@ $facebook-blue: #3B5998;
 $twitter-blue: #55ACEE;
 $google-red: #DD4B39;
 
-$title-size: 3.11vw;
+$title-size: 3.25vw;
 
 html {
   font-size: $base-font-size;
   -webkit-font-smoothing: antialiased;
+  height: 100%;
 }
 
 body {
   font-family: $base-font;
+}
+
+.title {
+  margin-top: 10vh;
+  margin-bottom: 5vh;
 }
 
 h1 {
@@ -61,7 +67,7 @@ h1 {
   color: $tile-color;
   letter-spacing: 0.3rem;
   word-spacing: 1rem;
-  margin-bottom: 0rem;
+  margin-bottom: 0;
 }
 
 h3 {
@@ -79,6 +85,7 @@ section.instructions {
   background: lighten($tile-background, 0%);
   padding: 10px 50px;
   border-radius: 8px;
+  margin-bottom: 7vh;
 
   p {
     margin-top: 0.5rem;
@@ -266,7 +273,7 @@ code {
   );
 
   // Keeps the entire game from shifting around as the size of the result changes
-  width: 5rem;
+  // width: 5rem;
 }
 
 .footer {
