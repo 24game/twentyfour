@@ -11,14 +11,14 @@ $color-fern: #a2b1a6;
 $color-forest: #c0ccbb;
 
 $base-font: $font-montserrat;
-$base-font-size: 14px;
-$base-space-between: 1rem;
+$base-font-size: 1.5vw;
+$base-space-between: 1vw;
 
 $tile-transition-duration: 75ms;
 
 $tile-background: lighten($color-wood, 2%);
 $tile-color: darken($tile-background, 75%);
-$tile-size: 9rem;
+$tile-size: 9vw;
 $tile-font-size: $tile-size * 0.45;
 $tile-border-width: 4px;
 $tile-border-radius: 6px;
@@ -30,41 +30,48 @@ $tile-active-background: lighten(invert($tile-color), 10%);
 
 $operator-font: 'Times New Roman';
 $operator-font-weight: 900;
-$operator-size: 6rem;
+$operator-size: 4.62vw;
 $operator-color: #879093;
 $operator-space-between: $base-space-between / 2;
 
 $equals-sign-margin: 4rem;
 $success: #3B5998;
 
-$footer-margin: 1rem;
-$footer-item-padding: 0.5rem;
+$footer-margin: 0.77778rem;
+$footer-item-padding: 0.38889vw;
 $footer-item-color: #707070;
+$footer-details-padding: 1.928vw;
 $facebook-blue: #3B5998;
 $twitter-blue: #55ACEE;
 $google-red: #DD4B39;
 
-* {
-}
+$title-size: 3.25vw;
 
 html {
   font-size: $base-font-size;
   -webkit-font-smoothing: antialiased;
+  height: 100%;
 }
 
 body {
   font-family: $base-font;
 }
 
+.title {
+  margin-top: 10vh;
+  margin-bottom: 5vh;
+}
+
 h1 {
-  font-size: 4rem;
+  font-size: $title-size;
   color: $tile-color;
   letter-spacing: 0.3rem;
   word-spacing: 1rem;
-  margin-bottom: 0rem;
+  margin-bottom: 0;
 }
 
 h3 {
+  font-size: #{$title-size * 0.5};
   margin: 0.5rem;
   color: lighten($tile-color, 5%);
 }
@@ -78,6 +85,7 @@ section.instructions {
   background: lighten($tile-background, 0%);
   padding: 10px 50px;
   border-radius: 8px;
+  margin-bottom: 7vh;
 
   p {
     margin-top: 0.5rem;
@@ -260,7 +268,7 @@ code {
   );
 
   // Keeps the entire game from shifting around as the size of the result changes
-  width: 5rem;
+  // width: 5rem;
 }
 
 .success {
@@ -268,13 +276,14 @@ code {
 }
 
 .footer {
+  font-weight: 300;
   margin: $footer-margin;
   .footer-item {
     text-transform: lowercase;
     letter-spacing: 0px;
     color: $footer-item-color;
     &:hover {
-      font-weight: 350;
+      font-weight: 300;
       color: darken($footer-item-color, 75%);
       border-bottom: 1px dotted;
     }
@@ -302,21 +311,21 @@ code {
     #fbShare {
       &:hover {
         color: $facebook-blue;
-        font-weight: 350;
+        font-weight: 300;
         border-bottom: 1px dotted $facebook-blue;
       }
     }
     #twitterShare {
       &:hover {
         color: $twitter-blue;
-        font-weight: 350;
+        font-weight: 300;
         border-bottom: 1px dotted $twitter-blue;
       }
     }
     #googleShare {
       &:hover {
         color: $google-red;
-        font-weight: 350;
+        font-weight: 300;
         border-bottom: 1px dotted $google-red;
       }
     }
