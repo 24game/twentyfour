@@ -512,7 +512,7 @@ class Game extends React.Component {
     for (let i = 0; i < this.currentState.numbers.length; i++) {
       let staticOffset = this.getStaticTileOffsetByTargetIndex(i).left;
       let dynamicOffset = this.getDynamicTileOffsetByTargetIndex(i).left;
-      if (Math.abs(dynamicOffset - staticOffset) > 2) {
+      if (Math.abs(dynamicOffset - staticOffset) > 0.85) {
         return true;
       }
     }
