@@ -1,5 +1,4 @@
 @import "helpers";
-@import "fonts";
 
 /* Variables */
 $font-montserrat: 'Montserrat', sans-serif;
@@ -36,6 +35,7 @@ $operator-color: #879093;
 $operator-space-between: $base-space-between / 2;
 
 $equals-sign-margin: 4rem;
+$success: #3B5998;
 
 $footer-margin: 1rem;
 $footer-item-padding: 0.5rem;
@@ -227,11 +227,6 @@ code {
     color: darken($tile-active-background, 70%);
   }
 
-  &.enclosable {
-    background-color: $color-forest;
-    border: $tile-border-width dashed darken($color-forest, 25%);
-    color: darken($color-forest, 70%);
-  }
 }
 
 .equal-sign {
@@ -266,6 +261,10 @@ code {
 
   // Keeps the entire game from shifting around as the size of the result changes
   width: 5rem;
+}
+
+.success {
+  color: $success;
 }
 
 .footer {

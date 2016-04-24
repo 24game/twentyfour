@@ -7,9 +7,14 @@ class Result extends React.Component {
   }
 
   render() {
+    let className = "default-cursor unselectable result";
+    if (this.props.value === "24") {
+      className += " success";
+    }
+
     return (
       <div className="result-display">
-        <span className="default-cursor unselectable result">{this.props.value}</span>
+        <span className={className}>{this.props.value}</span>
       </div>
     );
   }
