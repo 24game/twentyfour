@@ -14,7 +14,7 @@ class Share extends React.Component {
           <span className="divider"> · </span>
           <a id="twitterShare" href={twittershare} target="_blank">twitter</a>
           <span className="divider"> · </span>
-          <a id="googleShare" href={googleshare} target="_blank">google</a>
+          <a id="googleShare" href={googleshare} target="_blank">google+</a>
         </p>
       </section>
     );
