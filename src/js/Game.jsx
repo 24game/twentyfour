@@ -693,6 +693,13 @@ class Game extends React.Component {
     if (animatingTile && this.animationMode) {
       inactiveTileOffset = animatingTile.targetOffset;
     }
+    if (this.justFinishedAnimation) {
+      return {
+        scale: 1,
+        shadow: 1,
+        offsetX: inactiveTileOffset
+      };
+    }
     if (this.isActiveTile(tileIndex)) {
       return {
         scale: spring(1.1, this.scaleSpringConfig),
