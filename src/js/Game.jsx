@@ -31,7 +31,7 @@ class Game extends React.Component {
       this.currentState.numbers = Utils.shuffle(Utils.getRandomPuzzle(props.puzzles));
       this.currentState.operators = Utils.shuffle(props.operators).slice(0, 3);
       this.currentState.parentheses = [null, null];
-      this.updateState(); 
+      this.updateState();
     });
 
     /* Default spring physics */
@@ -748,7 +748,7 @@ class Game extends React.Component {
   }
 
   render() {
-    let result = this.computeResult();
+    let result = this.computeResult() === "null" ? "∞" : Utils.cleanComputedResult(this.computeResult());
 
     let html = (
       <section className="flexible rows horizontally-centered vertically-centered game">
@@ -766,7 +766,7 @@ class Game extends React.Component {
           ];
         })}
         <EqualsSign/>
-        <Result value={Utils.cleanComputedResult(result)}/>
+        <Result value={result}/>
       </section>
     );
     return html;
