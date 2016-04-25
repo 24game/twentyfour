@@ -59,7 +59,6 @@ body {
 
 .title {
   margin-top: 10vh;
-  margin-bottom: 5vh;
 }
 
 h1 {
@@ -76,32 +75,9 @@ h3 {
   color: lighten($tile-color, 5%);
 }
 
-section.instructions {
-  font-family: $font-montserrat;
-  font-weight: 400;
-  font-size: 1.3rem;
-  word-spacing: 0.08rem;
-  color: lighten($tile-color, 10%);
-  background: lighten($tile-background, 0%);
-  padding: 10px 50px;
-  border-radius: 8px;
-  margin-bottom: 7vh;
-
-  p {
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-}
-
-section.instructions + section.game {
-  margin-top: 3rem;
-  padding: 1rem;
-}
-
 section.game {
   font-family: $font-droidsans;
   background: lighten($tile-background, 20%);
-  padding: 1.43rem;
   border-radius: $tile-border-radius;
 }
 
@@ -111,10 +87,6 @@ code {
   color: $tile-color;
   border-radius: 4px;
   @include space-between($base-space-between / 4);
-}
-
-.drop-container {
-  position: relative;
 }
 
 @mixin tile($background-color: initial, $hover-background-color: $background-color, $color: initial, $width: initial, $height: initial, $margin: initial, $border: initial, $border-radius: initial, $font-size: inherit, $font-family: inherit, $font-weight: inherit, $hover-border: initial, $hover-color: initial) {
@@ -267,8 +239,8 @@ code {
   $hover-color: $tile-color
   );
 
-  // Keeps the entire game from shifting around as the size of the result changes
-  // width: 5rem;
+  // Comment out next line to keep the entire game from shifting around as the size of the result changes
+  width: 5rem;
 }
 
 .success {
