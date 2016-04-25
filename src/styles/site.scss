@@ -35,7 +35,7 @@ $operator-color: #879093;
 $operator-space-between: $base-space-between / 2;
 
 $equals-sign-margin: 4rem;
-$success: #3B5998;
+$success: lighten(#3B5998, 15);
 
 $footer-margin: 0.77778rem;
 $footer-item-padding: 0.38889vw;

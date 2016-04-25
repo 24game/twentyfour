@@ -9,7 +9,7 @@ class Result extends React.Component {
   render() {
     let className = "default-cursor unselectable result";
     if (this.props.value === "24") {
-      className += " success";
+      className += " large success";
     }
 
     return (
