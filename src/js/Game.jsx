@@ -748,7 +748,7 @@ class Game extends React.Component {
   }
 
   render() {
-    let result = this.computeResult() === "null" ? "∞" : Utils.cleanComputedResult(this.computeResult());
+    let result = this.computeResult();
 
     let html = (
       <section className="flexible rows horizontally-centered vertically-centered game">
@@ -766,7 +766,7 @@ class Game extends React.Component {
           ];
         })}
         <EqualsSign/>
-        <Result value={result}/>
+        <Result value={Utils.cleanComputedResult(result)}/>
       </section>
     );
     return html;

@@ -12,7 +12,7 @@ class Footer extends React.Component {
     this.displayAbout = this.displayAbout.bind(this);
     this.displayShare = this.displayShare.bind(this);
     this.state = {
-      showInstructions: false,
+      showInstructions: true,
       showAbout: false,
       showShare: false
     };
