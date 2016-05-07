@@ -30,6 +30,9 @@ gulp.task("reload-html", function() {
     gulp.src('src/**/*.html')
         .pipe(gulp.dest('public'))
         .pipe(livereload());
+    gulp.src('src/**/*.ico')
+        .pipe(gulp.dest('public'))
+        .pipe(livereload());
 });
 
 gulp.task("reload-js", function() {
