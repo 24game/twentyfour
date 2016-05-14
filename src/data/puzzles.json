@@ -125,7 +125,6 @@
   "numberTiles":[2,7,7,8],"expectedResult":24},{
   "numberTiles":[2,10,10,12],"expectedResult":24},{
   "numberTiles":[3,3,12,12],"expectedResult":24},{
-  "numberTiles":[1,1,5,7],"expectedResult":24},{
   "numberTiles":[4,8,13,13],"expectedResult":24},{
   "numberTiles":[1,4,4,12],"expectedResult":24},{
   "numberTiles":[5,6,12,13],"expectedResult":24},{
