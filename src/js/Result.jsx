@@ -6,11 +6,22 @@ class Result extends React.Component {
     super(props);
   }
 
+  getNewGame() {
+    console.warn("here");
+    let event = new CustomEvent('newGame', {
+      bubbles: true, cancelable: true, detail: null
+    });
+    window.dispatchEvent(event);
+  }
+
   render() {
     let className = "default-cursor unselectable result";
     let value = this.props.value === "null" ? "ಠ_ಠ" : this.props.value;
     if (value === "24") {
       className += " large success";
+      setTimeout((function() {
+        this.getNewGame();
+      }).bind(this), 3000);
     }
 
     return (
