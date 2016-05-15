@@ -19,9 +19,9 @@ class Result extends React.Component {
     let value = this.props.value === "null" ? "ಠ_ಠ" : this.props.value;
     if (value === "24") {
       className += " large success";
-      setTimeout((function() {
+      setTimeout(() => {
         this.getNewGame();
-      }).bind(this), 3000);
+      }, 3000);
     }
 
     return (
